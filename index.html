@@ -1,15 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
 	<head>
+		<!-- General Site Meta (favicon ect.) -->
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>Home | thundercraft5.github.io</title>
+		<title>Home | Thundercraft5.Github.io</title>
+		<link rel="icon" href="./resources/images/favicon.ico" type="image/x-icon" />
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Preload styles/scripts -->
+		<link rel="preload" href="./css/index.css" as="style">
+		<link rel="preload" href="./node_modules/jquery/dist/jquery.js" as="script">
+		<link rel="modulepreload" href="./js/index.js" as="script">
+
+		<!-- Load resources -->
+		<script src="./node_modules/jquery/dist/jquery.js" defer></script>
+		<script src="./js/index.js" type="module" defer></script>
 		<link rel="stylesheet" href="./css/index.css">
-		<script src="./js/index.js" type="module" async defer></script>
 	</head>
 	<body>
-		
+		<div class="topnavWrapper">
+			<nav class="topnav">
+				<div class="logo">
+					<a href="./index.html">
+						<img src="./resources/images/Logo.png" width="40" height="40">
+					</a>
+					<div class="headerTextContainer">
+						<div class="headerText"><a href="./index.html" class="blackLink">Thundercraft5.Github.IO</a></div>
+					</div>
+				</div>
+				<div class="navMenu">
+					<menu></menu>
+				</div>
+			</nav>
+		</div>
+		<main>Test</main>
+		<!-- <footer>
+			Test
+		</footer> -->
 	</body>
 </html>
