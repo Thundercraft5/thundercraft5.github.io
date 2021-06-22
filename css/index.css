@@ -1,3 +1,10 @@
+@import url("./topnav.css");
+
+:root {
+	--dark-text-color: rgb(31, 31, 31);
+	--dark-text-color--hover: rgb(71, 71, 71);
+}
+
 body {
 	font: normal 14px arial;
 	margin: 0 !important;
@@ -8,15 +15,6 @@ body {
 	vertical-align: baseline;
 }
 
-nav.topnav {
-	background-color: white;
-	position: fixed;
-	top: 0;
-	display: inline-flex;
-	box-shadow: 0 0 8px black;
-	height: 50px;
-	width: 100%;
-}
 
 main {
 	color: black;
@@ -39,25 +37,6 @@ footer {
 	position: absolute;
 }
 
-
-.headerText {
-	text-align: left;
-	color: black;
-	line-height: 28px;
-	font: bold x-large Rubik;
-	height: -webkit-fill-available;
-}
-
-.headerTextContainer {
-	left: 0;
-	text-align: center;
-	padding: 5px;
-	height: -webkit-fill-available;
-	display: inline-block;
-	vertical-align: top;
-	padding-top: 8px;
-}
-
 .blackLink {
 	text-decoration: none;
 	color: rgb(31, 31, 31);
@@ -69,38 +48,47 @@ footer {
 	color: rgb(71, 71, 71);
 }
 
-.logo img {
-	border-radius: 50%;
+.infectionTableProject {
+	text-align: center;
 }
 
-.logo {
-	display: inline-block;
-	padding: 4px;
+.infectionTableHeader {
+	font-size: x-large;
+	font-weight: bold;
 }
 
-.logo > a {
-	text-decoration: none;
+table.infectionTable, table.infectionTable :is(td, tr) {
+	border: 1.5px solid var(--dark-text-color--hover);
 }
 
-.navMenu:before {
-	content: "";
-	display: inline-block;
-	background-color: rgb(31, 31, 31);
-	height: 30px;
-	width: 2px;
-	vertical-align: bottom;
-	border-radius: .5px;
+table.infectionTable {
+	border-spacing: 0px;
+	margin: auto;
 }
 
-.navMenu {
-	display: flex;
-	align-items: center;
-	flex-direction: row;
-	justify-content: space-around;
-	flex-wrap: nowrap;
-	align-content: stretch;
+table.infectionTable :is(td, tr) {
+	background-color: lightgray;
+	width: 25px;
+	height: 25px;
 }
 
-menu {
-	display: inline-block;
+table.infectionTable td.active {
+	background-color: skyblue;
+}
+
+.infectionTableWrapper button.activateButton::before {
+	content: "Activate";
+}
+
+.infectionTableWrapper button.resetButton::before {
+	content: "Reset";
+}
+
+.infectionTableWrapper button:is(.activateButton, .resetButton) {
+	margin: auto;
+	display: block;
+}
+
+.infectionTableWrapper {
+	text-align: center;
 }
