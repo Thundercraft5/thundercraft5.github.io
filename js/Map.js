@@ -1,6 +1,7 @@
+import { MapUtils } from "./MapUtils.js";
 import { inspect } from "util";
 
-export default class Map extends globalThis.Map {
+export default class Map extends global.Map {
 	#depth = 0;
 	#locked = false;
 	#requiredKeyType;
@@ -58,75 +59,12 @@ export default class Map extends globalThis.Map {
 		valueOf() { return this.#value; }
 	};
 
-	/*** Helper functions ***/
-	static #assertCallbackMapEntry(v) {
-		if (!Array.isArray(v) && v.length !== 2) 
-			throw new TypeError(
-				`Return value of callback must be an array with a length of 2, received ${ Map.#toRepresentation(v) }`,
-			);
-
-		return v;  
-	};
-	static #assertFunction(v, nullable = false) {
-		if (!(v instanceof Function) && (nullable ? v != null : true)) 
-			throw new TypeError(`${ Map.#toRepresentation(v) } is not a function`);
-
-		return v;
-	};
-
-	static #toRepresentation(v) {
-		if (!v || v instanceof Boolean) 
-			return String(v);
-		else if (v.__proto__.constructor.name !== "" && typeof(v) === "object" && !Array.isArray(v)) 
-			return `#<${ v.__proto__.constructor.name }>`;
-		else if (typeof(v) === "object" && v[Symbol.toStringTag] || Array.isArray(v)) 
-			return Object.prototype.toString.call(v);
-		else return `${ v }`;
-	}
-
-	static #replaceHelper(map, callbackfn, thisArg, k, v, _, c) {
-		const [newK, newV] = Map.#assertCallbackMapEntry(callbackfn.call(thisArg, k, v, this, c));
-		
-		map.set(newK, newV);
-		
-		return map;
-	}
-
-	static #isMapEntryArray(array){
-		return Array.isArray(array) 
-			&& array.every(v => Array.isArray(v) && v.length <= 2);
-	}
-
+	/*** Helper functions ***/	
 	static #assertThis(v) {
-		if (v?.constructor !== Map.prototype.constructor) 
-			throw new TypeError(`Method ${ Map.#getStackName(3) } called on incompatible receiver ${Map.#toRepresentation(v)}`); // eslint-disable-line
+		if (v?.__proto__?.constructor !== Map.prototype.constructor) 
+			throw new TypeError(`Method ${ MapUtils.getStackName(3) } called on incompatible receiver ${MapUtils.toRepresentation(v)}`); // eslint-disable-line
 
 		return v;
-	}
-
-	static #getStackName(level) {
-		let {stack} = new Error();
-
-		stack = stack.split('\n')[level];
-		stack = stack.replace(/^\s*at/i, '');
-		[stack] = stack.split('(');
-		stack = stack.trim();
-		stack = stack.slice(stack.indexOf('.'));
-
-		return `${ Map.prototype.constructor.name }.prototype${ stack }`;
-	}
-
-	static #getClassName(v) {
-		return v.prototype.constructor.name;
-	}
-
-	static #getRandomInt(max, exclude) {
-		const int = Math.ceil(Math.random() * max);
-
-		if ((Array.isArray(exclude) && exclude.includes(int)) || int === exclude) 
-			return Map.#getRandomInt(max, exclude);
-		else 
-			return int;
 	}
 
 	#assertNotLocked() {
@@ -139,7 +77,7 @@ export default class Map extends globalThis.Map {
 		if (!(Object(k) instanceof this.#requiredKeyType) && this.#requiredKeyType)
 			throw new TypeError(
 				`Map keys must be of type "${ 
-					Map.#getClassName(this.#requiredValueType)
+					MapUtils.getClassName(this.#requiredValueType)
 				}", received "${
 					v?.constructor.name || v
 				}"`,
@@ -147,7 +85,7 @@ export default class Map extends globalThis.Map {
 		if (!(Object(v) instanceof this.#requiredValueType) && this.#requiredValueType)
 			throw new TypeError(
 				`Map values must be of type "${ 
-					Map.#getClassName(this.#requiredValueType)
+					MapUtils.getClassName(this.#requiredValueType)
 				}", received "${
 					v?.constructor.name || v
 				}"`,
@@ -164,7 +102,7 @@ export default class Map extends globalThis.Map {
 		const results = new Array(count)
 			.fill()
 			.map(() => {
-				const int = Map.#getRandomInt(this.size-1, exclude);
+				const int = MapUtils.getRandomInt(this.size-1, exclude);
 
 				exclude.push(int);
 
@@ -177,7 +115,7 @@ export default class Map extends globalThis.Map {
 	/*** Constructor ***/
 	constructor(...entries) {
 		super();
-		this.setAll(...(Map.#isMapEntryArray(entries[0]) && this.#depth++ <= 0 ? entries[0] : entries));
+		this.setAll(...(MapUtils.isMapEntryArray(entries[0]) && this.#depth++ <= 0 ? entries[0] : entries));
 		this.#depth = 0;
 	}
 
@@ -202,7 +140,7 @@ export default class Map extends globalThis.Map {
 	setAll(...entries) {
 		Map.#assertThis(this);
 
-		if (Map.#isMapEntryArray(entries[0]) && this.#depth++ <= 0) 
+		if (MapUtils.isMapEntryArray(entries[0]) && this.#depth++ <= 0) 
 			return this.setAll(...entries[0]); 
 		else if (entries[0]?.__proto__?.constructor === Object) 
 			return this.setAll(...Object.entries(entries[0]));
@@ -252,8 +190,12 @@ export default class Map extends globalThis.Map {
 		return this;
 	}
 
-	difference(other) {
-		return other.filter((_, k) => !this.has(k)).concat(this.filter((_, k) => !other.has(k)));
+	difference(otherMap) {
+		return otherMap.filter((_, k) => !this.has(k)).concat(this.filter((_, k) => !otherMap.has(k)));
+	}
+
+	intersect(other) {
+		return other.filter((_, k) => this.has(k));
 	}
 
 	/*** Getters ***/
@@ -269,7 +211,7 @@ export default class Map extends globalThis.Map {
 
 	find(callbackfn, thisArg=this) {
 		Map.#assertThis(this);
-		Map.#assertFunction(callbackfn);
+		MapUtils.assertFunction(callbackfn);
 
 		let res;
 
@@ -282,12 +224,12 @@ export default class Map extends globalThis.Map {
 
 	findEntry(callbackfn, thisArg=this) {
 		Map.#assertThis(this);
-		Map.#assertFunction(callbackfn);
+		MapUtils.assertFunction(callbackfn);
 
 		let res;
 
 		this.forEach((...d) => {
-			if (callbackfn.call(thisArg, ...d)) res = new Map.Entry(...d.slice(0, 2));
+			if (callbackfn.call(thisArg, ...d)) res = new MapUtils.Entry(...d.slice(0, 2));
 		});
 
 		return res;
@@ -295,7 +237,7 @@ export default class Map extends globalThis.Map {
 			
 	findKey(callbackfn, thisArg=this) {
 		Map.#assertThis(this);
-		Map.#assertFunction(callbackfn);
+		MapUtils.assertFunction(callbackfn);
 		let res;
 
 		this.forEach((...d) => {
@@ -411,7 +353,7 @@ export default class Map extends globalThis.Map {
 	/*** Iterative Methods ***/
 	forEach(callbackfn, thisArg=this) {
 		Map.#assertThis(this);
-		Map.#assertFunction(callbackfn);
+		MapUtils.assertFunction(callbackfn);
 
 		let count = 0;
 
@@ -424,7 +366,7 @@ export default class Map extends globalThis.Map {
 
 	toArray(mapFn=null, thisArg=this) {
 		Map.#assertThis(this);
-		Map.#assertFunction(mapFn, true);	
+		MapUtils.assertFunction(mapFn, true);	
 
 		const results = [];
 
@@ -436,9 +378,16 @@ export default class Map extends globalThis.Map {
 		return results;
 	}
 
+	mapToFlatArray(mapFn, thisArg=this) {
+		Map.#assertThis(this);
+		MapUtils.assertFunction(mapFn);
+
+		return this.toArray().flatMap(([k, v], i, arr) => mapFn.call(thisArg, k, v, arr, i));
+	}
+
 	some(callbackfn, thisArg=this) {
 		Map.#assertThis(this);
-		Map.#assertFunction(callbackfn);
+		MapUtils.assertFunction(callbackfn);
 
 		let res = false;
 
@@ -452,7 +401,7 @@ export default class Map extends globalThis.Map {
 	}
 
 	every(callbackfn, thisArg=this) {
-		Map.#assertFunction(callbackfn);
+		MapUtils.assertFunction(callbackfn);
 		Map.#assertThis(this);
 
 		let res = true;
@@ -468,27 +417,27 @@ export default class Map extends globalThis.Map {
 
 	replace(callbackfn, thisArg=this) {
 		Map.#assertThis(this);
-		Map.#assertFunction(callbackfn);
+		MapUtils.assertFunction(callbackfn);
 
 		const newMap = new this.constructor();
 		
-		this.forEach(Map.#replaceHelper.bind(null, newMap, callbackfn, thisArg));
+		this.forEach(MapUtils.replaceHelper.bind(null, newMap, callbackfn, thisArg));
 
 		return this;
 	}
 
 	replaceWith(callbackfn, thisArg=this) {
 		Map.#assertThis(this);
-		Map.#assertFunction(callbackfn);
+		MapUtils.assertFunction(callbackfn);
 
-		this.forEach(Map.#replaceHelper.bind(null, this, callbackfn, thisArg));
+		this.forEach(MapUtils.replaceHelper.bind(null, this, callbackfn, thisArg));
 
 		return this;
 	}
 
 	mapKeys(callbackfn, thisArg=this) {
 		Map.#assertThis(this);
-		Map.#assertFunction(callbackfn);
+		MapUtils.assertFunction(callbackfn);
 		const newMap = new this.constructor();
 
 		this.forEach((k, v, map, i) => {
@@ -502,7 +451,7 @@ export default class Map extends globalThis.Map {
 
 	mapValues(callbackfn, thisArg=this) {
 		Map.#assertThis(this);
-		Map.#assertFunction(callbackfn);
+		MapUtils.assertFunction(callbackfn);
 		const newMap = new this.constructor();
 
 		this.forEach((k, v, map, i) => {
@@ -516,7 +465,7 @@ export default class Map extends globalThis.Map {
 
 	mapWithKeys(callbackfn, thisArg=this) {
 		Map.#assertThis(this);
-		Map.#assertFunction(callbackfn);
+		MapUtils.assertFunction(callbackfn);
 		const entries = this.toArray();
 
 		this.clear();
@@ -532,7 +481,7 @@ export default class Map extends globalThis.Map {
 
 	mapWithValues(callbackfn, thisArg=this) {
 		Map.#assertThis(this);
-		Map.#assertFunction(callbackfn);
+		MapUtils.assertFunction(callbackfn);
 		const keys = this.keys();
 		
 		keys.forEach((k, i) => {
@@ -546,7 +495,7 @@ export default class Map extends globalThis.Map {
 	
 	partition(callbackfn, thisArg=this) {
 		Map.#assertThis(this);
-		Map.#assertFunction(callbackfn);
+		MapUtils.assertFunction(callbackfn);
 
 		const [passed, failed] = [new Map(), new Map()];
 
@@ -560,7 +509,7 @@ export default class Map extends globalThis.Map {
 
 	reduce(callbackfn, initialValue, thisArg=this) {
 		Map.#assertThis(this);
-		Map.#assertFunction(callbackfn);
+		MapUtils.assertFunction(callbackfn);
 
 		if (initialValue == null && this.size === 0) 
 			throw new TypeError('Reduce of empty map with no initial value');
@@ -573,7 +522,7 @@ export default class Map extends globalThis.Map {
 
 	filter(callbackfn, thisArg=this) {
 		Map.#assertThis(this);
-		Map.#assertFunction(callbackfn);
+		MapUtils.assertFunction(callbackfn);
 
 		const results = new this.constructor();
 
@@ -586,7 +535,7 @@ export default class Map extends globalThis.Map {
 
 	filterWith(callbackfn, thisArg=this) {
 		Map.#assertThis(this);
-		Map.#assertFunction(callbackfn);
+		MapUtils.assertFunction(callbackfn);
 
 		this.forEach((k, v, map, i) => {
 			if (!callbackfn.call(thisArg, k, v, map, i)) this.delete(k);
@@ -647,7 +596,7 @@ export default class Map extends globalThis.Map {
 	toEntryArray() {
 		Map.#assertThis(this);
 
-		return this.toArray((k, v) => new Map.Entry(k, v));
+		return this.toArray((k, v) => new MapUtils.Entry(k, v));
 	}
 
 	/*** Utility Methods ***/
@@ -656,7 +605,7 @@ export default class Map extends globalThis.Map {
 		const newMap = new this.constructor();
 
 		this.forEach((k, v) => newMap.set(k, v));
-		if (preserveLock) newMap.setLocked();
+		if (preserveLock) newMap.lock();
 
 		return newMap;
 	}
@@ -702,10 +651,14 @@ export default class Map extends globalThis.Map {
 	}
 
 	removeAll(...keys) {
+		Map.#assertThis(this);
+
 		return keys.map(key => this.remove(key));
 	}
 
 	lock() {
+		Map.#assertThis(this);
+		this.#assertNotLocked();
 		this.#locked = true;
 
 		return this;
@@ -755,6 +708,20 @@ export default class Map extends globalThis.Map {
 		return this;
 	}
 
+	slice(start = 0, end = this.size) {
+		return this.clone().sliceWith(start, end);
+	}
+
+	sliceWith(start = 0, end = this.size) {
+		const entries = this.entries();
+
+		entries.forEach(([k], i) => {
+			if (!(i >= start && i < end)) this.delete(k);
+		});
+
+		return this;
+	}
+
 	/*** Meta Properties ***/
 	* [Symbol.iterator]() {
 		Map.#assertThis(this);
@@ -775,12 +742,12 @@ export default class Map extends globalThis.Map {
 
 		return `Map${ this.#assertTypes
 			? `<${ 
-				Map.#getClassName(this.#requiredKeyType)
+				MapUtils.getClassName(this.#requiredKeyType)
 			}, ${
-				Map.#getClassName(this.#requiredValueType)
+				MapUtils.getClassName(this.#requiredValueType)
 			}>`
 			: "" 
-		}(${ this.size }) {${ 
+		}(${ this.size }) ${ this.#locked ? "[locked]" : "" } {${ 
 			[
 				this.size > 3 ? "\n" : " ",
 				ret,
@@ -790,8 +757,6 @@ export default class Map extends globalThis.Map {
 	}
 }
 
-const map = new Map([0, 1], [2, 3], [4, 5], [6, 7], [8, 9]).setAll({
-	E: "",
-});
+const map = new Map([0, 1], [2, 3], [4, 5], [6, 7], [8, 9], [10, 11], [12, 13]);
 
-console.log(map, map.lock().filterWith(k => k > 3));
+console.log(map.mapToFlatArray((k, v) => k/v));

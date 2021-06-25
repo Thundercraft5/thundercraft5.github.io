@@ -1,4 +1,4 @@
-import Map from "./Map.js";
+import Map from "../node_modules/extended-map/Map.js";
 
 const size = +$('.infectionTable').attr("data-size");
 
@@ -82,10 +82,6 @@ $('.infectionTableWrapper button.activateButton').on({
 		function getRandomInt(max) {
 			return Math.ceil(Math.random() * max);
 		}
-
-		function checkIfOutOfBounds(...x, ...y) {
-			
-		};
 
 		/**
 		 * @internal
