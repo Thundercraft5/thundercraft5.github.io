@@ -1,6 +1,9 @@
 {
-  	"devDependencies": {
-    	"jquery": "^3.6.0"
-  	},
-  	"type": "module"
+	"devDependencies": {
+		"jquery": "^3.6.0"
+	},
+	"dependencies": {
+		"extended-map": "file:../../Visual-Studio/JS/Map"
+	},
+	"type": "module"
 }
