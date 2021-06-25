@@ -1,5 +1,14 @@
+import { inspect } from "util";
+
 export default class Map extends globalThis.Map {
 	#depth = 0;
+	#locked = false;
+	#requiredKeyType;
+	#requiredValueType;
+	#assertTypes = false;
+
+	get locked() { return this.#locked; }
+	set locked(_) { throw new TypeError("Cannot modify read-only property 'locked'"); }
 
 	static Entry = class Entry {
 		#key;
@@ -40,6 +49,7 @@ export default class Map extends globalThis.Map {
 			return this;
 		}
 
+		[inspect.custom]() { return this.toString(); }
 		* [Symbol.iterator]() {
 			yield this.#key;
 			yield this.#value;
@@ -49,7 +59,7 @@ export default class Map extends globalThis.Map {
 	};
 
 	/*** Helper functions ***/
-	static #assertCallbackMapEntry = v => {
+	static #assertCallbackMapEntry(v) {
 		if (!Array.isArray(v) && v.length !== 2) 
 			throw new TypeError(
 				`Return value of callback must be an array with a length of 2, received ${ Map.#toRepresentation(v) }`,
@@ -57,20 +67,24 @@ export default class Map extends globalThis.Map {
 
 		return v;  
 	};
-	static #assertFunction = (v, nullable = false) => {
+	static #assertFunction(v, nullable = false) {
 		if (!(v instanceof Function) && (nullable ? v != null : true)) 
-			throw new TypeError(`Callback must be of type "Function", received ${ Map.#toRepresentation(v) }`);
+			throw new TypeError(`${ Map.#toRepresentation(v) } is not a function`);
 
 		return v;
 	};
 
-	static #toRepresentation = v => {
-		if (v?.constructor.name) return `#<${ v.constructor.name }>`;
-		else if (v !== undefined && v !== null) return Object.prototype.toString.call(v);
+	static #toRepresentation(v) {
+		if (!v || v instanceof Boolean) 
+			return String(v);
+		else if (v.__proto__.constructor.name !== "" && typeof(v) === "object" && !Array.isArray(v)) 
+			return `#<${ v.__proto__.constructor.name }>`;
+		else if (typeof(v) === "object" && v[Symbol.toStringTag] || Array.isArray(v)) 
+			return Object.prototype.toString.call(v);
 		else return `${ v }`;
 	}
 
-	static #replaceHelper = (map, callbackfn, thisArg, k, v, _, c) => {
+	static #replaceHelper(map, callbackfn, thisArg, k, v, _, c) {
 		const [newK, newV] = Map.#assertCallbackMapEntry(callbackfn.call(thisArg, k, v, this, c));
 		
 		map.set(newK, newV);
@@ -78,12 +92,86 @@ export default class Map extends globalThis.Map {
 		return map;
 	}
 
-	static #isMapEntryArray = array => Array.isArray(array) && array.every(v => Array.isArray(v) && v.length <= 2);
+	static #isMapEntryArray(array){
+		return Array.isArray(array) 
+			&& array.every(v => Array.isArray(v) && v.length <= 2);
+	}
 
-	static #assertThis = v => {
-		if (!v instanceof Map) throw new TypeError();
+	static #assertThis(v) {
+		if (v?.constructor !== Map.prototype.constructor) 
+			throw new TypeError(`Method ${ Map.#getStackName(3) } called on incompatible receiver ${Map.#toRepresentation(v)}`); // eslint-disable-line
 
 		return v;
+	}
+
+	static #getStackName(level) {
+		let {stack} = new Error();
+
+		stack = stack.split('\n')[level];
+		stack = stack.replace(/^\s*at/i, '');
+		[stack] = stack.split('(');
+		stack = stack.trim();
+		stack = stack.slice(stack.indexOf('.'));
+
+		return `${ Map.prototype.constructor.name }.prototype${ stack }`;
+	}
+
+	static #getClassName(v) {
+		return v.prototype.constructor.name;
+	}
+
+	static #getRandomInt(max, exclude) {
+		const int = Math.ceil(Math.random() * max);
+
+		if ((Array.isArray(exclude) && exclude.includes(int)) || int === exclude) 
+			return Map.#getRandomInt(max, exclude);
+		else 
+			return int;
+	}
+
+	#assertNotLocked() {
+		if (this.#locked) throw new TypeError('Cannot modify locked map');
+		
+		return this;
+	}
+
+	#assertType(k, v) {
+		if (!(Object(k) instanceof this.#requiredKeyType) && this.#requiredKeyType)
+			throw new TypeError(
+				`Map keys must be of type "${ 
+					Map.#getClassName(this.#requiredValueType)
+				}", received "${
+					v?.constructor.name || v
+				}"`,
+			);
+		if (!(Object(v) instanceof this.#requiredValueType) && this.#requiredValueType)
+			throw new TypeError(
+				`Map values must be of type "${ 
+					Map.#getClassName(this.#requiredValueType)
+				}", received "${
+					v?.constructor.name || v
+				}"`,
+			);
+			
+		return this;
+	}
+
+	#randomHelper(count, getter) {
+		if (count > this.size || count < 1) 
+			throw new RangeError('Count must not be greater than size of map or less than 1');
+
+		const exclude = [];
+		const results = new Array(count)
+			.fill()
+			.map(() => {
+				const int = Map.#getRandomInt(this.size-1, exclude);
+
+				exclude.push(int);
+
+				return int;
+			});
+
+		return results.map(i => getter.call(this, i));
 	}
 
 	/*** Constructor ***/
@@ -91,6 +179,16 @@ export default class Map extends globalThis.Map {
 		super();
 		this.setAll(...(Map.#isMapEntryArray(entries[0]) && this.#depth++ <= 0 ? entries[0] : entries));
 		this.#depth = 0;
+	}
+
+	toJSON() {
+		return JSON.stringify(this.toArray());
+	}
+
+	static fromJSON(json) {
+		const ret = new Map(JSON.parse(json));
+
+		return ret;
 	}
 
 	get size() { return super.size; }
@@ -102,8 +200,14 @@ export default class Map extends globalThis.Map {
 
 	/*** Setters ***/
 	setAll(...entries) {
-		if (Map.#isMapEntryArray(entries[0]) && this.#depth++ <= 0) return this.setAll(...entries[0]); 
-		else entries.forEach(([k, v]) => this.set(k, v));
+		Map.#assertThis(this);
+
+		if (Map.#isMapEntryArray(entries[0]) && this.#depth++ <= 0) 
+			return this.setAll(...entries[0]); 
+		else if (entries[0]?.__proto__?.constructor === Object) 
+			return this.setAll(...Object.entries(entries[0]));
+		else 
+			entries.forEach(([k, v]) => this.set(k, v));
 		
 		this.#depth = 0;
 
@@ -111,30 +215,51 @@ export default class Map extends globalThis.Map {
 	}
 
 	set(k, v) {
-		if (Array.isArray(k) && k.length === 2 && this.#depth++ <= 0) return this.set(...k);
-		else if (k instanceof Map.Entry && arguments.length === 1) this.set(k.key, k.value);
-		else super.set(k, v);
+		Map.#assertThis(this);
+		this.#assertNotLocked();
 
+		if (Array.isArray(k) && k.length === 2 && this.#depth++ <= 0) 
+			return this.set(...k);
+		else if (k instanceof Map.Entry && arguments.length === 1) 
+			this.set(k.key, k.value);
+		else 
+			super.set(k, v);
+
+		if (this.#assertTypes) this.#assertType(k, v);
 		this.#depth = 0;
 
 		return this;
 	}
 
-	merge(...maps) {
-		if (maps.length === 1 && this.#depth++ <= 0) {
+	concat(...maps) {
+		return this.clone().concatWith(...maps);
+	}
+
+	concatWith(...maps) {
+		Map.#assertThis(this);
+
+		if (maps.length === 1 && maps[0] instanceof Array)
+			return this.concatWith(...maps[0]);
+		else if (maps.length === 1 && this.#depth++ <= 0) {
 			maps[0].forEach((k, v) => this.set(k, v));
 
 			return this;
 		} else if (maps.length > 1) 
-			maps.forEach(map => this.merge(map));
+			maps.forEach(map => this.concatWith(map));
 
 		this.#depth = 0;
 
 		return this;
 	}
 
+	difference(other) {
+		return other.filter((_, k) => !this.has(k)).concat(this.filter((_, k) => !other.has(k)));
+	}
+
 	/*** Getters ***/
 	get(...keys) {
+		Map.#assertThis(this);
+
 		if (keys.length > 1) 
 			return keys.map(key => this.get(key));
 		else 
@@ -143,7 +268,9 @@ export default class Map extends globalThis.Map {
 	}
 
 	find(callbackfn, thisArg=this) {
+		Map.#assertThis(this);
 		Map.#assertFunction(callbackfn);
+
 		let res;
 
 		this.forEach((...d) => {
@@ -154,7 +281,9 @@ export default class Map extends globalThis.Map {
 	}
 
 	findEntry(callbackfn, thisArg=this) {
+		Map.#assertThis(this);
 		Map.#assertFunction(callbackfn);
+
 		let res;
 
 		this.forEach((...d) => {
@@ -165,6 +294,7 @@ export default class Map extends globalThis.Map {
 	}
 			
 	findKey(callbackfn, thisArg=this) {
+		Map.#assertThis(this);
 		Map.#assertFunction(callbackfn);
 		let res;
 
@@ -175,11 +305,27 @@ export default class Map extends globalThis.Map {
 		return res;
 	}
 
-	getByNumericKey(searchNum) {
-		return this.findValue((...[,,, c]) => c === searchNum);
+
+	getByIndex(searchNum) {
+		Map.#assertThis(this);
+
+		return this.find((...[,,, c]) => c === searchNum);
+	}
+
+	getKeyByIndex(searchNum) {
+		Map.#assertThis(this);
+
+		return this.findKey((...[,,, c]) => c === searchNum);
+	}
+
+	getEntryByIndex(searchNum) {
+		Map.#assertThis(this);
+
+		return this.findEntry((...[,,, c]) => c === searchNum);
 	}
 
 	indexOf(searchValue) {
+		Map.#assertThis(this);
 		let index;
 
 		this.forEach((k, v) => (v === searchValue ? index = k : null));
@@ -188,6 +334,7 @@ export default class Map extends globalThis.Map {
 	}
 
 	numericIndexOf(searchValue) {
+		Map.#assertThis(this);
 		let index = -1;
 
 		this.forEach((...[, v,, i]) => (v === searchValue ? index = i : null));
@@ -195,11 +342,78 @@ export default class Map extends globalThis.Map {
 		return index;
 	}
 
+	first(count = 1) {
+		Map.#assertThis(this);
+		const values = this.values();
+
+		return count > 1 ? values.slice(count) : values[0];
+	}
+
+	firstKey(count = 1) {
+		Map.#assertThis(this);
+		const keys = this.keys();
+
+		return count > 1 ? keys.slice(count) : keys[0];
+	}	
+
+	firstEntry(count = 1) {
+		Map.#assertThis(this);
+		const entries = this.toEntryArray();
+
+		return count > 1 ? entries.slice(count) : entries[0];
+	}	
+
+	last(count = 1) {
+		Map.#assertThis(this);
+		const values = this.values();
+
+		return count > 1 ? values.slice(values.length-count) : values[values.length-count];
+	}
+
+	lastKey(count = 1) {
+		Map.#assertThis(this);
+		const keys = this.keys();
+
+		return count > 1 ? keys.slice(keys.length-count) : keys[keys.length-count];
+	}	
+
+	lastEntry(count = 1) {
+		Map.#assertThis(this);
+		const entries = this.toEntryArray();
+
+		return count > 1 ? entries.slice(entries.length-count) : entries[entries.length-count];
+	}
+
+	random(count = 1) {
+		Map.#assertThis(this);
+		
+		const results = this.#randomHelper(count, this.getByIndex);
+
+		return count > 1 ? results : results[0];
+	}
+
+	randomKey(count = 1) {
+		Map.#assertThis(this);
+		
+		const results = this.#randomHelper(count, this.getKeyByIndex);
+
+		return count > 1 ? results : results[0];
+	}
+
+	randomEntry(count = 1) {
+		Map.#assertThis(this);
+		
+		const results = this.#randomHelper(count, this.getEntryByIndex);
+
+		return count > 1 ? results : results[0];
+	}
+
 	/*** Iterative Methods ***/
 	forEach(callbackfn, thisArg=this) {
-		let count = 0;
-
+		Map.#assertThis(this);
 		Map.#assertFunction(callbackfn);
+
+		let count = 0;
 
 		super.forEach((v, k, map) => {
 			callbackfn.call(thisArg, k, v, map, count++);
@@ -209,9 +423,10 @@ export default class Map extends globalThis.Map {
 	}
 
 	toArray(mapFn=null, thisArg=this) {
-		const results = [];
-
+		Map.#assertThis(this);
 		Map.#assertFunction(mapFn, true);	
+
+		const results = [];
 
 		if (mapFn) 
 			this.forEach((...d) => results.push(mapFn.call(thisArg, ...d)));
@@ -222,9 +437,10 @@ export default class Map extends globalThis.Map {
 	}
 
 	some(callbackfn, thisArg=this) {
-		let res = false;
-
+		Map.#assertThis(this);
 		Map.#assertFunction(callbackfn);
+
+		let res = false;
 
 		this.forEach((...d) => {
 			if (res) return;
@@ -236,9 +452,10 @@ export default class Map extends globalThis.Map {
 	}
 
 	every(callbackfn, thisArg=this) {
-		let res = true;
-
 		Map.#assertFunction(callbackfn);
+		Map.#assertThis(this);
+
+		let res = true;
 
 		this.forEach((...d) => {
 			if (!res) return;
@@ -250,20 +467,27 @@ export default class Map extends globalThis.Map {
 	}
 
 	replace(callbackfn, thisArg=this) {
+		Map.#assertThis(this);
+		Map.#assertFunction(callbackfn);
+
 		const newMap = new this.constructor();
 		
-		this.forEach(Map.#replaceHelper.bind(null, newMap, Map.#assertFunction(callbackfn), thisArg));
+		this.forEach(Map.#replaceHelper.bind(null, newMap, callbackfn, thisArg));
 
 		return this;
 	}
 
 	replaceWith(callbackfn, thisArg=this) {
-		this.forEach(Map.#replaceHelper.bind(null, this, Map.#assertFunction(callbackfn), thisArg));
+		Map.#assertThis(this);
+		Map.#assertFunction(callbackfn);
+
+		this.forEach(Map.#replaceHelper.bind(null, this, callbackfn, thisArg));
 
 		return this;
 	}
 
 	mapKeys(callbackfn, thisArg=this) {
+		Map.#assertThis(this);
 		Map.#assertFunction(callbackfn);
 		const newMap = new this.constructor();
 
@@ -277,9 +501,9 @@ export default class Map extends globalThis.Map {
 	}
 
 	mapValues(callbackfn, thisArg=this) {
+		Map.#assertThis(this);
 		Map.#assertFunction(callbackfn);
 		const newMap = new this.constructor();
-
 
 		this.forEach((k, v, map, i) => {
 			const res = callbackfn.call(thisArg, k, v, map, i);
@@ -291,8 +515,9 @@ export default class Map extends globalThis.Map {
 	}
 
 	mapWithKeys(callbackfn, thisArg=this) {
+		Map.#assertThis(this);
 		Map.#assertFunction(callbackfn);
-		const entries = this.entries();
+		const entries = this.toArray();
 
 		this.clear();
 		
@@ -306,6 +531,7 @@ export default class Map extends globalThis.Map {
 	}
 
 	mapWithValues(callbackfn, thisArg=this) {
+		Map.#assertThis(this);
 		Map.#assertFunction(callbackfn);
 		const keys = this.keys();
 		
@@ -317,66 +543,255 @@ export default class Map extends globalThis.Map {
 		
 		return this;
 	}
-
-	/*** Utility Methods ***/
-	clone() {
-		const newMap = new this.constructor();
-
-		this.forEach((k, v) => newMap.set(k, v));
-
-		return newMap;
-	}
 	
-	keys() {
-		const res = [];
+	partition(callbackfn, thisArg=this) {
+		Map.#assertThis(this);
+		Map.#assertFunction(callbackfn);
 
-		this.forEach(k => res.push(k));
+		const [passed, failed] = [new Map(), new Map()];
 
-		return res;
+		this.forEach((k, v, map, i) => {
+			if (callbackfn.call(thisArg, k, v, map, i)) passed.set(k, v);
+			else failed.set(k, v);
+		});
+
+		return [passed, failed];
 	}
 
-	entries() {
-		return this.toArray();
+	reduce(callbackfn, initialValue, thisArg=this) {
+		Map.#assertThis(this);
+		Map.#assertFunction(callbackfn);
+
+		if (initialValue == null && this.size === 0) 
+			throw new TypeError('Reduce of empty map with no initial value');
+
+		initialValue = initialValue != null ? initialValue : this.getByIndex(0);
+		this.forEach((k, v, map, i) => initialValue = callbackfn.call(thisArg, initialValue, k, v, map, i));
+		
+		return initialValue;
 	}
 
-	values() {
-		const res = [];
+	filter(callbackfn, thisArg=this) {
+		Map.#assertThis(this);
+		Map.#assertFunction(callbackfn);
 
-		this.forEach((...[, v]) => res.push(v));
+		const results = new this.constructor();
 
-		return res;
+		this.forEach((k, v, map, i) => {
+			if (callbackfn.call(thisArg, k, v, map, i)) results.set(k, v);
+		});
+
+		return this;
 	}
 
-	clear() {
-		return super.clear();
+	filterWith(callbackfn, thisArg=this) {
+		Map.#assertThis(this);
+		Map.#assertFunction(callbackfn);
+
+		this.forEach((k, v, map, i) => {
+			if (!callbackfn.call(thisArg, k, v, map, i)) this.delete(k);
+		});
+
+		return this;
 	}
 
-	delete(key) {
-		return super.delete(key);
-	}
-
+	/*** Checker Methods ***/
 	has(key) {
+		Map.#assertThis(this);
+
 		return super.has(key);
 	}
 
 	hasAll(...keys) {
+		Map.#assertThis(this);
+
 		return this.every(k => keys.includes(k));
 	}
 
 	hasAny(...keys) {
+		Map.#assertThis(this);
+
 		return this.some(k => keys.includes(k));
 	}
 
+	hasValue(...values) {
+		return this.some((_, v) => values.includes(v));
+	}
+
+	/*** Data methods ***/
+	keys() {
+		Map.#assertThis(this);
+
+		return [...super.keys()];
+	}
+
+	entries() {
+		Map.#assertThis(this);
+
+		return [...super.entries()];
+	}
+
+	entriesWithIndexes() {
+		Map.#assertThis(this);
+
+		return [...super.entries()].map(([k, v], i) => [k, v, i]);
+	}
+
+
+	values() {
+		Map.#assertThis(this);
+
+		return [...super.values()];
+	}
+	
 	toEntryArray() {
+		Map.#assertThis(this);
+
 		return this.toArray((k, v) => new Map.Entry(k, v));
 	}
 
+	/*** Utility Methods ***/
+	clone(preserveLock = false) {
+		Map.#assertThis(this);
+		const newMap = new this.constructor();
+
+		this.forEach((k, v) => newMap.set(k, v));
+		if (preserveLock) newMap.setLocked();
+
+		return newMap;
+	}
+	
+	print() {
+		Map.#assertThis(this);
+
+		console.log(this);
+
+		return this;
+	}
+
+	clear() {
+		Map.#assertThis(this);
+		this.#assertNotLocked();
+
+		return super.clear(), this;
+	}
+
+	delete(key) {
+		Map.#assertThis(this);
+		this.#assertNotLocked();
+
+		return super.delete(key);
+	}
+
+	deleteAll(...keys) {
+		Map.#assertThis(this);
+		this.#assertNotLocked();
+
+		return keys.every(k => this.delete(k));
+	}
+
+	remove(key) {
+		Map.#assertThis(this);
+		this.#assertNotLocked();
+
+		const v = this.get(key);
+
+		this.delete(key);
+
+		return v;
+	}
+
+	removeAll(...keys) {
+		return keys.map(key => this.remove(key));
+	}
+
+	lock() {
+		this.#locked = true;
+
+		return this;
+	}
+
+	setRequiredTypes({ key = Object, value = Object }) {
+		if (this.#requiredValueType || this.#requiredKeyType) 
+			throw new TypeError("Cannot re-declare required types of map");
+
+		if (typeof key !== "function" || !key.prototype?.constructor)
+			throw new TypeError("Map value assertion type must be a constructor");
+
+		if (typeof value !== "function" || !value.prototype?.constructor)
+			throw new TypeError("Map key assertion type must be a constructor");
+
+		this.#requiredValueType = value;
+		this.#requiredKeyType = key;
+		this.#assertTypes = true;
+
+		return this;
+	}
+
+	equals(otherMap) {
+		Map.#assertThis(this);
+		if (!otherMap instanceof this.constructor) return false;
+
+		return this.every((k, v, _, i) => {
+			const entry = otherMap.getEntryByIndex(i);
+
+			if (!entry) return false;
+
+			const [otherK, otherV] = entry;
+			
+			return k === otherK && v === otherV;
+		});
+	}
+
+	swap() {
+		const entries = this.entries();
+
+		this.clear();
+
+		entries.forEach(([k, v]) => {
+			this.set(v, k);
+		});
+
+		return this;
+	}
+
+	/*** Meta Properties ***/
 	* [Symbol.iterator]() {
-		for (const d of this.toArray()) yield d;
+		Map.#assertThis(this);
+		
+		for (const [k, v] of super.entries()) yield [k, v];
+	}
+
+	[Symbol.toStringTag] = "Map";
+	[inspect.custom](depth, options) {
+		let ret = [];
+
+		this.forEach((k, v) => {
+			ret.push(`${ inspect(k, options) } => ${ inspect(v, options) }`);
+		});
+
+		ret = this.size > 3 ? ret.map(v => " ".repeat(depth) + v) : ret;
+		ret = ret.join(this.size > 3 ? ",\n" : ", ");
+
+		return `Map${ this.#assertTypes
+			? `<${ 
+				Map.#getClassName(this.#requiredKeyType)
+			}, ${
+				Map.#getClassName(this.#requiredValueType)
+			}>`
+			: "" 
+		}(${ this.size }) {${ 
+			[
+				this.size > 3 ? "\n" : " ",
+				ret,
+				this.size > 3 ? ",\n" : " ",
+			].join("")
+		}}`;
 	}
 }
 
-const map = new Map(['$$$$', "EEEE"], ['!!!!!', "====="], ['%%%%', ">>>>"]);
+const map = new Map([0, 1], [2, 3], [4, 5], [6, 7], [8, 9]).setAll({
+	E: "",
+});
 
-map.mapWithKeys(v => `${ v }\\\\`).size = 1;
-console.log(map);
+console.log(map, map.lock().filterWith(k => k > 3));
