@@ -1,7 +1,6 @@
 import { MapUtils } from "./MapUtils.js";
-import { inspect } from "util";
 
-export default class Map extends global.Map {
+export default class Map extends globalThis.Map {
 	#depth = 0;
 	#locked = false;
 	#requiredKeyType;
@@ -50,7 +49,6 @@ export default class Map extends global.Map {
 			return this;
 		}
 
-		[inspect.custom]() { return this.toString(); }
 		* [Symbol.iterator]() {
 			yield this.#key;
 			yield this.#value;
@@ -376,6 +374,14 @@ export default class Map extends global.Map {
 			this.forEach((k, v) => results.push([k, v]));
 
 		return results;
+	}
+
+	toObject() {
+		const ret = {};
+
+		for (const [k, v] of this) ret[k] = v;
+
+		return ret;
 	}
 
 	mapToFlatArray(mapFn, thisArg=this) {
@@ -729,34 +735,5 @@ export default class Map extends global.Map {
 		for (const [k, v] of super.entries()) yield [k, v];
 	}
 
-	[Symbol.toStringTag] = "Map";
-	[inspect.custom](depth, options) {
-		let ret = [];
-
-		this.forEach((k, v) => {
-			ret.push(`${ inspect(k, options) } => ${ inspect(v, options) }`);
-		});
-
-		ret = this.size > 3 ? ret.map(v => " ".repeat(depth) + v) : ret;
-		ret = ret.join(this.size > 3 ? ",\n" : ", ");
-
-		return `Map${ this.#assertTypes
-			? `<${ 
-				MapUtils.getClassName(this.#requiredKeyType)
-			}, ${
-				MapUtils.getClassName(this.#requiredValueType)
-			}>`
-			: "" 
-		}(${ this.size }) ${ this.#locked ? "[locked]" : "" } {${ 
-			[
-				this.size > 3 ? "\n" : " ",
-				ret,
-				this.size > 3 ? ",\n" : " ",
-			].join("")
-		}}`;
-	}
+	[Symbol.species] = Map;
 }
-
-const map = new Map([0, 1], [2, 3], [4, 5], [6, 7], [8, 9], [10, 11], [12, 13]);
-
-console.log(map.mapToFlatArray((k, v) => k/v));
