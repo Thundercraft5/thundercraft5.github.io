@@ -1,7 +1,8 @@
 import Map from "../node_modules/extended-map/Map.js";
 
 const size = +$('.infectionTable').attr("data-size");
-
+const center = Math.ceil(size/2);
+		
 for (let i = 0; i++ < size;) {
 	const $row = $('<tr>', {
 		"data-y": i,
@@ -14,20 +15,39 @@ for (let i = 0; i++ < size;) {
 			"data-x": j,
 		}));
 	
-
 	$('.infectionTable').append($row);
 }
 
+/**
+ * @param {Number} time - the time to wait
+ * @return {JQuery.Deferred<void>} A promise that with a delay of `time`
+ */
+function wait(time) {
+	return new $.Deferred(def => setTimeout(() => def.resolve(), time));
+}
+
+const startEdgeTiles = new Map(			
+	[center, center+1], 
+	[center, center-1], 
+	[center-1, center],
+	[center+1, center],
+);
+
 $('.infectionTableWrapper button.activateButton').on({ 
-	click() {
+	async click() {
 		let growing = true;
-		let occupiedTiles = new Map([[6, 7]]);
-		let edgeTiles = new Map([[6, 8], [6, 6], [7, 7], [5, 7]]);
+		let occupiedTiles = new Map([center, center]);
+		let edgeTiles = startEdgeTiles.clone();
+		const upperBounds = new Map.Entry(size, size);
+		const lowerBounds = new Map.Entry(0, 0);
+
 		const $wrapper = $(this).parents('.infectionTableWrapper');
 		const $this = $(this);
-		let count = 0;
 
 		$this.attr({ "disabled": true });
+		$('.resetButton').click(() => {
+			reset();
+		});
 
 		/**
 		 * @internal
@@ -42,14 +62,14 @@ $('.infectionTableWrapper button.activateButton').on({
 		 * @helper
 		 */
 		function reset() {
-			occupiedTiles = new Map([[6, 3]]);
-			edgeTiles = new Map([[6, 4], [6, 2], [7, 3], [5, 3]]);
+			occupiedTiles = new Map([center, center]);
+			edgeTiles = startEdgeTiles.clone();
 			growing = false;
 
 			$wrapper.find(`td[data-x][data-y]`).removeClass('active');
-			$this.attr({ "disabled": false });
+			$this.attr({ disabled: false });
 
-			fill(6, 6);
+			fill(center, center);
 			grow();
 		}
 		
@@ -57,30 +77,17 @@ $('.infectionTableWrapper button.activateButton').on({
 		 * @internal
 		 * @helper
 		 */
-		function checkOccupied(x, y) {
-			return occupiedTiles.some((x1, y1) => x === x1 && y === y1);
-		}
-
-		/**
-		 * @param {Map} map
-		 * @param {Number} i
-		 * @returns {[*, *]}
-		 */
-		function getMapEntryByIndex(map, i) {
-			let res;
-			
-			map.forEach((k, v, _, c) => (c === i ? res = [k, v] : null));
-			console.log(res);
-
-			return res;
+		function checkOccupied(entry) {
+			return occupiedTiles.hasEntry(entry);
 		}
 
 		/**
 		 * @internal
 		 * @helper
+		 * @param {Map.Entry} entry - The entry to object to check for
 		 */
-		function getRandomInt(max) {
-			return Math.ceil(Math.random() * max);
+		function checkIfOutOfBounds(entry) {
+			return entry.lessThan(upperBounds) && entry.greaterThan(lowerBounds);
 		}
 
 		/**
@@ -88,19 +95,31 @@ $('.infectionTableWrapper button.activateButton').on({
 		 * @helper
 		 */
 		function addAvailableEdgeTiles(x, y) {
-			if (x > 11 || y > 11 || y < 0 || x < 0) return;
+			if (x > size || y > size || y < 0 || x < 0) return;
 			const [up, down, left, right] = [
-				[x - 1, y],
-				[x + 1, y],
-				[x, y - 1],
-				[x, y - 1],
+				new Map.Entry(x, y + 1),
+				new Map.Entry(x, y - 1),
+				new Map.Entry(x - 1, y),
+				new Map.Entry(x + 1, y),
 			];
 
 			// Edge
-			if (!checkOccupied(x - 1, y)) edgeTiles.set(x - 1, y);
-			if (!checkOccupied(x + 1, y)) edgeTiles.set(x + 1, y);
-			if (!checkOccupied(x, y - 1)) edgeTiles.set(x, y - 1);
-			if (!checkOccupied(x, y + 1)) edgeTiles.set(x, y + 1);
+			if (!checkOccupied(up) && checkIfOutOfBounds(up)) 
+				console.log(edgeTiles.has(up)),
+				edgeTiles.set(up), 
+				console.log("up");
+			if (!checkOccupied(down) && checkIfOutOfBounds(down)) 
+				console.log(edgeTiles.has(down)),
+				edgeTiles.set(down), 
+				console.log("down");
+			if (!checkOccupied(left) && checkIfOutOfBounds(left)) 
+				console.log(edgeTiles.has(left)), 
+				edgeTiles.set(left), 
+				console.log("left");
+			if (!checkOccupied(right) && checkIfOutOfBounds(right)) 
+				console.log(edgeTiles.has(right)),
+				edgeTiles.set(right), 
+				console.log("right");
 			/* 
 			// Corner
 			if (!checkOccupied(x - 1, y - 1)) edgeTiles.set(x - 1, y - 1);
@@ -114,24 +133,40 @@ $('.infectionTableWrapper button.activateButton').on({
 		 * @helper
 		 */
 		function grow() {
-			if (!edgeTiles.size || !growing || count++ > 5) return;
-			const index = getRandomInt(edgeTiles.size);
-			const [x, y] = getMapEntryByIndex(edgeTiles, index);
+			if (!edgeTiles.size || !growing) return;
+			const entry = edgeTiles.randomEntry();
+			const [x, y] = entry;
 
-			console.log(index);
-
+			console.log(x, y);
 			// Retry if tile grow fails or if x/y is out of bounds
-			if (checkOccupied(x, y) || x > 11 || y > 11 || y < 0 || x < 0) return grow();
+			if (checkOccupied(entry) || x > size || y > size || y < 0 || x < 0) return;
+			addTile(x, y);
+		}
 
+		/**
+		 * @internal
+		 * @helper
+		 */
+		async function addTile(x, y) {
 			fill(x, y);
 			edgeTiles.delete(x);
 			occupiedTiles.set(x, y);
 			addAvailableEdgeTiles(x, y);
-			setTimeout(() => grow(), 250);
+			await wait(250);
+			grow();
 		}
 
-		fill(6, 7);
+		fill(center, center);
 		grow();
+
+		for (let i = 0; i++ < 1000000;) {
+			if (!edgeTiles.size || !growing) return;
+			const entry = edgeTiles.randomEntry();
+			const [x, y] = entry;
+
+			// Retry if tile grow fails or if x/y is out of bounds
+			if (checkOccupied(entry) || x > size || y > size || y < 0 || x < 0) continue;
+			await addTile(x, y);
+		}
 	},
 });
-
