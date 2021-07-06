@@ -1,4 +1,4 @@
-import Map from "../node_modules/extended-map/Map.js";
+import VectorArray from "../node_modules/vector-array/VectorArray.js";
 
 const size = +$('.infectionTable').attr("data-size");
 const center = Math.ceil(size/2);
@@ -26,7 +26,7 @@ function wait(time) {
 	return new $.Deferred(def => setTimeout(() => def.resolve(), time));
 }
 
-const startEdgeTiles = new Map(			
+const startEdgeTiles = new VectorArray(			
 	[center, center+1], 
 	[center, center-1], 
 	[center-1, center],
@@ -36,10 +36,10 @@ const startEdgeTiles = new Map(
 $('.infectionTableWrapper button.activateButton').on({ 
 	async click() {
 		let growing = true;
-		let occupiedTiles = new Map([center, center]);
+		let occupiedTiles = new VectorArray([center, center]);
 		let edgeTiles = startEdgeTiles.clone();
-		const upperBounds = new Map.Entry(size, size);
-		const lowerBounds = new Map.Entry(0, 0);
+		const upperBounds = new VectorArray.Entry(size, size);
+		const lowerBounds = new VectorArray.Entry(0, 0);
 
 		const $wrapper = $(this).parents('.infectionTableWrapper');
 		const $this = $(this);
@@ -62,7 +62,7 @@ $('.infectionTableWrapper button.activateButton').on({
 		 * @helper
 		 */
 		function reset() {
-			occupiedTiles = new Map([center, center]);
+			occupiedTiles = new VectorArray([center, center]);
 			edgeTiles = startEdgeTiles.clone();
 			growing = false;
 
@@ -78,13 +78,13 @@ $('.infectionTableWrapper button.activateButton').on({
 		 * @helper
 		 */
 		function checkOccupied(entry) {
-			return occupiedTiles.hasEntry(entry);
+			return occupiedTiles.has(entry);
 		}
 
 		/**
 		 * @internal
 		 * @helper
-		 * @param {Map.Entry} entry - The entry to object to check for
+		 * @param {VectorArray.Entry} entry - The entry to object to check for
 		 */
 		function checkIfOutOfBounds(entry) {
 			return entry.lessThan(upperBounds) && entry.greaterThan(lowerBounds);
@@ -97,35 +97,27 @@ $('.infectionTableWrapper button.activateButton').on({
 		function addAvailableEdgeTiles(x, y) {
 			if (x > size || y > size || y < 0 || x < 0) return;
 			const [up, down, left, right] = [
-				new Map.Entry(x, y + 1),
-				new Map.Entry(x, y - 1),
-				new Map.Entry(x - 1, y),
-				new Map.Entry(x + 1, y),
+				new VectorArray.Entry(x, y + 1),
+				new VectorArray.Entry(x, y - 1),
+				new VectorArray.Entry(x - 1, y),
+				new VectorArray.Entry(x + 1, y),
 			];
 
 			// Edge
 			if (!checkOccupied(up) && checkIfOutOfBounds(up)) 
-				console.log(edgeTiles.has(up)),
-				edgeTiles.set(up), 
-				console.log("up");
+				edgeTiles.add(up);
 			if (!checkOccupied(down) && checkIfOutOfBounds(down)) 
-				console.log(edgeTiles.has(down)),
-				edgeTiles.set(down), 
-				console.log("down");
+				edgeTiles.add(down);
 			if (!checkOccupied(left) && checkIfOutOfBounds(left)) 
-				console.log(edgeTiles.has(left)), 
-				edgeTiles.set(left), 
-				console.log("left");
+				edgeTiles.add(left);
 			if (!checkOccupied(right) && checkIfOutOfBounds(right)) 
-				console.log(edgeTiles.has(right)),
-				edgeTiles.set(right), 
-				console.log("right");
+				edgeTiles.add(right);
 			/* 
 			// Corner
-			if (!checkOccupied(x - 1, y - 1)) edgeTiles.set(x - 1, y - 1);
-			if (!checkOccupied(x + 1, y - 1)) edgeTiles.set(x + 1, y - 1);
-			if (!checkOccupied(x - 1, y + 1)) edgeTiles.set(x - 1, y + 1);
-			if (!checkOccupied(x + 1, y + 1)) edgeTiles.set(x + 1, y + 1); */
+			if (!checkOccupied(x - 1, y - 1)) edgeTiles.add(x - 1, y - 1);
+			if (!checkOccupied(x + 1, y - 1)) edgeTiles.add(x + 1, y - 1);
+			if (!checkOccupied(x - 1, y + 1)) edgeTiles.add(x - 1, y + 1);
+			if (!checkOccupied(x + 1, y + 1)) edgeTiles.add(x + 1, y + 1); */
 		}
 
 		/**
@@ -133,7 +125,7 @@ $('.infectionTableWrapper button.activateButton').on({
 		 * @helper
 		 */
 		function grow() {
-			if (!edgeTiles.size || !growing) return;
+			if (!edgeTiles.length || !growing) return;
 			const entry = edgeTiles.randomEntry();
 			const [x, y] = entry;
 
@@ -150,9 +142,9 @@ $('.infectionTableWrapper button.activateButton').on({
 		async function addTile(x, y) {
 			fill(x, y);
 			edgeTiles.delete(x);
-			occupiedTiles.set(x, y);
+			occupiedTiles.add(x, y);
 			addAvailableEdgeTiles(x, y);
-			await wait(250);
+			await wait(50);
 			grow();
 		}
 
@@ -160,7 +152,7 @@ $('.infectionTableWrapper button.activateButton').on({
 		grow();
 
 		for (let i = 0; i++ < 1000000;) {
-			if (!edgeTiles.size || !growing) return;
+			if (!edgeTiles.length || !growing) return;
 			const entry = edgeTiles.randomEntry();
 			const [x, y] = entry;
 
