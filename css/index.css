@@ -92,3 +92,10 @@ table.infectionTable td.active {
 .infectionTableWrapper {
 	text-align: center;
 }
+
+#copyright-notice {
+	text-align: center;
+	overflow-wrap: break-word;
+	white-space: pre-wrap;
+	font-size: 9px;
+}
