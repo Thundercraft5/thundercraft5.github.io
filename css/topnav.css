@@ -49,10 +49,15 @@ menu {
 	display: none;
 }
 
+.topNavMenu > ul:hover {
+	display: initial !important;
+}
+
 .topNavMenu {
 	margin: 0 8px;
 	padding-right: 8px;
 	display: flex;
+	position: relative;
 }
 
 .topNavMenu:hover {
@@ -68,12 +73,25 @@ menu {
 	background-color: white;
 	list-style: none;
 	padding: 7px;
-	margin-top: 26px;
+	margin-top: 20px;
 	margin-left: -4px;
-	text-align: center;
+	text-align: left;
 	min-width: 70px;
 	box-shadow: 0 0 3px -1px black;
-	position: fixed;
+	position: absolute;
+}
+
+.topNavMenu > ul > li > a {
+	text-decoration: none;
+	padding: 3px 10px;
+	display: block;
+	color: rgb(31, 31, 31);
+	transition: color 0.3s ease, background 0.3s ease;
+}
+.topNavMenu > ul > li:hover > a {
+	text-decoration: none;
+	color: rgb(71, 71, 71);
+	background: rgba(0, 0, 0, 0.1);
 }
 
 
@@ -94,8 +112,6 @@ menu {
 	transform: rotate(135deg);
 	transition: transform 0.3s ease;
 }
-
-
 
 .headerText {
 	text-align: left;
