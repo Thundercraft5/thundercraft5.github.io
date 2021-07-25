@@ -54,3 +54,58 @@ footer {
 	white-space: pre-wrap;
 	font-size: 9px;
 }
+
+.parabolicBallProjectWrapper {
+	margin: auto;
+	position: relative;
+}
+
+.gridWrapper {
+	position: relative;
+	height: 450px;
+	border-bottom: 3px solid;
+	border-left: 3px solid;
+	border-color: black;
+	margin-left: 50px;
+}
+
+.parabolicBall {
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+	background: red;
+	bottom: 0;
+	left: 0;
+	position: absolute;
+}
+
+table.grid {
+	width: -webkit-fill-available;
+	height: -webkit-fill-available;
+}
+
+.readout {
+	display: flex;
+	flex-direction: column;
+	height: min-content;
+}
+
+.directionalArrow {
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 476.213 476.213' xml:space='preserve'%3E%3Cpolygon points='345.606,107.5 324.394,128.713 418.787,223.107 0,223.107 0,253.107 418.787,253.107 324.394,347.5 345.606,368.713 476.213,238.106 '/%3E%3C/svg%3E") center no-repeat;
+	height: 70px;
+	width: 100px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	margin-bottom: -36.5px;
+	margin-left: -17px;
+	transform-origin: 16px;
+}
+
+.positionMarker {
+	position: absolute;
+	width: 5px;
+	height: 5px;
+	background: black;
+	border-radius: 50%;
+}
