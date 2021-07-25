@@ -8,15 +8,20 @@
 		<link rel="icon" href="./resources/images/favicon.ico" type="image/x-icon" />
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<!-- Preload styles/scripts -->
+
+		<!-- Load CSS as early as possible -->
 		<link rel="preload" href="./css/index.css" as="style">
+		<link rel="stylesheet" href="./css/index.css">
+
+		<!-- Preload styles/scripts -->
 		<link rel="preload" href="./node_modules/jquery/dist/jquery.js" as="script">
 		<link rel="modulepreload" href="./js/index.js" as="script">
+		<link rel="modulepreload" href="./js/cannonball.js" as="script">
 
 		<!-- Load resources -->
 		<script src="./node_modules/jquery/dist/jquery.js" defer></script>
 		<script src="./js/index.js" type="module" defer></script>
-		<link rel="stylesheet" href="./css/index.css">
+		<script src="./js/cannonball.js" type="module" defer></script>
 	</head>
 	<body>
 		<div class="topnavWrapper">
@@ -41,6 +46,23 @@
 		</div>
 		<main>
 			<a href="./projects/InfectionTable">InfectionTable Project</a>
+			<div class="parabolicBallProjectWrapper">
+				<div class="parabolicBallProject">
+					<div class="gridWrapper">
+						<div class="parabolicBall"></div>
+						<div class="directionalArrow"></div>
+						<!-- Units in meters -->
+						<table class="grid" data-y="10" data-x="100" data-interval="1"></table>
+					</div>
+					<div class="readout">
+						<div class="time">Time elapsed: 0s</div>
+						<div class="height">Height: 0m</div>
+						<div class="dist">Distance: 0m</div>
+						<div class="vel-x">X velocity: 0m/s</div>
+						<div class="vel-y">Y velocity: 0m/s</div>
+					</div>
+				</div>
+			</div>
 		</main>
 		<!-- <footer>
 			Test
