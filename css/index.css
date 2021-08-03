@@ -109,3 +109,11 @@ table.grid {
 	background: black;
 	border-radius: 50%;
 }
+
+.markerCanvas {
+	position: absolute;
+	width: -webkit-fill-available;
+	height: -webkit-fill-available;
+	top: 0;
+	left: 0;
+}
