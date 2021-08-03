@@ -1,14 +1,24 @@
 /* eslint-disable camelcase, require-jsdoc */
 import './utils.js';
 
+const $canvas = $('.markerCanvas');
+const ctx = $canvas[0].getContext('2d');
+
+const canvasHeight = $canvas.height()*3;
+const canvasWidth = $canvas.width()*3;
+
+$canvas.attr('width', canvasWidth);
+$canvas.attr('height', canvasHeight);
+ctx.fillStyle = "rgba(0, 0, 0, 1)";
+
 const y_initial = 8; // m
 const x_initial = 0; // m
 
-const angle = 45; // deg
-const vel = 30; // m/s
+const angle = 40; // deg
+const vel = 70; // m/s
 
-const velocity_yInitial = vel * Math.sin(angle.toRadians()).round(2); // m/s
-const velocity_xInitial = vel * Math.cos(angle.toRadians()).round(2); // m/s
+let velocity_y = vel * Math.sin(angle.toRadians()).round(2); // m/s
+const velocity_x = vel * Math.cos(angle.toRadians()).round(2); // m/s
 
 $('.parabolicBall, .directionalArrow').css({
 	bottom: (y_initial * 20) + 20,
@@ -32,30 +42,33 @@ for (let x = 0; ++x < +$grid.attr('data-x');) {
 
 	$grid.append($row);
 }
+	
 
 function calculateY() {
 	const time = ms/1000;
 
-	return 1/2 * Math.G * time**2 + ((velocity_yInitial * time)) + y_initial;
+	velocity_y = calculateYVelocity();
+
+	return 1/2 * Math.G * time**2 + ((velocity_y * time)) + y_initial;
 }
 
 function calculateX() {
 	const time = ms/1000;
 
-	return (velocity_xInitial * time) + x_initial;
+	return (velocity_x * time) + x_initial;
 }
 
 function calculateXVelocity() {
-	return velocity_xInitial + 0; 
+	return velocity_x + 0; 
 }
 
 function calculateYVelocity() {
 	const time = ms/1000;
 
-	return velocity_xInitial + time*Math.G; 
+	return velocity_y + (time**2)*Math.G; 
 }	
 
-const interval = 10;
+const interval = 1;
 const timeout = setInterval(frame, interval);
 
 function frame() {
@@ -65,17 +78,16 @@ function frame() {
 	const y = calculateY();
 	const x = calculateX();
 
-	if (y < 0) return clearInterval(timeout), $('.parabolicBall').css({ bottom: 0 });
+	if (y < 0.25) 
+		velocity_y = (-y)*0.8;
+
+	if (y < 0) return clearInterval(interval), $('.parabolicBall').css({ bottom: 0 });
 
 	ms += interval;
 	const [bottom, left] = [y*20, x*20];
 
-	if (ms%100 === 0) $('<div>', {
-		class: "positionMarker",
-		css: { bottom: bottom + 20, left },
-	}).appendTo('.gridWrapper');
-
-	$('.parabolicBall').css({ bottom, left });
+	ctx.fillRect(x*20*3, canvasHeight-((y*20*3)+20), 4, 4);
+	$('.parabolicBall').css({bottom, left});
 	$('.time').text(`Time elapsed: ${ (ms/1000).round(2) }s`);
 	$('.height').text(`Height: ${ y.round(2) }m`);
 	$('.dist').text(`Distance: ${ x.round(2) }m`);
