@@ -11,11 +11,12 @@ $canvas.attr('width', canvasWidth);
 $canvas.attr('height', canvasHeight);
 ctx.fillStyle = "rgba(0, 0, 0, 1)";
 
-const y_initial = 8; // m
+const y_initial = 10; // m
 const x_initial = 0; // m
 
 const angle = 40; // deg
-const vel = 70; // m/s
+const vel = 10; // m/s
+const bouncyness = 0.7;
 
 let velocity_y = vel * Math.sin(angle.toRadians()).round(2); // m/s
 const velocity_x = vel * Math.cos(angle.toRadians()).round(2); // m/s
@@ -43,13 +44,17 @@ for (let x = 0; ++x < +$grid.attr('data-x');) {
 	$grid.append($row);
 }
 	
+const interval = 5;
+const timeout = setInterval(frame, interval);
+let global_y = y_initial;
 
-function calculateY() {
-	const time = ms/1000;
+function calculateY(y2) {
+	const time = interval/1000;
 
 	velocity_y = calculateYVelocity();
+	global_y = 1/2 * Math.G * time**2 + ((velocity_y * time)) + y2;
 
-	return 1/2 * Math.G * time**2 + ((velocity_y * time)) + y_initial;
+	return global_y;
 }
 
 function calculateX() {
@@ -62,24 +67,25 @@ function calculateXVelocity() {
 	return velocity_x + 0; 
 }
 
-function calculateYVelocity() {
-	const time = ms/1000;
 
-	return velocity_y + (time**2)*Math.G; 
+function calculateYVelocity() {
+	const time = interval/1000;
+
+	return velocity_y+(time*Math.G); 
 }	
 
-const interval = 1;
-const timeout = setInterval(frame, interval);
 
 function frame() {
 	/* x = velocity_xInitial * time */
 	/* y = 1/2 * Gravity * time^2 + velocity_yInitial * time */
 		
-	const y = calculateY();
+	let y = calculateY(global_y);
 	const x = calculateX();
 
-	if (y < 0.25) 
-		velocity_y = (-y)*0.8;
+	if (y < 0.25) {
+		velocity_y = (-velocity_y)*bouncyness;
+		y = 0.4;
+	}
 
 	if (y < 0) return clearInterval(interval), $('.parabolicBall').css({ bottom: 0 });
 
