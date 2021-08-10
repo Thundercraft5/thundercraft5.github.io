@@ -54,3 +54,11 @@ extendProperties(Math, {
 		value: -9.806_65,
 	},
 });
+
+extend(Function, true, {
+	bindParamsLimit(thisArg, limit = 1) {
+		return function() {
+			return this.apply(thisArg, Array.from(arguments).slice(0, limit));
+		}.bind(this);
+	},
+});

@@ -45,9 +45,57 @@
 			</nav>
 		</div>
 		<main>
-			<a href="./projects/InfectionTable/">InfectionTable Project</a>
 			<div class="parabolicBallProjectWrapper">
 				<div class="parabolicBallProject">
+					<div class="controlPanel">
+						<div class="buttons">
+							<button id="start-button">Start</button>
+							<button id="stop-button">Stop</button>
+							<button id="reset-button">Reset</button>
+						</div>
+						<div class="parameters">
+							<span class="input-wrapper">
+								<label for="angle-input">Angle (in degrees)</label>
+								<input 
+									type="number" 
+									id="angle-input" 
+									min="-360"
+									max="360"
+									value="40"
+								/>
+							</span>
+							<span class="input-wrapper">
+								<label for="speed-input">Speed (in m/s)</label>
+								<input 
+									type="number" 
+									id="speed-input" 
+									min="0"
+									value="10"
+								/>
+							</span>
+							<span class="input-wrapper">
+								<label for="bounciness-input">Bounciness (1 = No speed loss)</label>
+								<input 
+									type="number" 
+									id="bounciness-input" 
+									min="0"
+									max="5"
+									step="0.01"
+									value="0.7"
+								/>
+							</span>
+							<span class="input-wrapper">
+								<label for="starting-height-input">Starting Height (in meters)</label>
+								<input 
+									type="number" 
+									id="starting-height-input"
+									min="0"
+									max=""
+									value="10"
+								/>
+							</span>
+						</div>
+					</div>
 					<div class="gridWrapper">
 						<div class="parabolicBall"></div>
 						<div class="directionalArrow"></div>
