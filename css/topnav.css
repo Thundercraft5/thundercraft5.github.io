@@ -6,6 +6,7 @@ nav.topnav {
 	box-shadow: 0 0 8px black;
 	height: 50px;
 	width: 100%;
+	z-index: 100;
 }
 
 .logo img {
