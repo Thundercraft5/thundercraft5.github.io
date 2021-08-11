@@ -109,12 +109,12 @@ function start() {
 	}
 
 	function calculateX(x2) {
-		const time = ms/1000;
+		const time = interval/1000;
 
-		/* 		velocity_x = calculateXVelocity();
-		global_x = 1/2 * Math.G * time**2 + (velocity_x * time) + x2; */
+		velocity_x = calculateXVelocity();
+		global_x = (velocity_x * time) + x2;
 
-		return velocity_x * time + x_initial;
+		return global_x;
 	}
 
 	function calculateXVelocity() {
@@ -129,7 +129,7 @@ function start() {
 
 	function frame() {
 		let y = calculateY(global_y);
-		const x = calculateX(global_x);
+		let x = calculateX(global_x);
 
 		if (y < 0.05) {
 			velocity_y = (-velocity_y)*bounciness;
@@ -140,13 +140,13 @@ function start() {
 			y = 0.5;
 		}
 
-		// if (x*20 > boxWidth) {
-		// 	velocity_x = (-velocity_x)*bounciness;
-		// 	x = boxWidth-0.1;
-		// } else if (x < 0.05 && ms/1000 > 1) {
-		// 	x = 0.1;
-		// 	velocity_x = (-velocity_x)*bounciness;
-		// }
+		if (x*20 > boxWidth) {
+			velocity_x = (-velocity_x)*bounciness;
+			x = boxWidth-0.1;
+		} else if (x < 0.05 && ms/1000 > 1) {
+			x = 0.1;
+			velocity_x = (-velocity_x)*bounciness;
+		}
 
 		ms += interval;
 		const [bottom, left] = [y*20, x*20];
