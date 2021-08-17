@@ -1,6 +1,15 @@
 /* eslint-disable camelcase, require-jsdoc */
 import './utils.js';
 
+/**
+ * drag
+ * 
+ * `vtot = Math.sqrt(vx**2, vy**2)`
+ * `angle = tan^-1(vx/vy)` // Include extra -1 to account for reverse
+ * 
+ * Update `calculateX()` and `calculateY()` to include drag	
+ */
+
 $('.input-wrapper label').each(function() {
 	const $this = $(this);
 
@@ -9,7 +18,6 @@ $('.input-wrapper label').each(function() {
 });
 
 const prevInputs = JSON.parse(localStorage.getItem('CannonBallProject-prevInputs'));
-
 const $grid = $('table.grid');
 
 for (let x = 0; ++x < +$grid.attr('data-x');) {
@@ -42,7 +50,11 @@ const [
 	$angle,
 	$speed,
 	$bounciness,
-] = '#starting-height-input, #angle-input, #speed-input, #bounciness-input'.split(/\s*,\s*/).map($.bindParamsLimit(1));
+	$mass,
+	$drag,
+] = '#starting-height-input, #angle-input, #speed-input, #bounciness-input, #mass-input, #drag-input'
+	.split(/\s*,\s*/)
+	.map($.bindParamsLimit(1));
 
 function clearCanvas() {
 	ctx.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -58,7 +70,9 @@ if (prevInputs) {
 let y_initial, x_initial,
 	angle, speed, bounciness,
 	velocity_x, velocity_y,
-	global_y, global_x, ms; 
+	global_y, global_x, ms,
+	drag, mass, dragAcceleration,
+	drag_velocity_y, drag_velocity_x; 
 
 function start() {
 	if (paused) 
@@ -69,6 +83,8 @@ function start() {
 
 		angle = +$angle.val(); // deg
 		speed = +$speed.val(); // m/s
+		mass = +$mass.val(); // kg
+		drag = +$drag.val();
 		bounciness = +$bounciness.val();
 
 		velocity_y = speed * Math.sin(angle.toRadians()).round(2); // m/s
@@ -102,7 +118,6 @@ function start() {
 	function calculateY(y2) {
 		const time = interval/1000;
 
-		velocity_y = calculateYVelocity();
 		global_y = 1/2 * Math.G * time**2 + (velocity_y * time) + y2;
 
 		return global_y;
@@ -111,7 +126,6 @@ function start() {
 	function calculateX(x2) {
 		const time = interval/1000;
 
-		velocity_x = calculateXVelocity();
 		global_x = (velocity_x * time) + x2;
 
 		return global_x;
@@ -127,7 +141,21 @@ function start() {
 		return velocity_y+(time*Math.G); 
 	}	
 
+	function calculateDrag() {
+		const angle = Math.itan(velocity_x/velocity_y);
+		const vtot = Math.sqrt(velocity_x**2 + velocity_y**2);
+
+		dragAcceleration = (drag * vtot) / mass;
+		drag_velocity_y = -(dragAcceleration * Math.sin(angle.toRadians()).round(2)); // m/s
+		drag_velocity_x = -(dragAcceleration * Math.cos(angle.toRadians()).round(2)); // m/s
+	}
+
 	function frame() {
+		velocity_x = calculateXVelocity();
+		velocity_y = calculateYVelocity();
+		
+		calculateDrag();
+
 		let y = calculateY(global_y);
 		let x = calculateX(global_x);
 
@@ -136,7 +164,6 @@ function start() {
 			y = 0.1;
 		} else if (y*20 > boxHeight) {
 			velocity_y = (-velocity_y)*bounciness;
-			console.log(velocity_y);
 			y = 0.5;
 		}
 
@@ -158,6 +185,8 @@ function start() {
 		$('.dist').text(`Distance: ${ x.round(2) }m`);
 		$('.vel-x').text(`X velocity: ${ calculateXVelocity().round(2) }m/s`);
 		$('.vel-y').text(`Y velocity: ${ calculateYVelocity().round(2) }m/s`);
+		$('.drag-x').text(`Drag X: ${ drag_velocity_x.round(2) }m/s`);
+		$('.drag-y').text(`Drag Y: ${ drag_velocity_y.round(2) }m/s`);
 	}
 }
 
