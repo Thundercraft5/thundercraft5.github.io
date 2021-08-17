@@ -72,6 +72,25 @@
 									min="0"
 									value="10"
 								/>
+							</span>							
+							<span class="input-wrapper">
+								<label for="mass-input">Mass (in kg)</label>
+								<input 
+									type="number" 
+									id="mass-input" 
+									min="0"
+									value="10"
+								/>
+							</span>							
+							<span class="input-wrapper">
+								<label for="drag-input">Drag coefficient</label>
+								<input 
+									type="number" 
+									id="drag-input" 
+									min="0"
+									max="10"
+									value="0.5"
+								/>
 							</span>
 							<span class="input-wrapper">
 								<label for="bounciness-input">Bounciness (1 = No speed loss)</label>
@@ -95,6 +114,15 @@
 								/>
 							</span>
 						</div>
+						<div class="readout">
+							<div class="time">Time elapsed: 0s</div>
+							<div class="height">Height: 0m</div>
+							<div class="dist">Distance: 0m</div>
+							<div class="vel-x">X velocity: 0m/s</div>
+							<div class="vel-y">Y velocity: 0m/s</div>
+							<div class="drag-x">Drag X: 0m/s</div>
+							<div class="drag-y">Drag y: 0m/s</div>
+						</div>
 					</div>
 					<div class="gridWrapper">
 						<div class="parabolicBall"></div>
@@ -102,13 +130,6 @@
 						<canvas class="markerCanvas"></canvas>
 						<!-- Units in meters -->
 						<table class="grid" data-y="10" data-x="100" data-interval="1"></table>
-					</div>
-					<div class="readout">
-						<div class="time">Time elapsed: 0s</div>
-						<div class="height">Height: 0m</div>
-						<div class="dist">Distance: 0m</div>
-						<div class="vel-x">X velocity: 0m/s</div>
-						<div class="vel-y">Y velocity: 0m/s</div>
 					</div>
 				</div>
 			</div>

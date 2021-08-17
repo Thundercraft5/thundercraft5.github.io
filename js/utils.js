@@ -53,6 +53,18 @@ extendProperties(Math, {
 		enumerable: false,
 		value: -9.806_65,
 	},
+
+	isin(x) {
+		return this.asin(this.sin(x));
+	},	
+	
+	icos(x) {
+		return this.acos(this.cos(x));
+	},	
+	
+	itan(x) {
+		return this.atan(this.tan(x));
+	},
 });
 
 extend(Function, true, {
