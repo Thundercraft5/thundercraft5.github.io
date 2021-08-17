@@ -118,7 +118,7 @@ function start() {
 	function calculateY(y2) {
 		const time = interval/1000;
 
-		global_y = 1/2 * Math.G * time**2 + (velocity_y * time) + y2;
+		global_y = 1/2 * (Math.G + drag_velocity_y) * time**2 + (velocity_y * time) + y2;
 
 		return global_y;
 	}
@@ -126,35 +126,40 @@ function start() {
 	function calculateX(x2) {
 		const time = interval/1000;
 
-		global_x = (velocity_x * time) + x2;
+		global_x = 1/2 * (drag_velocity_x) * time**2 + (velocity_x * time) + x2;
 
 		return global_x;
 	}
 
 	function calculateXVelocity() {
-		return velocity_x/*  + (time*Math.G) */;
+		const time = interval/1000;
+
+		return velocity_x + (time*drag_velocity_x);
 	}
 
 	function calculateYVelocity() {
 		const time = interval/1000;
 
-		return velocity_y+(time*Math.G); 
+		return velocity_y+(time * (Math.G + drag_velocity_y)); 
 	}	
 
 	function calculateDrag() {
-		const angle = Math.itan(velocity_x/velocity_y);
+		let angle = Math.atan(velocity_y/velocity_x);
 		const vtot = Math.sqrt(velocity_x**2 + velocity_y**2);
 
-		dragAcceleration = (drag * vtot) / mass;
-		drag_velocity_y = -(dragAcceleration * Math.sin(angle.toRadians()).round(2)); // m/s
-		drag_velocity_x = -(dragAcceleration * Math.cos(angle.toRadians()).round(2)); // m/s
+		if (velocity_x < 0) angle -= Math.PI;
+
+		dragAcceleration = (-drag * vtot) / mass;
+		drag_velocity_y = dragAcceleration * Math.sin(angle).round(2); // m/s
+		drag_velocity_x = dragAcceleration * Math.cos(angle).round(2); // m/s
 	}
+	
 
 	function frame() {
+		calculateDrag();
+
 		velocity_x = calculateXVelocity();
 		velocity_y = calculateYVelocity();
-		
-		calculateDrag();
 
 		let y = calculateY(global_y);
 		let x = calculateX(global_x);
