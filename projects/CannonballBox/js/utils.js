@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
 export function extend(target, targetPrototype, methods) {
-	if (!methods && typeof(targetPrototype) === 'object') methods = targetPrototype, targetPrototype = null;
+	if (!methods && typeof targetPrototype === "object") methods = targetPrototype, targetPrototype = null;
 
 	for (const [k, v] of Object.entries(methods)) methods[k] = {
 		value: v,
@@ -16,11 +16,11 @@ export function extend(target, targetPrototype, methods) {
 
 export function extendProperties(target, properties) {
 	for (const [k, v] of Object.entries(properties)) {
-		let constant = false, 
+		let constant = false,
 			enumerable, value,
 			options = {}; // eslint-disable-line
 
-		if (typeof(v) === 'object') 
+		if (typeof v === "object")
 			({ constant, value, enumerable = true } = v);
 		else value = v;
 
@@ -34,7 +34,6 @@ export function extendProperties(target, properties) {
 
 		Object.defineProperty(target, k, options);
 	}
-
 }
 
 extend(Number, true, {
@@ -56,12 +55,12 @@ extendProperties(Math, {
 
 	isin(x) {
 		return this.asin(this.sin(x));
-	},	
-	
+	},
+
 	icos(x) {
 		return this.acos(this.cos(x));
-	},	
-	
+	},
+
 	itan(x) {
 		return this.atan(this.tan(x));
 	},

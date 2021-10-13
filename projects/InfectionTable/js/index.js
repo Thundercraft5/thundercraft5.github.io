@@ -1,21 +1,19 @@
 import VectorArray from "../../../node_modules/vector-array/VectorArray.js";
 
-const size = +$('.infectionTable').attr("data-size");
+const size = +$(".infectionTable").attr("data-size");
 const center = Math.ceil(size/2);
-		
-for (let i = 0; i++ < size;) {
-	const $row = $('<tr>', {
-		"data-y": i,
-	});
 
-	for (let j = 0; j++ < size;) 
-		$row.append($('<td>', {
+for (let i = 0; i++ < size;) {
+	const $row = $("<tr>", { "data-y": i });
+
+	for (let j = 0; j++ < size;)
+		$row.append($("<td>", {
 			"data-active": false,
 			"data-y": i,
 			"data-x": j,
 		}));
-	
-	$('.infectionTable').append($row);
+
+	$(".infectionTable").append($row);
 }
 
 /**
@@ -26,26 +24,24 @@ function wait(time) {
 	return new $.Deferred(def => setTimeout(() => def.resolve(), time));
 }
 
-const startEdgeTiles = new VectorArray(			
-	[center, center+1], 
-	[center, center-1], 
+const startEdgeTiles = new VectorArray(
+	[center, center+1],
+	[center, center-1],
 	[center-1, center],
 	[center+1, center],
 );
 
-$('.infectionTableWrapper button.activateButton').on({ 
+$(".infectionTableWrapper button.activateButton").on({
 	async click() {
 		let growing = true;
 		let occupiedTiles = new VectorArray([center, center]);
 		let edgeTiles = startEdgeTiles.clone();
 		const upperBounds = new VectorArray.Entry(size, size);
-		const lowerBounds = new VectorArray.Entry(0, 0);
-
-		const $wrapper = $(this).parents('.infectionTableWrapper');
+		const lowerBounds = new VectorArray.Entry(0, 0);		const $wrapper = $(this).parents(".infectionTableWrapper");
 		const $this = $(this);
 
-		$this.attr({ "disabled": true });
-		$('.resetButton').click(() => {
+		$this.attr({ disabled: true });
+		$(".resetButton").click(() => {
 			reset();
 		});
 
@@ -54,7 +50,7 @@ $('.infectionTableWrapper button.activateButton').on({
 		 * @helper
 		 */
 		function fill(x, y) {
-			return $wrapper.find(`td[data-x="${ x }"][data-y="${ y }"]`).addClass('active');
+			return $wrapper.find(`td[data-x="${ x }"][data-y="${ y }"]`).addClass("active");
 		}
 
 		/**
@@ -66,13 +62,13 @@ $('.infectionTableWrapper button.activateButton').on({
 			edgeTiles = startEdgeTiles.clone();
 			growing = false;
 
-			$wrapper.find(`td[data-x][data-y]`).removeClass('active');
+			$wrapper.find("td[data-x][data-y]").removeClass("active");
 			$this.attr({ disabled: false });
 
 			fill(center, center);
 			grow();
 		}
-		
+
 		/**
 		 * @internal
 		 * @helper
@@ -104,20 +100,21 @@ $('.infectionTableWrapper button.activateButton').on({
 			];
 
 			// Edge
-			if (!checkOccupied(up) && checkIfOutOfBounds(up)) 
+			if (!checkOccupied(up) && checkIfOutOfBounds(up))
 				edgeTiles.add(up);
-			if (!checkOccupied(down) && checkIfOutOfBounds(down)) 
+			if (!checkOccupied(down) && checkIfOutOfBounds(down))
 				edgeTiles.add(down);
-			if (!checkOccupied(left) && checkIfOutOfBounds(left)) 
+			if (!checkOccupied(left) && checkIfOutOfBounds(left))
 				edgeTiles.add(left);
-			if (!checkOccupied(right) && checkIfOutOfBounds(right)) 
+			if (!checkOccupied(right) && checkIfOutOfBounds(right))
 				edgeTiles.add(right);
 			/* 
-			// Corner
-			if (!checkOccupied(x - 1, y - 1)) edgeTiles.add(x - 1, y - 1);
-			if (!checkOccupied(x + 1, y - 1)) edgeTiles.add(x + 1, y - 1);
-			if (!checkOccupied(x - 1, y + 1)) edgeTiles.add(x - 1, y + 1);
-			if (!checkOccupied(x + 1, y + 1)) edgeTiles.add(x + 1, y + 1); */
+			 * // Corner
+			 *if (!checkOccupied(x - 1, y - 1)) edgeTiles.add(x - 1, y - 1);
+			 *if (!checkOccupied(x + 1, y - 1)) edgeTiles.add(x + 1, y - 1);
+			 *if (!checkOccupied(x - 1, y + 1)) edgeTiles.add(x - 1, y + 1);
+			 *if (!checkOccupied(x + 1, y + 1)) edgeTiles.add(x + 1, y + 1); 
+			 */
 		}
 
 		/**
