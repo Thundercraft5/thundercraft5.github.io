@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
-const licenseNotice // html 
-= $(`<div id="copyright-notice">
+const licenseNotice = // html
+$(`
+	<div id="copyright-notice">
 	<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
 		<img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
 	</a>.
@@ -9,3 +10,16 @@ const licenseNotice // html
 `);
 
 $("main").append(licenseNotice);
+
+const projects = [
+	"CannonballBox",
+	"CanvasDots",
+	"InfectionTable",
+];
+
+$(".topNavMenu-dropdown").append(projects.map(p => $("<li>", {
+	html: $("<a>", {
+		text: p,
+		href: `/projects/${ p }/`,
+	}),
+})));
