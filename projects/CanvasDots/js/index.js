@@ -44,7 +44,7 @@ function createHiDPICanvas(w, h, ratio = undefined, attrs = {}) {
 }
 
 function addNode(x, y, radius = 5, color = "#000000") {
-	canvasContext.fillStyle = "#000000";
+	canvasContext.fillStyle = color;
 	canvasContext.beginPath();
 	canvasContext.arc(x, y, radius, 0, 2 * Math.PI, false);
 	canvasContext.fill();
@@ -52,8 +52,8 @@ function addNode(x, y, radius = 5, color = "#000000") {
 	nodes.add(x, y);
 }
 
-function drawLine(x1, y1, x2, y2) {
-	canvasContext.fillStyle = "#000000";
+function drawLine(x1, y1, x2, y2, color = "#000000") {
+	canvasContext.fillStyle = color;
 	canvasContext.beginPath();
 	canvasContext.moveTo(x1, y1);
 	canvasContext.lineTo(x2, y2);
@@ -71,11 +71,13 @@ const canvasHeight = $canvas.attr("height");
 const canvasContext = $canvas[0].getContext("2d");
 const nodes = new VectorArray();
 
-addNode(getRandomInt(0, canvasWidth), getRandomInt(0, canvasHeight), 5, "#aaa");
+addNode(getRandomInt(0, canvasWidth), getRandomInt(0, canvasHeight), 5, "#ff0000");
 
 
 for (let i = 0; i++ < MAX_NODES;) {
-	const index = getRandomInt(0, i);
+	const index = getRandomInt(0, i-1);
+
+	console.log(index);
 	const node = nodes[index];
 	const nodeDistance = 0;
 	let finalCandidate;
