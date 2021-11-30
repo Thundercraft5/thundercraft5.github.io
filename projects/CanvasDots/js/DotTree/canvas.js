@@ -50,22 +50,19 @@ export default class Canvas {
 			context: element.getContext("2d"),
 		});
 
-		Object.assign(element, {
-			width: width * ratio,
-			height: height * ratio,
-			style: {
-				width: `${ width }px`,
-				height: `${ height }px`,
-			},
-		}, attrs);
+		Object.assign(element, attrs);
+		element.width = width * ratio;
+		element.height = height * ratio;
+		element.style.width = `${ width }px`;
+		element.style.height = `${ height }px`;
 		this.context.setTransform(ratio, 0, 0, ratio, 0, 0);
 	}
 
 	fillCircle(color = "#000", x = 0, y = 0, radius = 1) {
-		this.setFill({ color });
-		this.beginPath();
-		this.arc(x, y, radius, 0, 2 * Math.PI, false);
-		this.fill();
+		this.setFill({ color })
+			.beginPath()
+			.arc(x, y, radius, 0, 2 * Math.PI, false)
+			.fill();
 
 		return this;
 	}
@@ -73,6 +70,16 @@ export default class Canvas {
 	fillRect(color = "#000", x = 0, y = 0, width = 1, height = 1) {
 		this.setFill({ color });
 		this.context.fillRect(x, y, width, height);
+
+		return this;
+	}
+
+	fillLine(x0 = 0, y0 = 0, x1 = 0, y1 = 0, color = "#000000") {
+		this.setFill({ color })
+			.beginPath()
+			.moveTo(x0, y0)
+			.lineTo(x1, y1)
+			.stroke();
 
 		return this;
 	}
@@ -110,6 +117,10 @@ export default class Canvas {
 		this.arc(x, y, radius);
 		this.fill();
 		this.setCompositeOperation();
+	}
+
+	clear() {
+		this.clearRect(0, 0, this.width, this.height);
 	}
 
 	setCompositeOperation(op = "source-over") {
@@ -403,13 +414,15 @@ export default class Canvas {
 	}
 
 	stroke(path = null) {
-		this.context.stroke(path);
+		this.context.stroke(...Array.from(arguments).filter(Boolean));
 
 		return this;
 	}
 
 	strokeText(text = "", x = 0, y = 0, maxWidth = Infinity) {
 		this.context.strokeText(text, x, y, maxWidth);
+
+		return this;
 	}
 
 	transform(a = 0, b = 0, c = 0, d = 0, e = 0, f = 0) {
@@ -425,7 +438,7 @@ export default class Canvas {
 	}
 
 	attach(selector = "body") {
-		document.querySelector(selector)?.appendChild(selector);
+		document.querySelector(selector)?.appendChild(this.element);
 
 		return this;
 	}

@@ -1,3 +1,5 @@
+import { getRandomInt } from "../utils.js";
+
 /**
  * @typedef {import(".").Tree} Tree
  * @typedef {import(".").Point} Point
@@ -16,6 +18,8 @@ export default class Point {
 	tree = null;
 	childNodes = [];
 	depth = -1;
+	pointSize = 0;
+	id = getRandomInt(0, 10000000);
 
 	/**
 	 * @param {{
@@ -24,6 +28,7 @@ export default class Point {
 	 *	color?: string,
 	 *	parent?: Point,
 	 *	tree?: Tree,
+	 *  pointSize?: number,
 	 * }}
 	 */
 	constructor({
@@ -32,6 +37,7 @@ export default class Point {
 		color = "#000000",
 		parent = null,
 		tree = null,
+		pointSize = 0,
 	} = {}) {
 		Object.assign(this, {
 			x,
@@ -39,15 +45,16 @@ export default class Point {
 			color,
 			parent,
 			tree,
+			pointSize,
 		});
 		this.depth = this.parent ? this.parent.depth + 1 : 0;
 
 		if (this.parent)
 			this.parent.appendChild(this);
 
-		if (this.tree) {
+		if (tree) {
 			this.setTree(tree);
-			this.addToTreeNodes();
+			this.addToTree();
 		}
 	}
 
@@ -89,11 +96,12 @@ export default class Point {
 	/**
 	 * @param {Point} point
 	 */
-	appendChild(point = null) {
+	appendChild(point) {
 		this.childNodes.push(point);
 		point.parent = this;
-		point.tree = point.parent.tree;
+		point.setTree(this.tree);
 		point.depth = point.parent.depth + 1;
+		point.addToTree();
 
 		return this;
 	}
@@ -101,13 +109,24 @@ export default class Point {
 	/**
 	 * @param {Tree} tree
 	 */
-	setTree(tree = null) {
+	setTree(tree) {
 		this.tree = tree;
+		this.pointSize ||= this.tree.pointSize;
+		if (tree.canvas) this.setCanvas(tree.canvas);
 
 		return this;
 	}
 
-	addToTreeNodes() {
+	/**
+	 * @param {Canvas} canvas
+	 */
+	setCanvas(canvas) {
+		this.canvas = canvas;
+
+		return this;
+	}
+
+	addToTree() {
 		this.tree.nodes.push(this);
 
 		return this;
@@ -119,6 +138,19 @@ export default class Point {
 
 	draw(color = "#000", pointSize = this.tree.pointSize) {
 		this.canvas.fillCircle(color, this.x, this.y, pointSize);
+		this.color = color;
+		this.pointSize = pointSize;
+
+		return this;
+	}
+
+	redraw() {
+		this.canvas.fillCircle(this.color, this.x, this.y, this.pointSize);
+	}
+
+	move(x = 0, y = 0) {
+		this.x = x;
+		this.y = y;
 
 		return this;
 	}

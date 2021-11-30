@@ -1,4 +1,3 @@
-import "../../../../js/extensions.js";
 import Canvas from "./Canvas.js";
 import Point from "./Point.js";
 
@@ -8,16 +7,22 @@ class Tree {
 	static Canvas = Canvas;
 
 	nodes = [];
+	/** @type {Canvas} */
 	canvas = null;
 	maxDepth = Infinity;
+	/** @type {Point} */
 	root = null;
 	size = 10;
 	pointSize = 0;
+	x = -1;
+	y = -1;
 
 	constructor({
 		canvas = null,
 		maxDepth = Infinity,
-		root = new Point({ tree: this }),
+		x = 0,
+		y = 0,
+		root = new Point({ tree: this, x, y }),
 		pointSize = 10,
 	} = {}) {
 		Object.assign(this, {
@@ -27,6 +32,8 @@ class Tree {
 			pointSize,
 		});
 		this.root.depth = 0;
+		this.x = root.x;
+		this.y = root.y;
 	}
 
 	add({ x = 0, y = 0, color = "#000000", parent = this.root } = {}) {
@@ -69,16 +76,20 @@ class Tree {
 		attrs = {},
 		selector = "body",
 	} = {}) {
-		return this.canvas = new Canvas({ height, width, attrs }).attach(selector);
+		this.canvas = new Canvas({ height, width, attrs }).attach(selector);
+		this.nodes.forEach(node => node.setCanvas(this.canvas));
+
+		return this.canvas;
+	}
+
+	setCenter(x = this.canvas.width / 2, y = this.canvas.height / 2) {
+		this.root.move(x, y);
+		this.x = x;
+		this.y = y;
+
+		return this;
 	}
 }
-const t = new Tree();
-
-console.log(t.add({
-	x: 5, y: 5,
-}).createChild({
-	x: -5, y: -5,
-}).remove(new Point({ x: 5, y: 5 })).appendTo(t.nodes[0]));
 
 export { Tree, Point, Canvas };
 export default Tree;

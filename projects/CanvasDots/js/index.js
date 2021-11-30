@@ -1,4 +1,5 @@
-import VectorArray from "../../../node_modules/vector-array/VectorArray.js";
+import { Point, Tree } from "./DotTree/index.js";
+import { NullValueException, getRandomInt } from "./utils.js";
 
 /**
  * @param {Number} time - the time to wait
@@ -8,100 +9,72 @@ function wait(time) {
 	return new $.Deferred(def => setTimeout(() => def.resolve(), time));
 }
 
-function getRandomInt(min, max) {
-	min = Math.ceil(min);
-	max = Math.floor(max);
-
-	return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
+const $container = $(".canvasDots-wrapper");
 const SAMPLE_SIZE = 10;
-const MAX_NODES = 50;
-const PIXEL_RATIO = (function() {
-	const ctx = document.createElement("canvas").getContext("2d"),
-		dpr = window.devicePixelRatio || 1,
-		bsr = ctx.webkitBackingStorePixelRatio
-              || ctx.mozBackingStorePixelRatio
-              || ctx.msBackingStorePixelRatio
-              || ctx.oBackingStorePixelRatio
-              || ctx.backingStorePixelRatio || 1;
-
-	return dpr / bsr;
-}());
-
-
-function createHiDPICanvas(w, h, ratio = undefined, attrs = {}) {
-	if (!ratio) ratio = PIXEL_RATIO;
-	const can = document.createElement("canvas");
-
-	can.width = w * ratio;
-	can.height = h * ratio;
-	can.style.width = `${ w }px`;
-	can.style.height = `${ h }px`;
-	can.getContext("2d").setTransform(ratio, 0, 0, ratio, 0, 0);
-
-	return $(can);
-}
-
-function addNode(x, y, radius = 5, color = "#000000") {
-	canvasContext.fillStyle = color;
-	canvasContext.beginPath();
-	canvasContext.arc(x, y, radius, 0, 2 * Math.PI, false);
-	canvasContext.fill();
-
-	nodes.add(x, y);
-}
-
-function drawLine(x1, y1, x2, y2, color = "#000000") {
-	canvasContext.fillStyle = color;
-	canvasContext.beginPath();
-	canvasContext.moveTo(x1, y1);
-	canvasContext.lineTo(x2, y2);
-	canvasContext.stroke();
-}
-
-const $canvas = createHiDPICanvas(1000, 1000, undefined, {
-	id: "canvasDots-canvas",
+const MAX_NODES = 1000;
+const MAX_DIST = 200;
+const MIN_DIST = 10;
+const tree = new Tree({
+	pointSize: 5,
+});
+const canvas = tree.attachCanvas({
+	height: 1000 + $container.height(),
+	width: $container.width(),
+	selector: ".canvasDots-wrapper",
+	attrs: {
+		id: "canvasDots-canvas",
+	},
 });
 
-$canvas.appendTo(".canvasDots-wrapper");
+tree.setCenter();
 
-const canvasWidth = $canvas.attr("width");
-const canvasHeight = $canvas.attr("height");
-const canvasContext = $canvas[0].getContext("2d");
-const nodes = new VectorArray();
-
-addNode(getRandomInt(0, canvasWidth), getRandomInt(0, canvasHeight), 5, "#ff0000");
-
+tree.root.draw("#000000", 10);
 
 for (let i = 0; i++ < MAX_NODES;) {
-	const index = getRandomInt(0, i-1);
-
-	console.log(index);
-	const node = nodes[index];
-	const nodeDistance = 0;
-	let finalCandidate;
-
-	console.log(nodes);
+	const donePercentage = ((i + MAX_NODES)/MAX_NODES - 1) * 100;
+	const candidates = [];
 
 	for (let j = 0; j++ < SAMPLE_SIZE;) {
 		const angle = getRandomInt(0, 360);
-		const dist = 100;
-		const x = dist * Math.sin(angle) + node.x;
-		const y = dist * Math.cos(angle) + node.y;
-		const candidate = new VectorArray.Entry(x, y);
+		const index = getRandomInt(0, i-2);
+		const node = tree.nodes[index];
+		const dist = getRandomInt(MIN_DIST, MAX_DIST);
+		const x = Math.clamp(dist * Math.sin(angle) + node.x, 0, canvas.width);
+		const y = Math.clamp(dist * Math.cos(angle) + node.y, 0, canvas.height);
+		const candidate = new Point({ x, y });
+		let closest;
 
-		if ((x > 0 && x < canvasWidth) && (y > 0 && y < canvasHeight)) // eslint-disable-line
-			finalCandidate = candidate;
+		if (tree.nodes.length > 2)
+			closest = tree.nodes.greatest((prev, cur) => distance(prev, candidate) >= distance(cur, candidate));
+		else if (tree.nodes[1] && distance(tree.nodes[1], candidate) > distance(tree.nodes[0], candidate))
+			[, closest] = tree.nodes;
+		else
+			[closest] = tree.nodes;
+
+		if (!node) throw new NullValueException("Node not found");
+
+		if (closest) candidates.push({ closest, node: candidate });
+		else throw new NullValueException(`Closest node not found: index ${ index }, node number ${ i }, candidate number: ${ j }`);
 	}
 
-	drawLine(node.x, node.y, finalCandidate.x, finalCandidate.y);
-	addNode(...finalCandidate);
+	const { closest: parent, node } = candidates.greatest((prev, cur) => distance(prev.closest, prev.node) <= distance(cur.closest, cur.node)); // eslint-disable-line
+	// const color = `#${ (parent.depth * 1000).toString(16).split(".")[0].padEnd(6, "0") }`;
+	let color;
 
-	function distance(a, b) {
-		const dx = a.x - b.x,
-			dy = a.y - b.y;
 
-		return Math.sqrt(dx * dx + dy * dy);
-	}
+	// canvas.fillLine(parent.x, parent.y, node.x, node.y);
+	node.appendTo(parent);
+	node.draw(color);
+	parent.redraw();
 }
+
+function distance(a, b) {
+	const dx = a.x - b.x,
+		dy = a.y - b.y;
+
+	return Math.sqrt(dx**2 + dy**2);
+}
+
+Object.assign(window, {
+	canvas, tree,
+});
