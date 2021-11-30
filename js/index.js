@@ -1,4 +1,4 @@
-import "./extension.js";
+import "./extensions.js";
 
 const licenseNotice = // html
 $(`
@@ -18,7 +18,6 @@ const projects = [
 	"InfectionTable",
 ];
 
-console.log($(".topNavMenu-dropdown"));
 $(".topNavMenu-dropdown").append(projects.map(p => $("<li>", {
 	html: $("<a>", {
 		text: p,
