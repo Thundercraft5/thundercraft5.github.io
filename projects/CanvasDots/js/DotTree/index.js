@@ -1,73 +1,62 @@
+import AbstractTree from "./AbstractTree.js"; // eslint-disable-line
+import AbstractPoint from "./AbstractPoint.js"; // eslint-disable-line
 import Canvas from "./Canvas.js";
 import Point from "./Point.js";
 
-class Tree {
+class Tree extends AbstractTree {
+	static Canvas = Canvas;
 	static Tree = Tree;
 	static Point = Point;
-	static Canvas = Canvas;
 
-	nodes = [];
 	/** @type {Canvas} */
 	canvas = null;
-	maxDepth = Infinity;
-	/** @type {Point} */
-	root = null;
-	size = 10;
-	pointSize = 0;
-	x = -1;
-	y = -1;
+	/** @type {Point[]} */
+	nodes = [];
+	#_;
 
 	constructor({
 		canvas = null,
 		maxDepth = Infinity,
+		maxChildren = Infinity,
 		x = 0,
 		y = 0,
-		root = new Point({ tree: this, x, y }),
+		root = new Point({ x, y }),
 		pointSize = 10,
 	} = {}) {
-		Object.assign(this, {
+		super({
 			maxDepth,
-			canvas,
+			maxChildren,
+			x,
+			y,
 			root,
 			pointSize,
 		});
-		this.root.depth = 0;
-		this.x = root.x;
-		this.y = root.y;
+		Object.assign(this, {
+			canvas,
+		});
+		root.setTree(this);
+		console.log(root.canvas);
 	}
 
-	add({ x = 0, y = 0, color = "#000000", parent = this.root } = {}) {
+	add({
+		x = 0,
+		y = 0,
+		color = "#000000",
+		parent = this.root,
+		maxDepth = Infinity,
+	} = {}) {
 		const [p] = arguments; // eslint-disable-line
 
-		if (p instanceof Point) {
-			if (!this.find(p.x, p.y)) this.nodes.push(p);
-			if (parent) p.appendTo(parent);
-			p.tree = this;
+		if (p instanceof AbstractPoint) return super.add.apply(this, [ p ]);
+		/** @type {Point} */
+		const newPoint = super.add({
+			x, y, parent, maxDepth,
+		});
 
-			return p;
-		}
-		const newPoint = new Point({ x, y, color, parent, tree: this });
-
-		this.nodes.push(newPoint);
+		newPoint.setColor(color);
+		newPoint.setCanvas(this.canvas);
 
 		return newPoint;
-	}
-
-
-	remove(x = 0, y = 0) {
-		if (typeof x === "object") return this.remove(x.x, x.y);
-		const p = this.find(x, y);
-
-		p.parent = null;
-		p.tree = null;
-		p.depth = -1;
-		this.nodes.remove(p);
-
-		return p;
-	}
-
-	find(x = 0, y = 0) {
-		return this.nodes.find(p => p.x === x && p.y === y);
 	}
 
 	attachCanvas({
@@ -78,18 +67,28 @@ class Tree {
 	} = {}) {
 		this.canvas = new Canvas({ height, width, attrs }).attach(selector);
 		this.nodes.forEach(node => node.setCanvas(this.canvas));
+		console.log(this.canvas);
 
 		return this.canvas;
 	}
 
-	setCenter(x = this.canvas.width / 2, y = this.canvas.height / 2) {
-		this.root.move(x, y);
-		this.x = x;
-		this.y = y;
+	toAbstract() {
+		return new AbstractTree(this);
+	}
 
-		return this;
+
+	static fromAbstract(abstractTree, {
+		height = 1000,
+		width = 1000,
+		attrs = {},
+		selector = "body",
+	} = { _empty: true }) {
+		const tree = new this(abstractTree);
+
+		if (!arguments[1]._empty) tree.attachCanvas({ height, width, attrs, selector }); // eslint-disable-line
+
+		return tree;
 	}
 }
-
-export { Tree, Point, Canvas };
+export { Tree, Point, Canvas, AbstractTree, AbstractPoint };
 export default Tree;

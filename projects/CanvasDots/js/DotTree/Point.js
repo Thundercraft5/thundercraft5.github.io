@@ -1,4 +1,4 @@
-import { getRandomInt } from "../utils.js";
+import AbstractPoint from "./AbstractPoint.js";
 
 /**
  * @typedef {import(".").Tree} Tree
@@ -6,20 +6,24 @@ import { getRandomInt } from "../utils.js";
  * @typedef {import(".").Canvas} Canvas
  */
 
-export default class Point {
-	x = NaN;
-	y = NaN;
+export default class Point extends AbstractPoint {
 	color = "#000000";
 	/** @type {Canvas} */
 	canvas = null;
-	/** @type {Point} */
-	parent = null;
-	/** @type {Tree} */
-	tree = null;
-	childNodes = [];
-	depth = -1;
-	pointSize = 0;
-	id = getRandomInt(0, 10000000);
+
+	get canAddChildNodes() {
+		return this.childrenAmountInBounds && this.depthInBounds;
+	}
+
+	get depthInBounds() {
+		return this.depth + 1 <= this.tree.maxDepth;
+	}
+
+	get childrenAmountInBounds() {
+		const nextAmount = this.childNodes.length + 1;
+
+		return nextAmount <= this.maxChildren && nextAmount <= this.tree.maxChildren;
+	}
 
 	/**
 	 * @param {{
@@ -29,6 +33,7 @@ export default class Point {
 	 *	parent?: Point,
 	 *	tree?: Tree,
 	 *  pointSize?: number,
+	 *  maxDepth?: number,
 	 * }}
 	 */
 	constructor({
@@ -38,102 +43,18 @@ export default class Point {
 		parent = null,
 		tree = null,
 		pointSize = 0,
+		maxChildren = Infinity,
 	} = {}) {
-		Object.assign(this, {
-			x,
-			y,
-			color,
+		super({
 			parent,
 			tree,
+			x,
+			y,
 			pointSize,
+			maxChildren,
 		});
-		this.depth = this.parent ? this.parent.depth + 1 : 0;
-
-		if (this.parent)
-			this.parent.appendChild(this);
-
-		if (tree) {
-			this.setTree(tree);
-			this.addToTree();
-		}
-	}
-
-	createChild({ x = 0, y = 0, color = "#000000" } = {}) {
-		const p = new Point({ x, y, color, parent: this, tree: this.tree });
-
-		this.childNodes.push(p);
-
-		return p;
-	}
-
-	removeChild(x = 0, y = 0) {
-		if (typeof x === "object") return this.removeChild(x.x, x.y);
-
-		return this.childNodes.find(p => p.x === x && p.y === y)?.remove();
-	}
-
-	remove() {
-		this.childNodes.forEach(p => p.remove());
-		this.parent.childNodes.remove(this);
-		this.tree.nodes.remove(this);
-
-		this.parent = null;
-		this.depth = -1;
-		this.tree = null;
-
-		return this;
-	}
-
-	/**
-	 * @param {Point} parent
-	 */
-	appendTo(parent = null) {
-		parent.appendChild(this);
-
-		return this;
-	}
-
-	/**
-	 * @param {Point} point
-	 */
-	appendChild(point) {
-		this.childNodes.push(point);
-		point.parent = this;
-		point.setTree(this.tree);
-		point.depth = point.parent.depth + 1;
-		point.addToTree();
-
-		return this;
-	}
-
-	/**
-	 * @param {Tree} tree
-	 */
-	setTree(tree) {
-		this.tree = tree;
-		this.pointSize ||= this.tree.pointSize;
-		if (tree.canvas) this.setCanvas(tree.canvas);
-
-		return this;
-	}
-
-	/**
-	 * @param {Canvas} canvas
-	 */
-	setCanvas(canvas) {
-		this.canvas = canvas;
-
-		return this;
-	}
-
-	addToTree() {
-		this.tree.nodes.push(this);
-
-		return this;
-	}
-
-	hasChildren() {
-		return !!this.childNodes.length;
+		this.setColor(color);
+		if (tree) this.setCanvas(tree.canvas);
 	}
 
 	draw(color = "#000", pointSize = this.tree.pointSize) {
@@ -144,14 +65,32 @@ export default class Point {
 		return this;
 	}
 
-	redraw() {
-		this.canvas.fillCircle(this.color, this.x, this.y, this.pointSize);
+	appendChild(node) {
+		super.appendChild(node);
+		node.setCanvas(this.canvas);
 	}
 
-	move(x = 0, y = 0) {
-		this.x = x;
-		this.y = y;
+	setTree(tree) {
+		super.setTree(tree);
+		if (tree.canvas) this.setCanvas(tree.canvas);
 
 		return this;
+	}
+
+	setColor(color) {
+		this.color = color;
+
+		return this;
+	}
+
+	setCanvas(canvas) {
+		console.log(canvas);
+		if (canvas) this.canvas = canvas;
+
+		return this;
+	}
+
+	toAbstract() {
+		return new AbstractPoint(this);
 	}
 }

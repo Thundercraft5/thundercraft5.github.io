@@ -7,3 +7,13 @@
 #canvasDots-canvas, .canvasDots-wrapper {
 	display: flex;
 }
+
+.canvasDots-controls {
+	display: flex;
+	flex-direction: column; 
+}
+
+.canvasDots-controls > div {
+	display: flex;
+}
+
