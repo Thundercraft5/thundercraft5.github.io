@@ -2,7 +2,7 @@ import "../internalPackages/native-extensions/extensions.js";
 import $ from "jquery";
 
 new class {
-	projects = [
+	projects = [ 
 		"CannonballBox",
 		"CanvasDots",
 		"InfectionTable",
