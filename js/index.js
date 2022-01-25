@@ -1,8 +1,8 @@
 import "../internalPackages/native-extensions/extensions.js";
-import $ from "../node_modules/jquery/dist/jquery.js";
+import "../node_modules/jquery/dist/jquery.js";
 
 new class {
-	projects = [ 
+	projects = [
 		"CannonballBox",
 		"CanvasDots",
 		"InfectionTable",
