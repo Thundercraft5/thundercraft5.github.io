@@ -11,20 +11,6 @@ export default class Point extends AbstractPoint {
 	/** @type {Canvas} */
 	canvas = null;
 
-	get canAddChildNodes() {
-		return this.childrenAmountInBounds && this.depthInBounds;
-	}
-
-	get depthInBounds() {
-		return this.depth + 1 <= this.tree.maxDepth;
-	}
-
-	get childrenAmountInBounds() {
-		const nextAmount = this.childNodes.length + 1;
-
-		return nextAmount <= this.maxChildren && nextAmount <= this.tree.maxChildren;
-	}
-
 	/**
 	 * @param {{
 	 *	x?: number,
@@ -44,6 +30,8 @@ export default class Point extends AbstractPoint {
 		tree = null,
 		pointSize = 0,
 		maxChildren = Infinity,
+		isRoot = false,
+		insertionIndex = -1,
 	} = {}) {
 		super({
 			parent,
@@ -52,6 +40,8 @@ export default class Point extends AbstractPoint {
 			y,
 			pointSize,
 			maxChildren,
+			isRoot,
+			insertionIndex,
 		});
 		this.setColor(color);
 		if (tree) this.setCanvas(tree.canvas);
@@ -65,8 +55,8 @@ export default class Point extends AbstractPoint {
 		return this;
 	}
 
-	appendChild(node) {
-		super.appendChild(node);
+	append(node) {
+		super.append(node);
 		node.setCanvas(this.canvas);
 	}
 
@@ -83,8 +73,14 @@ export default class Point extends AbstractPoint {
 		return this;
 	}
 
+	redraw() {
+		this.canvas.fillCircle(this.color, this.x, this.y, this.pointSize);
+
+		return this;
+	}
+
+
 	setCanvas(canvas) {
-		console.log(canvas);
 		if (canvas) this.canvas = canvas;
 
 		return this;

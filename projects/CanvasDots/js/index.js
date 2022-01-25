@@ -1,9 +1,12 @@
-import { Point, Tree } from "./DotTree/index.js";
-import { NullValueException, getRandomInt } from "./utils.js"; // eslint-disable-line
+/* eslint-disable unicorn/prefer-top-level-await */
+import { AbstractPoint, AbstractTree, Point, Tree } from "./DotTree/index.js";
+import { NullValueException, distance, drawOutArray, getRandomInt } from "./utils.js";
+import { TreeWorker } from "./Workers/index.js";
+import $ from "jquery";
 
 /**
- * @param {Number} time - the time to wait
- * @return {JQuery.Deferred<void>} A promise that with a delay of `time`
+ * @param {Number} time - the time to wait for
+ * @returns {JQuery.Deferred<void>} A promise with a delay of {@link time}
  */
 function wait(time) {
 	return new $.Deferred(def => setTimeout(() => def.resolve(), time));
@@ -24,19 +27,20 @@ function getOptions() {
 	return r;
 }
 
-const treeWorker = new Worker("./js/Workers/TreeHandler.js");
-
-treeWorker.addEventListener("message", console.log);
-
+const treeWorker = new TreeWorker();
 const DEFAULT_OPTIONS = {
 	SAMPLE_SIZE: 10,
-	MAX_NODES: 1000,
+	MAX_NODES: 300,
 	MAX_DIST: 200,
 	MIN_DIST: 10,
 	MAX_CHILDREN: 10,
 	MAX_DEPTH: 10,
-	SHOW_LINES: false,
-	SHOW_COLORS: false,
+	SHOW_LINES: true,
+	SHOW_COLORS: true,
+};
+const CONSTANTS = {
+	MARGIN: 10,
+	POINT_SIZE: 5,
 };
 const CONTROLS_MAP = {
 	SAMPLE_SIZE: "#sampleSize",
@@ -52,70 +56,55 @@ const CONTROLS_MAP = {
 for (const [key, node] of Object.entries(CONTROLS_MAP))
 	$(node).val(DEFAULT_OPTIONS[key]);
 
-function run({
+async function run({
 	SAMPLE_SIZE = 10,
-	MAX_NODES = 1000,
+	MAX_NODES = 300,
 	MAX_DIST = 200,
 	MIN_DIST = 10,
 	MAX_CHILDREN = 10,
 	MAX_DEPTH = 10,
-	SHOW_LINES = false,
-	SHOW_COLORS = false,
-} = {}) {
-	$(".canvasDots-wrapper").empty();
+	SHOW_LINES = true,
+	SHOW_COLORS = true,
+} = {}, $reset, $input) {
+	$reset.text("Running...");
 
+	$(".canvasDots-wrapper").empty();
 	const $container = $(".canvasDots-wrapper");
-	const tree = new Tree({
-		pointSize: 5,
-		maxChildren: MAX_CHILDREN,
-		maxDepth: MAX_DEPTH,
+	const canvasHeight = 1000 + $container.height(),
+		canvasWidth = $container.width();
+	const tree = await treeWorker.send("process", {
+		canvasHeight,
+		canvasWidth,
+		SAMPLE_SIZE,
+		MAX_NODES,
+		MAX_DIST,
+		MIN_DIST,
+		MAX_CHILDREN,
+		MAX_DEPTH,
+		CONSTANTS,
+	}).then(([ t ]) => {
+		$reset.text("Re-run");
+
+		return Tree.fromAbstract(AbstractTree.deserialize(t), {
+			height: canvasHeight,
+			width: canvasWidth,
+			selector: ".canvasDots-wrapper",
+			attrs: {
+				id: "canvasDots-canvas",
+			},
+		});
 	});
-	const canvas = tree.attachCanvas({
-		height: 1000 + $container.height(),
-		width: $container.width(),
-		selector: ".canvasDots-wrapper",
-		attrs: {
-			id: "canvasDots-canvas",
-		},
-	});
+
+	tree.setCenter();
+
+	const { canvas } = tree;
 
 	tree.setCenter();
 	tree.root.draw("#000000", 10);
 
-	outer: for (let i = 0; i++ < MAX_NODES;) {
-		const donePercentage = ((i + MAX_NODES)/MAX_NODES - 1) * 100;
-		const candidates = [];
-
-		for (let j = 0; j++ < SAMPLE_SIZE;) {
-			const angle = getRandomInt(0, 360);
-			const index = getRandomInt(0, tree.nodes.length-1);
-			const node = tree.nodes[index];
-			const dist = getRandomInt(MIN_DIST, MAX_DIST);
-			const x = Math.clamp(dist * Math.sin(angle) + node.x, 0, canvas.width);
-			const y = Math.clamp(dist * Math.cos(angle) + node.y, 0, canvas.height);
-			const candidate = new Point({ x, y });
-			let closest;
-
-			if (tree.nodes.length > 2)
-				closest = tree.nodes.greatest((prev, cur) => distance(prev, candidate) >= distance(cur, candidate));
-			else if (tree.nodes[1] && distance(tree.nodes[1], candidate) > distance(tree.nodes[0], candidate))
-				[, closest] = tree.nodes;
-			else
-				[closest] = tree.nodes;
-
-			if (!closest.childrenAmountInBounds || !closest.depthInBounds) continue outer;
-			if (!node) throw new NullValueException("Node not found");
-
-			if (closest) candidates.push({
-				closest,
-				node: candidate,
-			});
-			else throw new NullValueException(`Closest node not found: index ${ index }, node number ${ i }, candidate number: ${ j }`);
-		}
-
-		const { closest: parent, node } = candidates.greatest((prev, cur) => distance(prev.closest, prev.node) <= distance(cur.closest, cur.node)); // eslint-disable-line
-
-		node.appendTo(parent);
+	tree.traverse(node => {
+		if (!node.parent) return;
+		const { parent } = node;
 
 		if (SHOW_COLORS) {
 			const color = `#${ (parent.depth * 1000).toString(16).split(".")[0].padEnd(6, "0") }`;
@@ -125,17 +114,13 @@ function run({
 
 		if (SHOW_LINES) canvas.fillLine(parent.x, parent.y, node.x, node.y);
 		parent.redraw();
-	}
-
-	function distance(a, b) {
-		const dx = a.x - b.x,
-			dy = a.y - b.y;
-
-		return Math.sqrt(dx**2 + dy**2);
-	}
+	});
 
 	Object.assign(window, {
 		canvas, tree,
+		distance,
+		run,
+		treeWorker,
 	});
 }
 
@@ -144,6 +129,12 @@ function updateRanges() {
 	$(this).siblings(".value").text(this.value);
 }
 
-run(DEFAULT_OPTIONS);
-$(".canvasDots-reset").on("click", () => run(getOptions()));
+const $inputs = $(".canvasDots-controls"),
+	$reset = $(".canvasDots-reset");
+
+run(DEFAULT_OPTIONS, $reset, $inputs);
+
+$reset.on("click", e => {
+	run(getOptions(), $reset, $inputs);
+});
 $(".canvasDots-controls input").each(updateRanges).on("input", updateRanges);
