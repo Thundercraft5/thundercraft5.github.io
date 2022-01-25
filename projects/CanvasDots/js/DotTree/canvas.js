@@ -14,7 +14,7 @@
  * }} CanvasStrokeOptions
  */
 export default class Canvas {
-	static PIXEL_RATIO = (function() {
+	static PIXEL_RATIO = (() => {
 		const ctx = document.createElement("canvas").getContext("2d"),
 			dpr = window.devicePixelRatio || 1,
 			bsr = ctx.webkitBackingStorePixelRatio
@@ -24,7 +24,7 @@ export default class Canvas {
 				|| ctx.backingStorePixelRatio || 1;
 
 		return dpr / bsr;
-	}());
+	})();
 
 	width = 1000;
 	height = 1000;
@@ -414,6 +414,7 @@ export default class Canvas {
 	}
 
 	stroke(path = null) {
+		// eslint-disable-next-line prefer-rest-params
 		this.context.stroke(...Array.from(arguments).filter(Boolean));
 
 		return this;

@@ -37,7 +37,8 @@ $(".infectionTableWrapper button.activateButton").on({
 		let occupiedTiles = new VectorArray([center, center]);
 		let edgeTiles = startEdgeTiles.clone();
 		const upperBounds = new VectorArray.Entry(size, size);
-		const lowerBounds = new VectorArray.Entry(0, 0);		const $wrapper = $(this).parents(".infectionTableWrapper");
+		const lowerBounds = new VectorArray.Entry(0, 0);
+		const $wrapper = $(this).parents(".infectionTableWrapper");
 		const $this = $(this);
 
 		$this.attr({ disabled: true });
@@ -148,7 +149,7 @@ $(".infectionTableWrapper button.activateButton").on({
 		fill(center, center);
 		grow();
 
-		for (let i = 0; i++ < 1000000;) {
+		for (let i = 0; i++ < 1_000_000;) {
 			if (!edgeTiles.length || !growing) return;
 			const entry = edgeTiles.randomEntry();
 			const [x, y] = entry;

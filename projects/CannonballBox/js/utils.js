@@ -1,4 +1,4 @@
-/* eslint-disable require-jsdoc */
+
 export function extend(target, targetPrototype, methods) {
 	if (!methods && typeof targetPrototype === "object") methods = targetPrototype, targetPrototype = null;
 

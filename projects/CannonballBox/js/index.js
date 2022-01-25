@@ -1,4 +1,4 @@
-/* eslint-disable camelcase, require-jsdoc */
+/* eslint-disable camelcase */
 import "./utils.js";
 
 /**
@@ -196,17 +196,17 @@ function reset() {
 	clearCanvas();
 	clearInterval(intervalId);
 
-	y_initial
-		= x_initial
-		= angle
-		= speed
-		= bounciness
-		= velocity_x
-		= velocity_y
-		= ms
-		= global_y
-		= global_x
-		= 0;
+	y_initial =
+		x_initial =
+		angle =
+		speed =
+		bounciness =
+		velocity_x =
+		velocity_y =
+		ms =
+		global_y =
+		global_x =
+		0;
 }
 
 function pause() {
