@@ -2,7 +2,7 @@
 import { AbstractPoint, AbstractTree, Point, Tree } from "./DotTree/index.js";
 import { NullValueException, distance, drawOutArray, getRandomInt } from "./utils.js";
 import { TreeWorker } from "./Workers/index.js";
-import $ from "jquery";
+import $ from "../../../node_modules/jquery/dist/jquery.js";
 
 /**
  * @param {Number} time - the time to wait for

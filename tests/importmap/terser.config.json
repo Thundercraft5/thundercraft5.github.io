@@ -1,0 +1,9 @@
+{
+	"compress": false,
+	"mangle": false,
+	"format": {
+		"comments": false,
+		"ascii_only": true
+	},
+	"ecma": 2022
+}
