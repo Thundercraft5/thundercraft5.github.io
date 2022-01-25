@@ -1,9 +1,32 @@
 {
-	"devDependencies": {
-		"jquery": "^3.6.0"
-	},
-	"type": "module",
-	"dependencies": {
-		"vector-array": "file:../../Libraries/JS/VectorArray"
-	}
+  "devDependencies": {
+    "jquery": "latest"
+  },
+  "type": "module",
+  "dependencies": {
+    "extension-types": "file:types",
+    "native-extensions": "file:internalPackages/native-extensions",
+    "vector-array": "file:../../Libraries/JS/VectorArray"
+  },
+  "name": "thundercraft5.github.io",
+  "description": "A personal site containing my various projects. If you have any issues/suggestions please open an issue, contributions are welcome and encouraged!",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Thundercraft5/thundercraft5.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Thundercraft5/thundercraft5.github.io/issues"
+  },
+  "homepage": "https://github.com/Thundercraft5/thundercraft5.github.io#readme"
 }

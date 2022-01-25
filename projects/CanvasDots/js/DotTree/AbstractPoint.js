@@ -1,10 +1,11 @@
 import {
+	DuplicateNodeException,
 	NodeDepthOutOfBoundsException,
 	TooManyChildNodesException,
 	getRandomInt,
 } from "../utils.js";
 
-/**
+/**	
  * @typedef {import(".").AbstractTree} AbstractTree
  */
 
@@ -15,12 +16,17 @@ export default class AbstractPoint {
 	parent = null;
 	/** @type {AbstractTree} */
 	tree = null;
+	/** @type {AbstractPoint[]} */
 	childNodes = [];
+	/** @type {AbstractPoint[]} */
+	siblings = [];
 	depth = -1;
 	pointSize = 0;
-	id = getRandomInt(0, 10000000000000000000000);
+	id = getRandomInt(0, 10_000_000_000_000_000_000_000);
 	maxDepth = Infinity;
 	maxChildren = Infinity;
+	isRoot = false;
+	insertionIndex = -1;
 
 	get canAddChildNodes() {
 		return this.childrenAmountInBounds && this.depthInBounds;
@@ -44,7 +50,7 @@ export default class AbstractPoint {
 	 *	parent?: AbstractPoint,
 	 *	tree?: Tree,
 	 *  pointSize?: number,
-	 *  maxDepth?: number,
+	 *  maxChildren?: number,
 	 * }}
 	 */
 	constructor({
@@ -54,6 +60,8 @@ export default class AbstractPoint {
 		tree = null,
 		pointSize = 0,
 		maxChildren = Infinity,
+		isRoot = false,
+		insertionIndex = -1,
 	} = {}) {
 		Object.assign(this, {
 			x,
@@ -62,16 +70,16 @@ export default class AbstractPoint {
 			tree,
 			pointSize,
 			maxChildren,
+			isRoot,
+			insertionIndex,
 		});
 		this.depth = this.parent ? this.parent.depth + 1 : 0;
 
 		if (this.parent)
-			this.parent.appendChild(this);
+			this.parent.append(this);
 
-		if (tree) {
+		if (tree)
 			this.setTree(tree);
-			this.addToTree();
-		}
 	}
 
 	createChild({ x = 0, y = 0 } = {}) {
@@ -90,12 +98,16 @@ export default class AbstractPoint {
 
 	remove() {
 		this.childNodes.forEach(p => p.remove());
+		this.siblings.forEach(p => p.siblings.remove(this));
 		this.parent.childNodes.remove(this);
 		this.tree.nodes.remove(this);
 
 		this.parent = null;
 		this.depth = -1;
 		this.tree = null;
+		this.insertionIndex = -1;
+		this.siblings = [];
+		this.isRoot = false;
 
 		return this;
 	}
@@ -104,7 +116,7 @@ export default class AbstractPoint {
 	 * @param {AbstractPoint} parent
 	 */
 	appendTo(parent = null) {
-		parent.appendChild(this);
+		parent.append(this);
 
 		return this;
 	}
@@ -114,15 +126,22 @@ export default class AbstractPoint {
 	 * @throws {DepthOutOfRangeException}
 	 * @throws {TooManyChildNodesException}
 	 */
-	appendChild(point) {
+	append(point) {
 		if (!this.depthInBounds) throw new NodeDepthOutOfBoundsException(this);
 		else if (!this.childrenAmountInBounds) throw new TooManyChildNodesException(point, this);
 
+		if (this.childNodes.includes(point) || this.childNodes.findIndex(c => c.x === point.x && c.y === point.y) != -1)
+			throw new DuplicateNodeException(this);
 		this.childNodes.push(point);
+
 		point.parent = this;
 		point.setTree(this.tree);
 		point.depth = point.parent.depth + 1;
-		point.addToTree();
+		point.insertionIndex = this.tree.insertionIndex++;
+		this.childNodes.forEach(c => {
+			c.siblings.replaceWith([...this.childNodes].removeFrom(c));
+		});
+
 
 		return this;
 	}
@@ -145,13 +164,7 @@ export default class AbstractPoint {
 	}
 
 	hasChildren() {
-		return !!this.childNodes.length;
-	}
-
-	redraw() {
-		this.canvas.fillCircle(this.color, this.x, this.y, this.pointSize);
-
-		return this;
+		return this.childNodes.length > 0;
 	}
 
 	move(x = 0, y = 0) {
@@ -159,5 +172,15 @@ export default class AbstractPoint {
 		this.y = y;
 
 		return this;
+	}
+
+	clone() {
+		return new AbstractPoint({ ...this, tree: null, insertionIndex: -1, parent: null });
+	}
+
+	static deserialize(point) {
+		Object.setPrototypeOf(point, this.prototype);
+
+		return point;
 	}
 }
