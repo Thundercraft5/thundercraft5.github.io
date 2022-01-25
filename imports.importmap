@@ -1,0 +1,5 @@
+{
+	"imports": {
+		"jquery": "/node_modules/jquery/dist/jquery-esm.js"
+	}
+}
