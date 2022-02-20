@@ -1,0 +1,12 @@
+{
+	"type": "module",
+	"name": "vector-array",
+	"version": "1.0.0",
+	"description": "A package that provides a class for usage in scripts that use vector-style arrays. This package is for my personal use.",
+	"main": "Map.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Thundercraft5",
+	"license": "SEE LICENSE IN ./LICENSE"
+}

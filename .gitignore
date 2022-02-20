@@ -1,2 +1,3 @@
-**/.vscode
-**/package.json
+**/.vscode/settings.json
+*.pem
+**/dist

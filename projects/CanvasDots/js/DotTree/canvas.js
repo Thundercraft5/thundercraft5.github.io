@@ -18,10 +18,10 @@ export default class Canvas {
 		const ctx = document.createElement("canvas").getContext("2d"),
 			dpr = window.devicePixelRatio || 1,
 			bsr = ctx.webkitBackingStorePixelRatio
-				|| ctx.mozBackingStorePixelRatio
-				|| ctx.msBackingStorePixelRatio
-				|| ctx.oBackingStorePixelRatio
-				|| ctx.backingStorePixelRatio || 1;
+			|| ctx.mozBackingStorePixelRatio
+			|| ctx.msBackingStorePixelRatio
+			|| ctx.oBackingStorePixelRatio
+			|| ctx.backingStorePixelRatio || 1;
 
 		return dpr / bsr;
 	})();
@@ -415,7 +415,7 @@ export default class Canvas {
 
 	stroke(path = null) {
 		// eslint-disable-next-line prefer-rest-params
-		this.context.stroke(...Array.from(arguments).filter(Boolean));
+		this.context.stroke(...[...arguments].filter(Boolean));
 
 		return this;
 	}
