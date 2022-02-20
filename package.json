@@ -1,32 +1,57 @@
 {
-  "devDependencies": {
-    "jquery": "latest"
-  },
-  "type": "module",
-  "dependencies": {
-    "extension-types": "file:types",
-    "native-extensions": "file:internalPackages/native-extensions",
-    "vector-array": "file:../../Libraries/JS/VectorArray"
-  },
-  "name": "thundercraft5.github.io",
-  "description": "A personal site containing my various projects. If you have any issues/suggestions please open an issue, contributions are welcome and encouraged!",
-  "version": "1.0.0",
-  "main": "index.js",
-  "directories": {
-    "test": "tests"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Thundercraft5/thundercraft5.github.io.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Thundercraft5/thundercraft5.github.io/issues"
-  },
-  "homepage": "https://github.com/Thundercraft5/thundercraft5.github.io#readme"
+	"name": "thundercraft5.github.io",
+	"description": "A personal site containing my various projects. If you have any issues/suggestions please open an issue, contributions are welcome and encouraged!",
+	"homepage": "https://github.com/Thundercraft5/thundercraft5.github.io#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Thundercraft5/thundercraft5.github.io.git"
+	},
+	"bugs": {
+		"url": "https://github.com/Thundercraft5/thundercraft5.github.io/issues"
+	},
+	"private": true,
+	"devDependencies": {
+		"chokidar": "^3.5.3",
+		"esbuild-dev-server": "^0.3.0",
+		"express": "^4.17.3",
+		"glob": "^7.2.0",
+		"glob-parent": "^6.0.2",
+		"jquery": "latest",
+		"kevin-middleware": "^1.3.0",
+		"lerna": "^4.0.0",
+		"math-js": "^1.0.1",
+		"morgan": "^1.10.0",
+		"webpack": "^5.69.1"
+	},
+	"type": "module",
+	"workspaces": [
+		"projects/*",
+		"internalPackages/*"
+	],
+	"dependencies": {
+		"@types/chalk": "^2.2.0",
+		"@types/colors": "^1.2.1",
+		"@types/nodemailer": "^6.4.4",
+		"chalk": "^5.0.0",
+		"colors": "^1.4.0",
+		"eslint": "^8.7.0",
+		"eslint4b": "^7.32.0",
+		"extension-types": "file:types",
+		"monaco-editor": "^0.27.0",
+		"native-extensions": "file:internalPackages/native-extensions",
+		"nodemailer": "^6.7.2",
+		"vector-array": "file:../../Libraries/JS/VectorArray"
+	},
+	"version": "1.0.0",
+	"main": "index.js",
+	"directories": {
+		"test": "tests"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"serve": ""
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC"
 }

@@ -7,9 +7,9 @@ export default class TreeWorker extends Worker {
 
 		constructor(command, ...data) {
 			if (typeof command === "object") {
-				const [{ command, data }] = arguments; // eslint-disable-line
+				const [{ command, data, type }] = arguments; // eslint-disable-line
 
-				Object.assign(this, { command, data });
+				Object.assign(this, { command, data, type });
 			}
 
 			this.command = command;

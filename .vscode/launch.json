@@ -1,0 +1,36 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "pwa-node",
+			"name": "Start Localhost Server",
+			"request": "launch",
+			"runtimeExecutable": "npm",
+			"cwd": "${workspaceFolder}/projects/EslintEditor",
+			"args": [
+				"run",
+				"watch"
+			]
+		},
+		{
+			"type": "chrome",
+			"request": "attach",
+			"name": "Debug Client",
+			"urlFilter": "http://localhost:3000/*",
+			"webRoot": "${workspaceRoot}",
+			"userDataDir": false,
+			"sourceMaps": true,
+			"trace": true,
+			"port": 9222,
+		}
+	],
+	"compounds": [
+		{
+			"name": "Start debugging Localhost",
+			"configurations": [
+				"Start Localhost Server",
+				"Debug Client",
+			]
+		}
+	]
+}
