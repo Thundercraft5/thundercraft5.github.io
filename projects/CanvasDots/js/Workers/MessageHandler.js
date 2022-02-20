@@ -45,11 +45,13 @@ export default class MessageHandler {
 	}
 
 	addSingleListener(command, listener) {
-		this.addListener(command, (command, ...args) => {
+		const cb = (command, ...args) => {
 			listener(command, ...args);
 
-			this.removeListener(command, listener);
-		});
+			this.removeListener(command, cb);
+		};
+
+		this.addListener(command, cb);
 
 		return this;
 	}
@@ -78,9 +80,23 @@ export default class MessageHandler {
 		const { command, data, type } = this.#receiveCallback(eventArgs);
 		const listeners = this.#fetchRegistry(command);
 
-			if (listeners.length === 0) console.warn(`Received a command event for command "${ command }" but no listeners are registered for that event.`);
+		if (listeners.length === 0) console.warn(`Received a command event for command "${ command }" but no listeners are registered for that event.`);
 
-		listeners.forEach(listener => listener(command, ...data));
+		let curListener = null;
+
+		try {
+			listeners.forEach(listener => (curListener = listener, listener(command, ...data)));
+		} catch (e) {
+			console.warn(`Calling the listeners for command "${ command }" result in an error:`, e);
+			console.warn("Offending listener:");
+			console.dir(curListener);
+
+			this.send("error", {
+				command,
+				error: e,
+				data,
+			});
+		}
 	}
 
 	/** @param {SerializableObject[]} data */
@@ -120,6 +136,17 @@ export default class MessageHandler {
 
 	#fetchRegistry(key) {
 		return this.#hasRegistry(key) ? this.#getRegistry(key) : this.#createRegistry(key);
+	}
+
+	#createPromise() {
+		let resolve, reject;
+		const promise = new Promise((resolve, reject) => { resolve = resolve, reject = reject; });
+
+		return {
+			promise,
+			resolve,
+			reject,
+		};
 	}
 }
 

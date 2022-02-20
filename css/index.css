@@ -10,14 +10,18 @@ body {
 	font: normal 14px arial;
 	margin: 0 !important;
 	overflow-x: hidden;
+	display: flex;
 }
 
 * {
 	vertical-align: baseline;
 }
 
-button, input[type="submit"], input[type="reset"], 
-input[type="button"], input[type="checkbox"] {
+button:not(:disabled), 
+input[type="submit"]:not(:disabled), 
+input[type="reset"]:not(:disabled), 
+input[type="button"]:not(:disabled), 
+input[type="checkbox"]:not(:disabled) {
 	cursor: pointer;
 }
 
@@ -29,7 +33,9 @@ main {
 	overflow: auto;
 	height: -webkit-fill-available;
 	white-space: pre;
-	padding: 5px;
+	display: flex;
+	flex-direction: column;
+	padding: 8px;
 }
 
 footer {
@@ -61,5 +67,26 @@ footer {
 }
 
 :is(h1, h2, h3, h4, h5, h6, header).centerHeader {
+	text-align: center;
+}
+
+.hidden {
+	display: none !important;
+}
+
+.loading-gray {
+	background: url("/resources/images/spinners/spinner-gray.svg") center no-repeat;
+}
+
+.veryLargeText {
+	font-size: xxx-large;
+}
+
+.largeText {
+	font-size: x-large;
+}
+
+.center {
+	display: block;
 	text-align: center;
 }

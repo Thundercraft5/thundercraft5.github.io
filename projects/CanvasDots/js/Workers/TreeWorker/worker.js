@@ -14,7 +14,7 @@ handler.addListeners({
 		MIN_DIST,
 		MAX_CHILDREN,
 		MAX_DEPTH,
-		CONSTANTS,
+		/** @type {import("../..").CONSTANTS} */ CONSTANTS,
 	 }) {
 		let nodeCount = 0;
 		const tree = new AbstractTree({
@@ -38,6 +38,14 @@ handler.addListeners({
 				const y = Math.clamp(dist * Math.cos(angle) + node.y, 0+CONSTANTS.MARGIN, canvasHeight-CONSTANTS.MARGIN);
 				const candidate = new AbstractPoint({ x, y });
 				let closest;
+
+				/*
+				 * if (x < 0+CONSTANTS.MARGIN
+				 * 	|| x > canvasHeight-CONSTANTS.MARGIN
+				 * 	|| y < 0+CONSTANTS.MARGIN
+				 * 	|| y > canvasHeight-CONSTANTS.MARGIN
+				 * ) continue;
+				 */
 
 				if (tree.nodes.length > 2)
 					closest = drawOutArray(tree.nodes, 2).greatest((prev, cur) => distance(prev, candidate) >= distance(cur, candidate));

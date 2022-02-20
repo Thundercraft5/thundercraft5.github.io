@@ -1,4 +1,4 @@
-import VectorArray from "../../../node_modules/vector-array/VectorArray.js";
+import VectorArray from "../../../internalPackages/vector-array/VectorArray.js";
 
 const size = +$(".infectionTable").attr("data-size");
 const center = Math.ceil(size/2);
@@ -123,7 +123,7 @@ $(".infectionTableWrapper button.activateButton").on({
 		 * @helper
 		 */
 		function grow() {
-			if (!edgeTiles.length || !growing) return;
+			if (edgeTiles.length === 0 || !growing) return;
 			const entry = edgeTiles.randomEntry();
 			const [x, y] = entry;
 
@@ -150,7 +150,7 @@ $(".infectionTableWrapper button.activateButton").on({
 		grow();
 
 		for (let i = 0; i++ < 1_000_000;) {
-			if (!edgeTiles.length || !growing) return;
+			if (edgeTiles.length === 0 || !growing) return;
 			const entry = edgeTiles.randomEntry();
 			const [x, y] = entry;
 

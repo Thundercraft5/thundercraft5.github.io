@@ -169,6 +169,4 @@ class AbstractTree {
 	}
 }
 
-export { AbstractTree };
-export default AbstractTree;
-export { default as AbstractPoint } from "./AbstractPoint.js";
+export { AbstractTree, AbstractPoint, AbstractTree as default };

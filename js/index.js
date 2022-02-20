@@ -6,6 +6,8 @@ new class {
 		"CannonballBox",
 		"CanvasDots",
 		"InfectionTable",
+		"EslintEditor",
+		"MinMaxFinder",
 	];
 
 	tests = [];

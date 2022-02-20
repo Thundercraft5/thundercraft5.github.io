@@ -1,0 +1,21 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Site: Add new Project",
+			"type": "shell",
+			"command": "./scripts/tasks/create-project.ps1",
+			"options": {
+				"cwd": "${workspaceRoot}"
+			}
+		},
+		{
+			"label": "npm: Start Localhost",
+			"type": "shell",
+			"command": "npm run watch",
+			"options": {
+				"cwd": "${workspaceRoot}/projects/EslintEditor",
+			}
+		}
+	]
+}

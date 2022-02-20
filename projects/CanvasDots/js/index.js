@@ -1,6 +1,6 @@
 /* eslint-disable unicorn/prefer-top-level-await */
-import { AbstractPoint, AbstractTree, Point, Tree } from "./DotTree/index.js";
-import { NullValueException, distance, drawOutArray, getRandomInt } from "./utils.js";
+import { AbstractTree, Canvas, Tree } from "./DotTree/index.js";
+import { distance } from "./utils.js";
 import { TreeWorker } from "./Workers/index.js";
 import "../../../node_modules/jquery/dist/jquery.js";
 
@@ -56,21 +56,30 @@ const CONTROLS_MAP = {
 for (const [key, node] of Object.entries(CONTROLS_MAP))
 	$(node).val(DEFAULT_OPTIONS[key]);
 
-async function run({
-	SAMPLE_SIZE = 10,
-	MAX_NODES = 300,
-	MAX_DIST = 200,
-	MIN_DIST = 10,
-	MAX_CHILDREN = 10,
-	MAX_DEPTH = 10,
-	SHOW_LINES = true,
-	SHOW_COLORS = true,
-} = {}, $reset, $input) {
-	$reset.text("Running...");
+async function run(
+	{
+		SAMPLE_SIZE = 10,
+		MAX_NODES = 300,
+		MAX_DIST = 200,
+		MIN_DIST = 10,
+		MAX_CHILDREN = 10,
+		MAX_DEPTH = 10,
+		SHOW_LINES = true,
+		SHOW_COLORS = true,
+
+	} = {},
+	/** @type {JQuery} */ $reset,
+	/** @type {JQuery} */ $input,
+) {
+	$reset.find(".text")
+		.text("Running...")
+	.end()
+	.prop("disabled", true);
+	$(".loading-gray").toggleClass("hidden");
 
 	$(".canvasDots-wrapper").empty();
 	const $container = $(".canvasDots-wrapper");
-	const canvasHeight = 1000 + $container.height(),
+	const canvasHeight = 800,
 		canvasWidth = $container.width();
 	const tree = await treeWorker.send("process", {
 		canvasHeight,
@@ -83,7 +92,12 @@ async function run({
 		MAX_DEPTH,
 		CONSTANTS,
 	}).then(([ t ]) => {
-		$reset.text("Re-run");
+		$reset.find(".text")
+			.text("Re-run")
+		.end()
+		.prop("disabled", false);
+
+		$(".loading-gray").toggleClass("hidden");
 
 		return Tree.fromAbstract(AbstractTree.deserialize(t), {
 			height: canvasHeight,
@@ -106,13 +120,14 @@ async function run({
 		if (!node.parent) return;
 		const { parent } = node;
 
+		if (SHOW_LINES) canvas.fillLine(parent.x, parent.y, node.x, node.y);
+
 		if (SHOW_COLORS) {
 			const color = `#${ (parent.depth * 1000).toString(16).split(".")[0].padEnd(6, "0") }`;
 
 			node.draw(color);
 		} else node.draw();
 
-		if (SHOW_LINES) canvas.fillLine(parent.x, parent.y, node.x, node.y);
 		parent.redraw();
 	});
 
@@ -138,3 +153,5 @@ $reset.on("click", e => {
 	run(getOptions(), $reset, $inputs);
 });
 $(".canvasDots-controls input").each(updateRanges).on("input", updateRanges);
+
+export { CONSTANTS };

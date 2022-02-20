@@ -49,40 +49,46 @@
 				</div>
 			</nav>
 		</div>
-		<main class="canvadDots">
-			<button class="canvasDots-reset">Re-run</button>
-			<div class="canvasDots-controls">
-				<div class="canvasDots-sampleSize">
-					<input id="sampleSize" type="range" min="1" max="100" />
-					<label>Sample Size: </label><span class="value">0</span>
+		<main class="canvasDots">
+
+			<div class="controls">
+				<div class="buttons">
+					<button class="canvasDots-reset">Re-run</button>
+					<div class="loading-gray hidden" style="width: 20px; height: 20px"></div>
 				</div>
-				<div class="canvasDots-maxNodes">
-					<input id="maxNodes" type="range" min="1" max="10000" />
-					<label>Max Nodes: </label><span class="value">0</span>
-				</div>
-				<div class="canvasDots-maxDist">
-					<input id="maxDist" type="range" min="1" max="750" />
-					<label>Max node distance: </label><span class="value">0</span>
-				</div>
-				<div class="canvasDots-minDist">
-					<input id="minDist" type="range" min="1" max="100" />
-					<label>Min node distance: </label><span class="value">0</span>
-				</div>
-				<div class="canvasDot-maxChildren">
-					<input id="maxChildren" type="range" min="1" max="100" />
-					<label>Max children per node: </label><span class="value">0</span>
-				</div>
-				<div class="canvasDot-maxDepth">
-					<input id="maxDepth" type="range" min="1" max="100" />
-					<label>Max node depth: </label><span class="value">0</span>
-				</div>
-				<div class="canvasDots-showLines">
-					<input type="checkbox" id="showLines" checked />
-					<label>Show node lines</label>
-				</div>
-				<div class="canvasDots-showColors">
-					<input type="checkbox" id="showColors" checked />
-					<label>Show node color</label>
+				<div class="params">
+					<div class="canvasDots-sampleSize">
+						<input id="sampleSize" type="range" min="1" max="100" />
+						<label>Sample Size: </label><span class="value">0</span>
+					</div>
+					<div class="canvasDots-maxNodes">
+						<input id="maxNodes" type="range" min="1" max="10000" />
+						<label>Max Nodes: </label><span class="value">0</span>
+					</div>
+					<div class="canvasDots-maxDist">
+						<input id="maxDist" type="range" min="1" max="750" />
+						<label>Max node distance: </label><span class="value">0</span>
+					</div>
+					<div class="canvasDots-minDist">
+						<input id="minDist" type="range" min="1" max="100" />
+						<label>Min node distance: </label><span class="value">0</span>
+					</div>
+					<div class="canvasDot-maxChildren">
+						<input id="maxChildren" type="range" min="1" max="100" />
+						<label>Max children per node: </label><span class="value">0</span>
+					</div>
+					<div class="canvasDot-maxDepth">
+						<input id="maxDepth" type="range" min="1" max="100" />
+						<label>Max node depth: </label><span class="value">0</span>
+					</div>
+					<div class="canvasDots-showLines">
+						<input type="checkbox" id="showLines" checked />
+						<label>Show node lines</label>
+					</div>
+					<div class="canvasDots-showColors">
+						<input type="checkbox" id="showColors" checked />
+						<label>Show node color</label>
+					</div>
 				</div>
 			</div>
 			<div class="canvasDots-wrapper">
