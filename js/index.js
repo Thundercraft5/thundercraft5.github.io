@@ -1,6 +1,8 @@
 import "../internalPackages/native-extensions/extensions.js";
 import "../node_modules/jquery/dist/jquery.js";
 
+console.log(this);
+
 new class {
 	projects = [
 		"CannonballBox",

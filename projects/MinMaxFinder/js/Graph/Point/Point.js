@@ -10,7 +10,7 @@ export default class Point {
 
 	/** @param {{ x: number, y: number } | number} x */
 	constructor(x = 0, y = 0) {
-		if (x?.x || x?.y) y = x.y || 0, x = x.x || 0;
+		if (x?.x != null || x?.y != null) y = x.y || 0, x = x.x || 0;
 
 		this.x = x;
 		this.y = y;

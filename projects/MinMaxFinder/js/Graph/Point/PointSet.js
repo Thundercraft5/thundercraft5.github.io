@@ -12,7 +12,8 @@ export default class PointSet extends Set {
 	}
 
 	add(/** @type {Point} */ point) {
-		this.#cache[[point.x, point.y]] = 1;
+ 		super.add(point);
+		this.#cache[[point.x, point.y]] = point;
 
 		return this;
 	}

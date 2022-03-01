@@ -1,5 +1,4 @@
 @import url("./topnav.css");
-@import url("./cannonball.css");
 
 :root {
 	--dark-text-color: rgb(31, 31, 31);
@@ -79,11 +78,11 @@ footer {
 }
 
 .veryLargeText {
-	font-size: xxx-large;
+	font-size: 20vh;
 }
 
 .largeText {
-	font-size: x-large;
+	font-size: xxx-large;
 }
 
 .center {

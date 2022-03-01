@@ -10,7 +10,7 @@ export default class AbstractGraphPoint extends Point {
 
 	/** @param {number | {x: number, y: number}} x */
 	constructor(graph, x = 0, y = 0) {
-		if (x?.x || x?.y) y = x.x || 0, x = x.x || 0;
+		if (x?.x != null || x?.y != null) y = x.y || 0, x = x.x || 0;
 
 		super(x, y);
 		this.graph = graph;
