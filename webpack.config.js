@@ -1,20 +1,13 @@
+import glob from "glob";
 import path from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const webpackConfigs = await Promise.all(glob.sync("./projects/*/webpack.config.js").map(async project => {
+	const { default: config } = await import(project);
 
-export default {
-	name: "",
-	mode: "development",
-	entry: "./src/index.js",
-	output: {
-		filename: "bundle.js",
-		path: path.resolve(__dirname, "dist"),
-		library: {
-			type: "module",
-		},
-	},
-	experiments: {
-		outputModule: true,
-	},
-};
+	return config;
+}));
+
+console.log(webpackConfigs);
+export default webpackConfigs;

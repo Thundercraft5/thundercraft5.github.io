@@ -1,7 +1,11 @@
 import { distance, shiftToPositive } from "./utils.js";
 import Canvas from "./Graph/Canvas.js";
+import Graph from "./Graph/index.js";
 import * as math from "./dist/math.js";
+import ScaledGraphPoint from "./Graph/Point/ScaledGraphPoint";
 
+window.Graph = Graph;
+window.ScaledGraphPoint = ScaledGraphPoint;
 console.log(math);
 
 function getPointAt({ x, y }) {
@@ -45,11 +49,44 @@ function plotFunction(func, targetVariable = "x", color = "#f00", includeDerivat
 	return plots;
 }
 
+function taylorExpansion(func, derivativeCount = 10, a = 0, symbol = "x") {
+	const expr = math.parse(func);
+	let derivative;
+	const terms = [];
+	const derivatives = [];
+
+	for (let k = 0; k++ < derivativeCount;) {
+		derivative = math.derivative(derivative || expr?.value || expr, symbol);
+		derivatives.push(derivative);
+		console.log(derivative.toString());
+
+		terms.push(new math.OperatorNode("*", "multiply", [
+			new math.OperatorNode("/", "divide", [
+				new math.ConstantNode(derivative.compile().evaluate({ x: a })),
+				new math.ConstantNode(math.factorial(k)),
+			]),
+			new math.OperatorNode("^", "pow", [
+				new math.OperatorNode("-", "subtract", [
+					new math.SymbolNode("x"),
+					new math.ConstantNode(a),
+				]),
+				new math.ConstantNode(k),
+			]),
+		]));
+
+		console.log(math.simplify(terms[k-1]).toString());
+	}
+
+	console.log(derivatives);
+
+	return new math.OperatorNode("+", "add", terms);
+}
+
 const func = "y = x^2";
 // NB: Goes in all 4 directions
 const maxDist = 100;
 const divisions = 100;
-const stepSize = 0.1;
+const stepSize = 0.25;
 const graphDivisionDist = maxDist/divisions;
 const xThreshold = 0.1;
 const canvasSize = $(".minMaxFinder-canvas-wrapper").width();
@@ -96,6 +133,9 @@ const { plots } = plotFunction(func, "x", "#f00", true);
 let lastPlot = plots[0];
 let min;
 
+plotFunction(taylorExpansion("sin(x)", 10, 3, "x").toString(), "x", "#ccc");
+plotFunction("sin(x)", "x", "#ee0");
+
 canvas.attach(".minMaxFinder-canvas-wrapper");
 
 for (const [i, { x, y }] of plots.slice(1).entries()) {
@@ -108,4 +148,4 @@ for (const [i, { x, y }] of plots.slice(1).entries()) {
 	lastPlot = plots[i];
 }
 
-alert(`x: ${ min.x }, y: ${ min.y }`);
+console.log(`x: ${ min.x }, y: ${ min.y }`);

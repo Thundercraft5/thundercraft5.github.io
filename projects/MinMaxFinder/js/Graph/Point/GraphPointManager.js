@@ -22,8 +22,12 @@ export default class GraphPointManager {
 		this.#set.addAll(...points);
 	}
 
-	/** @return {InstanceType<T>} */
+	/** 
+	 * @return {InstanceType<T>} 
+	 * @param {number | {x: number, y: number}} x 
+	 */
 	getPointAt(x, y) {
+		if (x?.x != null || x?.y != null) y = x.y || 0, x = x.x || 0;
 		if (this.#set.has(x, y)) return this.#set.get(x, y);
 
 		const newPoint = new this.#pointConstructor(this.#graph, x, y);
