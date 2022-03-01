@@ -2,11 +2,6 @@ import { Test } from "./test";
 import { add } from "math";
 
 new Test().test();
-/**
- * @typedef {import("./DotTree").Point} Point
- * @typedef {import("./DotTree").Canvas} Canvas
- * @typedef {import("./DotTree").Tree} Tree
- */
 
 export function getRandomInt(min = 0, max = Infinity) {
 	min = Math.ceil(min);
@@ -16,7 +11,7 @@ export function getRandomInt(min = 0, max = Infinity) {
 }
 
 function getArgumentSignature(args) {
-	return [...args].map(v => v.__proto__.constructor);
+	return [...args].map(v => Object.getPrototypeOf(args).constructor);
 }
 
 export function stretchArray(arr = [], mult = 1) {
@@ -67,9 +62,9 @@ export class NullValueException extends Exception {
 
 /** @internal */
 export class TreeException extends Exception {
-	/** @type {Tree} */
+	/** @type {Test} */
 	tree = null;
-	constructor(/** @type {Tree} */ tree = null) {
+	constructor(/** @type {Test} */ tree = null) {
 		super();
 		this.tree = tree;
 	}
@@ -77,17 +72,17 @@ export class TreeException extends Exception {
 
 /** @internal */
 export class TreeNodeException extends TreeException {
-	/** @type {Point} */
+	/** @type {Test} */
 	node = null;
 
-	constructor(/** @type {Point} */ node = null) {
+	constructor(/** @type {Test} */ node = null) {
 		super(node?.tree);
 	}
 }
 
 /** @internal */
 export class NodeDepthOutOfBoundsException extends TreeNodeException {
-	constructor(/** @type {Point} */ node = null) {
+	constructor(/** @type {Test} */ node = null) {
 		super(node);
 
 		this.message = `The added node exceeds the maximum depth specified by the parent tree (which is "${ this.tree.maxDepth }").`;
@@ -96,10 +91,10 @@ export class NodeDepthOutOfBoundsException extends TreeNodeException {
 
 /** @internal */
 export class TooManyChildNodesException extends TreeNodeException {
-	/** @type {Point} */
+	/** @type {Test} */
 	parentNode = null;
 
-	constructor(/** @type {Point} */ point, /** @type {Point} */ parentNode = null) {
+	constructor(/** @type {Test} */ point, /** @type {Test} */ parentNode = null) {
 		super(parentNode);
 		console.log(parentNode.tree);
 
@@ -111,10 +106,10 @@ export class TooManyChildNodesException extends TreeNodeException {
 }
 
 export class DuplicateNodeException extends TreeNodeException {
-	/** @type {Point} parentNode */
+	/** @type {Test} parentNode */
 	parentNode = null;
 
-	constructor(/** @type {Point} */ point) {
+	constructor(/** @type {Test} */ point) {
 		super(point);
 		this.parentNode = point.parentNode;
 		this.message = "The added node is already in the parent's child node list.";

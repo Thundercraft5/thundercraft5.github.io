@@ -7,6 +7,7 @@ import * as Tree from "monaco-editor/esm/vs/base/browser/ui/tree/indexTreeModel.
  */
 
 console.log(Tree);
+
 self.MonacoEnvironment = {
 	getWorkerUrl(moduleId, label) {
 		if (label === "json")
@@ -60,7 +61,7 @@ window.monaco = monaco;
 window.models = [];
 
 (async() => {
-	const { default: { Linter } } = await import("../node_modules/eslint/lib/linter/index.js");
+	const { default: { Linter } } = await import("../../../node_modules/eslint/lib/linter/index.js");
 	const [
 		js,
 		module,
@@ -75,11 +76,21 @@ window.models = [];
 		editor.getModel(),
 		monaco.editor.createModel(module, "javascript", monaco.Uri.file("test.js")),
 	);
-	const worker = await (await monaco.languages.typescript.getJavaScriptWorker())(uri);
 
-	console.log(await worker.getEmitOutput(uri.toString()));
-	window.worker = worker;
-	window.uri = uri;
+	window.getEmitOutput = async function() {
+		const worker = await(await monaco.languages.typescript.getJavaScriptWorker())(uri);
+
+		window.worker = worker;
+		window.uri = uri;
+
+		return await worker.getEmitOutput(uri.toString());
+	};
+
+	/*
+	 * console.log(await worker.getEmitOutput(uri.toString()));
+	 * window.worker = worker;
+	 * window.uri = uri;
+	 */
 	/*
 	 * console.log(new Linter().verifyAndFix(editor.getValue(), {
 	 * 	parserOptions: {
@@ -90,4 +101,5 @@ window.models = [];
 	 */
 })();
 
+console.log("Test");
 console.log("Test");

@@ -1,5 +1,5 @@
 {
-	"name": "thundercraft5.github.io",
+	"name": "@thundercraft5.github.io/root",
 	"description": "A personal site containing my various projects. If you have any issues/suggestions please open an issue, contributions are welcome and encouraged!",
 	"homepage": "https://github.com/Thundercraft5/thundercraft5.github.io#readme",
 	"repository": {
@@ -12,21 +12,26 @@
 	"private": true,
 	"devDependencies": {
 		"chokidar": "^3.5.3",
+		"css-loader": "^5.2.7",
 		"esbuild-dev-server": "^0.3.0",
 		"express": "^4.17.3",
 		"glob": "^7.2.0",
 		"glob-parent": "^6.0.2",
+		"hard-source-webpack-plugin": "^0.13.1",
 		"jquery": "latest",
-		"kevin-middleware": "^1.3.0",
 		"lerna": "^4.0.0",
 		"math-js": "^1.0.1",
 		"morgan": "^1.10.0",
+		"style-loader": "^3.3.1",
+		"ttf-loader": "^1.0.2",
 		"webpack": "^5.69.1"
 	},
 	"type": "module",
 	"workspaces": [
 		"projects/*",
-		"internalPackages/*"
+		"internalPackages/*",
+		"builds",
+		"true"
 	],
 	"dependencies": {
 		"@types/chalk": "^2.2.0",
@@ -34,12 +39,19 @@
 		"@types/nodemailer": "^6.4.4",
 		"chalk": "^5.0.0",
 		"colors": "^1.4.0",
+		"cors": "^2.8.5",
 		"eslint": "^8.7.0",
 		"eslint4b": "^7.32.0",
+		"express-csp-header": "^5.0.0",
 		"extension-types": "file:types",
+		"html-loader": "^3.1.0",
+		"http2-express-bridge": "^1.0.7",
+		"linkedom": "^0.14.2",
 		"monaco-editor": "^0.27.0",
 		"native-extensions": "file:internalPackages/native-extensions",
+		"node-html-parser": "^5.2.0",
 		"nodemailer": "^6.7.2",
+		"spdy": "^4.0.2",
 		"vector-array": "file:../../Libraries/JS/VectorArray"
 	},
 	"version": "1.0.0",
@@ -48,8 +60,12 @@
 		"test": "tests"
 	},
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"serve": ""
+		"serve": "nodemon --no-deprecation ./scripts/server.js",
+		"serve:debug": "nodemon --no-deprecation --inspect=3000 ./scripts/server.js",
+		"postinstall": "lerna bootstrap",
+		"build": "lerna build --parallel",
+		"watch": "lerna watch --parallel",
+		"mathjs:build": "esbuild ./node_modules/mathjs/lib/esm/index.js --minify --sourcemap --outfile=./projects/MinMaxFinder/js/dist/math.js --bundle --format=esm --target=esnext --allow-overwrite"
 	},
 	"keywords": [],
 	"author": "",
