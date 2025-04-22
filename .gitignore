@@ -5,3 +5,7 @@
 **/dist
 node_modules/**
 !**/*.html
+thundercraft5.github.io.md
+builds
+localhost.crt
+localhost.key

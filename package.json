@@ -11,6 +11,8 @@
 	},
 	"private": true,
 	"devDependencies": {
+		"@thundercraft5/eslint-plugin": "^2.1.5",
+		"@thundercraft5/tsconfig": "latest",
 		"chokidar": "^4.0.3",
 		"css-loader": "^7.1.2",
 		"esbuild-dev-server": "^0.3.0",
@@ -18,6 +20,7 @@
 		"glob": "^11.0.1",
 		"glob-parent": "^6.0.2",
 		"hard-source-webpack-plugin": "^0.13.1",
+		"jiti": "^2.4.2",
 		"jquery": "latest",
 		"lerna": "^8.2.2",
 		"lws-index": "^3.1.1",
@@ -30,17 +33,11 @@
 		"webpack": "^5.99.6"
 	},
 	"type": "module",
-	"workspaces": [
-		"projects/*",
-		"internalPackages/*",
-		"builds",
-		"true"
-	],
 	"dependencies": {
-		"@thundercraft5/vector-array": "file:internalPackages/vector-array",
-		"@types/chalk": "^2.2.4",
-		"@types/colors": "^1.2.4",
-		"@types/nodemailer": "^6.4.17",
+		"@mdx-js/loader": "^3.1.0",
+		"@mdx-js/react": "^3.1.0",
+		"@next/mdx": "^15.3.1",
+		"@thundercraft5/vector-array": "file:packages/vector-array",
 		"chalk": "^5.4.1",
 		"colors": "^1.4.0",
 		"cors": "^2.8.5",
@@ -50,18 +47,18 @@
 		"html-loader": "^5.1.0",
 		"http2-express-bridge": "^1.0.7",
 		"linkedom": "^0.18.9",
+		"mdx": "^0.3.1",
 		"monaco-editor": "^0.52.2",
-		"native-extensions": "file:internalPackages/native-extensions",
+		"native-extensions": "file:packages/native-extensions",
+		"next": "^15.3.1",
 		"node-html-parser": "^7.0.1",
 		"nodemailer": "^6.10.1",
 		"spdy": "^4.0.2"
 	},
 	"version": "1.0.0",
 	"main": "index.js",
-	"directories": {
-		"test": "tests"
-	},
 	"scripts": {
+		"update": "ncu -u && pnpm install",
 		"serve": "nodemon --no-deprecation ./scripts/server.js",
 		"serve:debug": "nodemon --no-deprecation --inspect=3000 ./scripts/server.js",
 		"build": "lerna build --parallel",

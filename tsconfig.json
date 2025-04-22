@@ -1,0 +1,12 @@
+{      
+        "extends": "@thundercraft5/tsconfig/node18.tsconfig.json",
+        "compilerOptions": {
+                "moduleResolution": "bundler",
+                "module": "ESNext",
+                "moduleDetection": "auto"
+        },
+        "include": [
+                "**/*.ts",
+                "**/*.mdx",
+        ],
+}
