@@ -1,0 +1,96 @@
+@import url("./topnav.css");
+
+:root {
+	--dark-text-color: rgb(31, 31, 31);
+	--dark-text-color--hover: rgb(71, 71, 71);
+}
+
+body {
+	font: normal 14px arial;
+	margin: 0 !important;
+	overflow-x: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
+* {
+	vertical-align: baseline;
+}
+
+button:not(:disabled), 
+input[type="submit"]:not(:disabled), 
+input[type="reset"]:not(:disabled), 
+input[type="button"]:not(:disabled), 
+input[type="checkbox"]:not(:disabled) {
+	cursor: pointer;
+}
+
+main {
+	color: black;
+	width: 100%;
+	margin-top: 55px;
+	display: block;
+	overflow: auto;
+	height: -webkit-fill-available;
+	white-space: pre;
+	display: flex;
+	flex-direction: column;
+	padding: 8px;
+}
+
+footer {
+	background-color: rgb(44, 44, 44);
+	width: 100%;
+	padding: 10px;
+	color: white;
+	height: 3vw;
+	margin-bottom: -100px;
+	position: absolute;
+}
+
+.blackLink {
+	text-decoration: none;
+	color: rgb(31, 31, 31);
+	transition: color 0.3s ease;
+}
+
+.blackLink:hover {
+	text-decoration: none;
+	color: rgb(71, 71, 71);
+}
+
+#copyright-notice {
+	text-align: center;
+	overflow-wrap: break-word;
+	white-space: pre-wrap;
+	font-size: 9px;
+}
+
+:is(h1, h2, h3, h4, h5, h6, header).centerHeader {
+	text-align: center;
+}
+
+.hidden {
+	display: none !important;
+}
+
+.loading-gray {
+	background: url("/resources/images/spinners/spinner-gray.svg") center no-repeat;
+}
+
+.veryLargeText {
+	font-size: 20vh;
+}
+
+.largeText {
+	font-size: xxx-large;
+}
+
+.center {
+	display: block;
+	text-align: center;
+}
+
+html > body {
+	flex-direction: row;
+}
