@@ -22,7 +22,7 @@ new class {
 	}
 
 	icons = {
-		"TS": "TypeScript_logo_2020.svg",
+		"TS": "Typescript_logo_2020.svg",
 		"Chrome": "Google_Chrome_icon_(February_2022).svg",
 		"Obsidian": "2023_Obsidian_logo.svg",
 		"Lua": "Lua-Logo.svg",
