@@ -4,7 +4,7 @@ import { spawn } from "child_process";
 import "colors";
 
 // File utilities
-import glob from "glob";
+// import * as glob from "glob";
 
 // Server utilities
 import express from "express";

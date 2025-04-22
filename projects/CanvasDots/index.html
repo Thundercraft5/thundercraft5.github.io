@@ -4,7 +4,7 @@
 		<!-- General Site Meta (favicon ect.) -->
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>CanvasDots | Thundercraft5.Github.io</title>
+		<title>CanvasDots Visualization | Thundercraft5.Github.io</title>
 		<link rel="icon" href="/resources/images/favicon.ico" type="image/x-icon" />
 
 		<meta name="description" content="" />
@@ -38,19 +38,39 @@
 						<img src="/resources/images/Logo.png" width="40" height="40">
 					</a>
 					<div class="headerTextContainer">
-						<div class="headerText"><a href="/index.html" class="blackLink">Thundercraft5.Github.IO</a></div>
+						<div class="headerText"><a href="/index.html" class="blackLink"><code>thundercraft5.github.io</code></a></div>
 					</div>
 				</div>
 				<div class="navMenu">
 					<div class="topNavMenu">
-						<span>Projects</span>
-						<ul class="topNavMenu-dropdown"></ul>
+						<span><a class="blackLink" href="/projects/">Projects</a></span>
+						<ul class="topNavMenu-dropdown" id="projectsDropdown">
+						</ul>
+					</div>
+					<div class="topNavMenu noarrow">
+						<span><a class="blackLink" href="/work.html">Work</a></span>
+					</div>
+					<div class="topNavMenu">
+						<span><a class="blackLink" href="/packages.html">Packages</a></span>
+						<ul class="topNavMenu-dropdown" id="packagesDropdown">
+						</ul>
+					</div>
+					<div class="topNavMenu noarrow">
+						<span><a class="blackLink" href="/about.html">About</a></span>
+					</div>
+					<div class="topNavMenu noarrow">
+						<span><a class="blackLink" href="/philosophy.html">Philosophy</a></span>
+					</div>
+					<div class="topNavMenu noarrow">
+						<span><a class="blackLink" href="/farming.html">Farming</a></span>
 					</div>
 				</div>
 			</nav>
 		</div>
 		<main class="canvasDots">
-
+			<p>
+				CanvasDots is a visualization project that uses HTML5 Canvas to create dynamic and interactive dot-based graphics. Adjust the parameters below to customize the behavior and appearance of the dots, and explore the fascinating patterns they form.
+			</p>
 			<div class="controls">
 				<div class="buttons">
 					<button class="canvasDots-reset">Re-run</button>
@@ -94,6 +114,10 @@
 			<div class="canvasDots-wrapper">
 			</div>
 		</main>
+		<footer>
+            <p><small>🖋 This page was last updated on <b>04/20/2025</b></small></p>
+			<div id="#copyrightNotice"></div>
+        </footer>
 	</body>
 
 </html>
