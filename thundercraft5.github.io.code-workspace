@@ -63,7 +63,8 @@
 			"**/*.key": false,
 			"**/*.crt": false
 		},
-		"explorerExclude.backup": null
+		"explorerExclude.backup": null,
+		"git.ignoreLimitWarning": true
 	},
 	"launch": {
 		"version": "0.2.0",

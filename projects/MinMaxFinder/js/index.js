@@ -1,8 +1,8 @@
 import { distance, shiftToPositive } from "./utils.js";
 import Canvas from "./Graph/Canvas.js";
 import Graph from "./Graph/index.js";
-import * as math from "./dist/math.js";
-import ScaledGraphPoint from "./Graph/Point/ScaledGraphPoint";
+import * as math from "https://esm.sh/mathjs";
+import ScaledGraphPoint from "./Graph/Point/ScaledGraphPoint.js";
 
 window.Graph = Graph;
 window.ScaledGraphPoint = ScaledGraphPoint;
@@ -132,8 +132,13 @@ console.log(-maxDist*scaling);
 const { plots } = plotFunction(func, "x", "#f00", true);
 let lastPlot = plots[0];
 let min;
+let orig = "sin(x)";
+let taylor = taylorExpansion(orig, 10, 3, "x").toString();
 
-plotFunction(taylorExpansion("sin(x)", 10, 3, "x").toString(), "x", "#ccc");
+$('#original').text(`Original function: ${orig}`)
+$('#derivative').text(`Taylor Expansion: ${taylor}`)
+
+plotFunction(taylor, "x", "#ccc");
 plotFunction("sin(x)", "x", "#ee0");
 
 canvas.attach(".minMaxFinder-canvas-wrapper");
