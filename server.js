@@ -1,23 +1,22 @@
 /* eslint-disable multiline-ternary */
-import chokidar from "chokidar";
-import { spawn } from "child_process";
 import "colors";
 
-// File utilities
-import glob from "glob";
-
+import { spawn } from "child_process";
+import chokidar from "chokidar";
+import cors from "cors";
 // Server utilities
 import express from "express";
-import morgan from "morgan";
-import http2Express from "http2-express-bridge";
-import spdy from "spdy";
-import { BLOB, DATA, INLINE, NONE, SELF, expressCspHeader as cspHeaders } from "express-csp-header";
-import cors from "cors";
-import https from "https";
+import { BLOB, DATA, INLINE,NONE,SELF,expressCspHeader as cspHeaders } from "express-csp-header";
+import { promises as fs,constants as fsConstants } from "fs";
+// File utilities
+import glob from "glob";
 import http2 from "http2";
-import { fileURLToPath } from "url";
-import { promises as fs, constants as fsConstants } from "fs";
+import http2Express from "http2-express-bridge";
+import https from "https";
+import morgan from "morgan";
 import path from "path";
+import spdy from "spdy";
+import { fileURLToPath } from "url";
 
 async function filePathExists(filePath) {
 	try {
@@ -33,14 +32,14 @@ function logServerMessage(...messages) {
 	console.log("[SERVER]".blue.bold, ...messages);
 }
 
-const url = "https://nkg-msi";
-const PORT = process.env.PORT || 3000;
-const APP = http2Express(express);
-const serverOptions = {
-	cert: await fs.readFile("./localhost.crt"),
-	key: await fs.readFile("./localhost.key"),
-	allowHTTP1: true,
-};
+const url = "https://nkg-msi",
+	PORT = process.env.PORT || 3000,
+	APP = http2Express(express),
+	serverOptions = {
+		cert: await fs.readFile("./localhost.crt"),
+		key: await fs.readFile("./localhost.key"),
+		allowHTTP1: true,
+	};
 
 APP.use(cspHeaders({
 	directives: {
@@ -78,24 +77,21 @@ APP.get("/favicon.ico", (_, res) => res.sendFile(path.resolve("./resources/image
 
 // Normal requests
 APP.get("*", async({ url, headers }, res, next) => {
-	const normalizedPath = path.join(path.resolve("."), url);
-	const absolutePathExists = await filePathExists(normalizedPath);
-	const resourceType = headers["sec-fetch-dest"];
-	const isResource = ["style", "script"].includes(resourceType);
-	const hasExt = path.extname(url);
-	const stats = absolutePathExists ? await fs.stat(normalizedPath) : null;
+	const normalizedPath = path.join(path.resolve("."), url),
+		absolutePathExists = await filePathExists(normalizedPath),
+		resourceType = headers["sec-fetch-dest"],
+		isResource = ["style", "script"].includes(resourceType),
+		hasExt = path.extname(url),
+		stats = absolutePathExists ? await fs.stat(normalizedPath) : null;
 
-	if (isResource)
-		if (absolutePathExists && stats?.isDirectory()) return res.redirect(`${ url }/index.${ resourceType === "style" ? "css" : "js" }`);
+	if (isResource) if (absolutePathExists && stats?.isDirectory()) return res.redirect(`${ url }/index.${ resourceType === "style" ? "css" : "js" }`);
 
 	if (absolutePathExists && !hasExt) {
-		if (stats?.isDirectory())
-			return !url.endsWith("/")
-				? res.redirect(301, `${ url }/`)
-				: res.sendFile(path.join(normalizedPath, "index.html"));
+		if (stats?.isDirectory()) return !url.endsWith("/")
+			? res.redirect(301, `${ url }/`)
+			: res.sendFile(path.join(normalizedPath, "index.html"));
 	} else if (absolutePathExists) return res.sendFile(normalizedPath);
-	else if (!hasExt && isResource)
-		return res.redirect(301, `${ url }.${ resourceType === "style" ? "css" : "js" }`);
+	else if (!hasExt && isResource) return res.redirect(301, `${ url }.${ resourceType === "style" ? "css" : "js" }`);
 
 	return next();
 });
@@ -104,11 +100,13 @@ APP.get("*", (_, res) => res.status(404).sendFile(path.resolve("./404.html")));
 
 APP.use((err, { url, method }, res, next) => {
 	if (method !== "GET") return res.status(405).sendFile(path.resolve("./405.html"));
+
 	try {
 		decodeURIComponent(url);
 	} catch (e) {
 		if (e instanceof URIError) return res.status(400).sendFile(path.resolve("./bad-request.html"));
 	}
+
 	console.log(err);
 	res.status(500).sendFile(path.resolve("./500.html"));
 });
@@ -119,7 +117,7 @@ function listen(port, address = "localhost") {
 	});
 }
 
-/*	
+/*
  * listen(PORT, "192.168.1.234");
  * listen(PORT, "192.168.1.231");
  */

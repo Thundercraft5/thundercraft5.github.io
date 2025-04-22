@@ -3,8 +3,8 @@
  * You can safely look at other samples without losing modifications.
  * Modifications are not saved on browser refresh/close though -- copy often!
  */
-return {
-	tokenPostfix: ".wikitext",	
+const rules = {
+	tokenPostfix: ".wikitext",
 	ignoreCase: true,
 	/*
 	 * Set defaultToken to invalid to see what you do not tokenize yet
@@ -45,7 +45,7 @@ return {
 			}, "keyword.parserfunction.colon"], "@templateParams"],
 			[/(#)(\w+)(\|)/u, ["invalid", "invalid", "invalid"], "@templateParams"],
 			[/(#)(\w+)(}})/, ["invalid", "invalid", "braces.end"], "@pop"],
-			[/(\w+)(\|)/u, ["template.name", "template.pipe"], "@templateParams" ],
+			[/(\w+)(\|)/u, ["template.name", "template.pipe"], "@templateParams"],
 			[/(\w+)(\}})/, ["template.name", "braces.end"], "@pop"],
 		],
 
@@ -53,7 +53,7 @@ return {
 			// escapes
 			[/&\w+;/u, "string.escape"],
 
-			// various markup                
+			// various markup
 			[/'''/u, "keyword.bold.begin", "@bold"],
 			[/''/u, "keyword.italics.begin", "@italics"],
 			[/^(\s*)(={6})(.+?)(={6})/u, ["whitespace", "keyword.header-level-6.begin", "strong.header-level-6.name", "keyword.header-level-6.end"]],
@@ -88,7 +88,7 @@ return {
 
 		whitespace: [
 			[/[\t\n\r ]+/u, "white"],
-			[/\/\*/u, "comment", "@comment" ],
+			[/\/\*/u, "comment", "@comment"],
 			[/\/\/.*$/u, "comment"],
 		],
 	},

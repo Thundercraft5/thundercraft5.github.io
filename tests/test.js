@@ -1,8 +1,7 @@
-
 import { promises as fs } from "fs";
 
-const { parse } = await import("../builds/out/node-html-parser/index.js");
-const html = await fs.readFile("./tests/test.html", { encoding: "utf8" });
+const { parse } = await import("../builds/out/node-html-parser/index.js"),
+	html = await fs.readFile("./tests/test.html", { encoding: "utf8" });
 
 console.time("html");
 const res = parse(html.replace(/<main[^\0]*?>[^\0]*?<\/main>/u), {
@@ -27,8 +26,7 @@ res.querySelectorAll("script").forEach(s => {
 		"https://static.wikia.nocookie.net/silversurfer/",
 		"https://services.fandom.com/icbm/",
 
-	].some(site => s.rawAttrs.includes(site)))
-		s.remove();
+	].some(site => s.rawAttrs.includes(site))) s.remove();
 });
 res.querySelector(".page-footer")?.remove();
 res.querySelectorAll(".global-footer__section").forEach(e => e?.remove());
