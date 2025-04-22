@@ -1,8 +1,9 @@
 /* eslint-disable new-cap */
 import "colors";
-import { build, formatMessages, serve } from "esbuild";
+
 import { NodeModulesPolyfillPlugin } from "@esbuild-plugins/node-modules-polyfill";
 import del from "del";
+import { build, formatMessages, serve } from "esbuild";
 import { promises as fs } from "fs";
 import path from "path";
 
@@ -14,23 +15,23 @@ console.log(projects.map(project => path.resolve(project, "js/dist/**")));
 await del(projects.map(project => path.resolve(project, "js/dist/**")));
 
 const watch = process.env.NODE_WATCH
-	? {
-		onRebuild(error, res) {
-			if (error) console.warn(`${ "[Watch]".bold.blue } ${ `${ error?.message }`.red }`);
-			else console.log(`${ "[Watch]".bold.blue } ${ "Rebuild successful!".white }`);
-		},
-	}
-	: undefined;
-const workerEntryPoints = [
-	"vs/language/json/json.worker.js",
-	"vs/language/css/css.worker.js",
-	"vs/language/html/html.worker.js",
-	"vs/language/typescript/ts.worker.js",
-	"vs/editor/editor.worker.js",
-];
-const plugins = [
-	NodeModulesPolyfillPlugin(),
-];
+		? {
+			onRebuild(error, res) {
+				if (error) console.warn(`${ "[Watch]".bold.blue } ${ `${ error?.message }`.red }`);
+				else console.log(`${ "[Watch]".bold.blue } ${ "Rebuild successful!".white }`);
+			},
+		}
+		: undefined,
+	workerEntryPoints = [
+		"vs/language/json/json.worker.js",
+		"vs/language/css/css.worker.js",
+		"vs/language/html/html.worker.js",
+		"vs/language/typescript/ts.worker.js",
+		"vs/editor/editor.worker.js",
+	],
+	plugins = [
+		NodeModulesPolyfillPlugin(),
+	];
 
 build({
 	entryPoints: workerEntryPoints.map(entry => `./node_modules/monaco-editor/esm/${ entry }`),
