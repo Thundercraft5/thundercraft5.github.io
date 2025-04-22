@@ -1,6 +1,6 @@
 import AbstractTree from "./AbstractTree.js";
 import AbstractPoint from "./AbstractPoint.js"; // eslint-disable-line
-import Canvas from "./Canvas.js";
+import Canvas from "./canvas.js";
 import Point from "./Point.js";
 
 class Tree extends AbstractTree {
