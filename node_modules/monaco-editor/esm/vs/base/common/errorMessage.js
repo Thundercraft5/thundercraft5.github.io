@@ -2,9 +2,9 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-import * as nls from '../../nls.js';
-import * as types from './types.js';
 import * as arrays from './arrays.js';
+import * as types from './types.js';
+import * as nls from '../../nls.js';
 function exceptionToErrorMessage(exception, verbose) {
     if (verbose && (exception.stack || exception.stacktrace)) {
         return nls.localize('stackTrace.format', "{0}: {1}", detectSystemErrorMessage(exception), stackToString(exception.stack) || stackToString(exception.stacktrace));
@@ -18,6 +18,10 @@ function stackToString(stack) {
     return stack;
 }
 function detectSystemErrorMessage(exception) {
+    // Custom node.js error from us
+    if (exception.code === 'ERR_UNC_HOST_NOT_ALLOWED') {
+        return `${exception.message}. Please update the 'security.allowedUNCHosts' setting if you want to allow this host.`;
+    }
     // See https://nodejs.org/api/errors.html#errors_class_system_error
     if (typeof exception.code === 'string' && typeof exception.errno === 'number' && typeof exception.syscall === 'string') {
         return nls.localize('nodeExceptionMessage', "A system error occurred ({0})", exception.message);

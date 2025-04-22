@@ -5,7 +5,7 @@
 		<!-- General Site Meta (favicon ect.) -->
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>CannonballBox | Projects | Thundercraft5.Github.io</title>
+		<title>CannonballBox Simulation | Thundercraft5.Github.io</title>
 		<link rel="icon" href="/resources/images/favicon.ico" type="image/x-icon" />
 
 		<meta name="description" content="" />
@@ -27,6 +27,8 @@
 		<!-- Load resources -->
 		<script src="/js/index.js" type="module" defer></script>
 		<script src="./js/index.js" type="module" defer></script>
+		<script src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js" crossorigin="anonymous" defer></script>
+
 	</head>
 
 	<body>
@@ -37,19 +39,39 @@
 						<img src="/resources/images/Logo.png" width="40" height="40">
 					</a>
 					<div class="headerTextContainer">
-						<div class="headerText"><a href="/index.html" class="blackLink">Thundercraft5.Github.IO</a></div>
+						<div class="headerText"><a href="/index.html" class="blackLink"><code>thundercraft5.github.io</code></a></div>
 					</div>
 				</div>
 				<div class="navMenu">
 					<div class="topNavMenu">
-						<span>Projects</span>
-						<ul class="topNavMenu-dropdown">
+						<span><a class="blackLink" href="/projects/">Projects</a></span>
+						<ul class="topNavMenu-dropdown" id="projectsDropdown">
 						</ul>
+					</div>
+					<div class="topNavMenu noarrow">
+						<span><a class="blackLink" href="/work.html">Work</a></span>
+					</div>
+					<div class="topNavMenu">
+						<span><a class="blackLink" href="/packages.html">Packages</a></span>
+						<ul class="topNavMenu-dropdown" id="packagesDropdown">
+						</ul>
+					</div>
+					<div class="topNavMenu noarrow">
+						<span><a class="blackLink" href="/about.html">About</a></span>
+					</div>
+					<div class="topNavMenu noarrow">
+						<span><a class="blackLink" href="/philosophy.html">Philosophy</a></span>
+					</div>
+					<div class="topNavMenu noarrow">
+						<span><a class="blackLink" href="/farming.html">Farming</a></span>
 					</div>
 				</div>
 			</nav>
 		</div>
 		<main>
+			<p>
+				Welcome to the CannonballBox project! This is a physics simulation that demonstrates projectile motion with adjustable parameters such as angle, speed, mass, drag, and bounciness. Use the controls below to experiment with different settings and observe the results in real-time.
+			</p>
 			<h2 class="centerHeader">CannonballBox Project</h2>
 			<div class="parabolicBallProjectWrapper">
 				<div class="parabolicBallProject">
@@ -105,9 +127,10 @@
 				</div>
 			</div>
 		</main>
-		<!-- <footer>
-			Test
-		</footer> -->
+        <footer>
+            <p><small>🖋 This page was last updated on <b>04/20/2025</b></small></p>
+			<div id="#copyrightNotice"></div>
+        </footer>
 	</body>
 
 </html>

@@ -13,7 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 import { registerEditorContribution } from '../../../browser/editorExtensions.js';
 import { ICodeEditorService } from '../../../browser/services/codeEditorService.js';
-import { ReferencesController } from '../../../contrib/gotoSymbol/peek/referencesController.js';
+import { ReferencesController } from '../../../contrib/gotoSymbol/browser/peek/referencesController.js';
 import { IConfigurationService } from '../../../../platform/configuration/common/configuration.js';
 import { IContextKeyService } from '../../../../platform/contextkey/common/contextkey.js';
 import { IInstantiationService } from '../../../../platform/instantiation/common/instantiation.js';
@@ -33,4 +33,4 @@ StandaloneReferencesController = __decorate([
     __param(6, IConfigurationService)
 ], StandaloneReferencesController);
 export { StandaloneReferencesController };
-registerEditorContribution(ReferencesController.ID, StandaloneReferencesController);
+registerEditorContribution(ReferencesController.ID, StandaloneReferencesController, 4 /* EditorContributionInstantiation.Lazy */);

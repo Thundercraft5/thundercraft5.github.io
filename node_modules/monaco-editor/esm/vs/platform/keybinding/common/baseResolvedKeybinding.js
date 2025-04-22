@@ -3,36 +3,51 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 import { illegalArgument } from '../../../base/common/errors.js';
-import { UILabelProvider, AriaLabelProvider } from '../../../base/common/keybindingLabels.js';
-import { ResolvedKeybinding, ResolvedKeybindingPart } from '../../../base/common/keyCodes.js';
+import { AriaLabelProvider, ElectronAcceleratorLabelProvider, UILabelProvider, UserSettingsLabelProvider } from '../../../base/common/keybindingLabels.js';
+import { ResolvedKeybinding, ResolvedChord } from '../../../base/common/keybindings.js';
 export class BaseResolvedKeybinding extends ResolvedKeybinding {
-    constructor(os, parts) {
+    constructor(os, chords) {
         super();
-        if (parts.length === 0) {
-            throw illegalArgument(`parts`);
+        if (chords.length === 0) {
+            throw illegalArgument(`chords`);
         }
         this._os = os;
-        this._parts = parts;
+        this._chords = chords;
     }
     getLabel() {
-        return UILabelProvider.toLabel(this._os, this._parts, (keybinding) => this._getLabel(keybinding));
+        return UILabelProvider.toLabel(this._os, this._chords, (keybinding) => this._getLabel(keybinding));
     }
     getAriaLabel() {
-        return AriaLabelProvider.toLabel(this._os, this._parts, (keybinding) => this._getAriaLabel(keybinding));
+        return AriaLabelProvider.toLabel(this._os, this._chords, (keybinding) => this._getAriaLabel(keybinding));
     }
-    isChord() {
-        return (this._parts.length > 1);
+    getElectronAccelerator() {
+        if (this._chords.length > 1) {
+            // [Electron Accelerators] Electron cannot handle chords
+            return null;
+        }
+        if (this._chords[0].isDuplicateModifierCase()) {
+            // [Electron Accelerators] Electron cannot handle modifier only keybindings
+            // e.g. "shift shift"
+            return null;
+        }
+        return ElectronAcceleratorLabelProvider.toLabel(this._os, this._chords, (keybinding) => this._getElectronAccelerator(keybinding));
     }
-    getParts() {
-        return this._parts.map((keybinding) => this._getPart(keybinding));
+    getUserSettingsLabel() {
+        return UserSettingsLabelProvider.toLabel(this._os, this._chords, (keybinding) => this._getUserSettingsLabel(keybinding));
     }
-    _getPart(keybinding) {
-        return new ResolvedKeybindingPart(keybinding.ctrlKey, keybinding.shiftKey, keybinding.altKey, keybinding.metaKey, this._getLabel(keybinding), this._getAriaLabel(keybinding));
+    hasMultipleChords() {
+        return (this._chords.length > 1);
     }
-    getDispatchParts() {
-        return this._parts.map((keybinding) => this._getDispatchPart(keybinding));
+    getChords() {
+        return this._chords.map((keybinding) => this._getChord(keybinding));
     }
-    getSingleModifierDispatchParts() {
-        return this._parts.map((keybinding) => this._getSingleModifierDispatchPart(keybinding));
+    _getChord(keybinding) {
+        return new ResolvedChord(keybinding.ctrlKey, keybinding.shiftKey, keybinding.altKey, keybinding.metaKey, this._getLabel(keybinding), this._getAriaLabel(keybinding));
+    }
+    getDispatchChords() {
+        return this._chords.map((keybinding) => this._getChordDispatch(keybinding));
+    }
+    getSingleModifierDispatchChords() {
+        return this._chords.map((keybinding) => this._getSingleModifierChordDispatch(keybinding));
     }
 }

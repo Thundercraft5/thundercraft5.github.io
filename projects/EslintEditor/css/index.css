@@ -1,7 +1,0 @@
-@import url("../js/dist/index.css");
-
-.eslintEditor {
-	width: -webkit-fill-available; 
-	height: 80vh;
-	border: 1px solid #ccc;
-}

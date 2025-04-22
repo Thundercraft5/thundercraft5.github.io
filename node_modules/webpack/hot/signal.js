@@ -2,9 +2,13 @@
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
 */
-/*globals __resourceQuery */
+/* globals __resourceQuery */
 if (module.hot) {
 	var log = require("./log");
+
+	/**
+	 * @param {boolean=} fromUpdate true when called from update
+	 */
 	var checkForUpdate = function checkForUpdate(fromUpdate) {
 		module.hot
 			.check()
@@ -45,7 +49,7 @@ if (module.hot) {
 			});
 	};
 
-	process.on(__resourceQuery.substr(1) || "SIGUSR2", function () {
+	process.on(__resourceQuery.slice(1) || "SIGUSR2", function () {
 		if (module.hot.status() !== "idle") {
 			log(
 				"warning",

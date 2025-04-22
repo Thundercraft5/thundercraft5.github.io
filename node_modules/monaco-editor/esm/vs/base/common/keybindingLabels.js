@@ -6,23 +6,23 @@ import * as nls from '../../nls.js';
 export class ModifierLabelProvider {
     constructor(mac, windows, linux = windows) {
         this.modifierLabels = [null]; // index 0 will never me accessed.
-        this.modifierLabels[2 /* Macintosh */] = mac;
-        this.modifierLabels[1 /* Windows */] = windows;
-        this.modifierLabels[3 /* Linux */] = linux;
+        this.modifierLabels[2 /* OperatingSystem.Macintosh */] = mac;
+        this.modifierLabels[1 /* OperatingSystem.Windows */] = windows;
+        this.modifierLabels[3 /* OperatingSystem.Linux */] = linux;
     }
-    toLabel(OS, parts, keyLabelProvider) {
-        if (parts.length === 0) {
+    toLabel(OS, chords, keyLabelProvider) {
+        if (chords.length === 0) {
             return null;
         }
         const result = [];
-        for (let i = 0, len = parts.length; i < len; i++) {
-            const part = parts[i];
-            const keyLabel = keyLabelProvider(part);
+        for (let i = 0, len = chords.length; i < len; i++) {
+            const chord = chords[i];
+            const keyLabel = keyLabelProvider(chord);
             if (keyLabel === null) {
                 // this keybinding cannot be expressed...
                 return null;
             }
-            result[i] = _simpleAsString(part, keyLabel, this.modifierLabels[OS]);
+            result[i] = _simpleAsString(chord, keyLabel, this.modifierLabels[OS]);
         }
         return result.join(' ');
     }
@@ -31,7 +31,7 @@ export class ModifierLabelProvider {
  * A label provider that prints modifiers in a suitable format for displaying in the UI.
  */
 export const UILabelProvider = new ModifierLabelProvider({
-    ctrlKey: '⌃',
+    ctrlKey: '\u2303',
     shiftKey: '⇧',
     altKey: '⌥',
     metaKey: '⌘',
@@ -55,7 +55,7 @@ export const UILabelProvider = new ModifierLabelProvider({
 export const AriaLabelProvider = new ModifierLabelProvider({
     ctrlKey: nls.localize({ key: 'ctrlKey.long', comment: ['This is the long form for the Control key on the keyboard'] }, "Control"),
     shiftKey: nls.localize({ key: 'shiftKey.long', comment: ['This is the long form for the Shift key on the keyboard'] }, "Shift"),
-    altKey: nls.localize({ key: 'altKey.long', comment: ['This is the long form for the Alt key on the keyboard'] }, "Alt"),
+    altKey: nls.localize({ key: 'optKey.long', comment: ['This is the long form for the Alt/Option key on the keyboard'] }, "Option"),
     metaKey: nls.localize({ key: 'cmdKey.long', comment: ['This is the long form for the Command key on the keyboard'] }, "Command"),
     separator: '+',
 }, {
@@ -69,6 +69,45 @@ export const AriaLabelProvider = new ModifierLabelProvider({
     shiftKey: nls.localize({ key: 'shiftKey.long', comment: ['This is the long form for the Shift key on the keyboard'] }, "Shift"),
     altKey: nls.localize({ key: 'altKey.long', comment: ['This is the long form for the Alt key on the keyboard'] }, "Alt"),
     metaKey: nls.localize({ key: 'superKey.long', comment: ['This is the long form for the Super key on the keyboard'] }, "Super"),
+    separator: '+',
+});
+/**
+ * A label provider that prints modifiers in a suitable format for Electron Accelerators.
+ * See https://github.com/electron/electron/blob/master/docs/api/accelerator.md
+ */
+export const ElectronAcceleratorLabelProvider = new ModifierLabelProvider({
+    ctrlKey: 'Ctrl',
+    shiftKey: 'Shift',
+    altKey: 'Alt',
+    metaKey: 'Cmd',
+    separator: '+',
+}, {
+    ctrlKey: 'Ctrl',
+    shiftKey: 'Shift',
+    altKey: 'Alt',
+    metaKey: 'Super',
+    separator: '+',
+});
+/**
+ * A label provider that prints modifiers in a suitable format for user settings.
+ */
+export const UserSettingsLabelProvider = new ModifierLabelProvider({
+    ctrlKey: 'ctrl',
+    shiftKey: 'shift',
+    altKey: 'alt',
+    metaKey: 'cmd',
+    separator: '+',
+}, {
+    ctrlKey: 'ctrl',
+    shiftKey: 'shift',
+    altKey: 'alt',
+    metaKey: 'win',
+    separator: '+',
+}, {
+    ctrlKey: 'ctrl',
+    shiftKey: 'shift',
+    altKey: 'alt',
+    metaKey: 'meta',
     separator: '+',
 });
 function _simpleAsString(modifiers, key, labels) {

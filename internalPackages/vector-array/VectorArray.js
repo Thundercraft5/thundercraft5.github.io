@@ -1,4 +1,4 @@
-import Utils from "./Utils";
+import Utils from "./Utils.js";
 
 export default class VectorArray extends Array {
 	static Entry = class Entry {

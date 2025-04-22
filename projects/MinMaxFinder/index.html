@@ -4,7 +4,7 @@
 		<!-- General Site Meta (favicon ect.) -->
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>MinMaxFinder | Thundercraft5.Github.io</title>
+		<title>MinMaxFinder Tool | Thundercraft5.Github.io</title>
 		<link rel="icon" href="/resources/images/favicon.ico" type="image/x-icon" />
 
 		<meta name="description" content="" />
@@ -38,18 +38,39 @@
 						<img src="/resources/images/Logo.png" width="40" height="40">
 					</a>
 					<div class="headerTextContainer">
-						<div class="headerText"><a href="/index.html" class="blackLink">Thundercraft5.Github.IO</a></div>
+						<div class="headerText"><a href="/index.html" class="blackLink"><code>thundercraft5.github.io</code></a></div>
 					</div>
 				</div>
 				<div class="navMenu">
 					<div class="topNavMenu">
-						<span>Projects</span>
-						<ul class="topNavMenu-dropdown"></ul>
+						<span><a class="blackLink" href="/projects/">Projects</a></span>
+						<ul class="topNavMenu-dropdown" id="projectsDropdown">
+						</ul>
+					</div>
+					<div class="topNavMenu noarrow">
+						<span><a class="blackLink" href="/work.html">Work</a></span>
+					</div>
+					<div class="topNavMenu">
+						<span><a class="blackLink" href="/packages.html">Packages</a></span>
+						<ul class="topNavMenu-dropdown" id="packagesDropdown">
+						</ul>
+					</div>
+					<div class="topNavMenu noarrow">
+						<span><a class="blackLink" href="/philosophy.html">Philosophy</a></span>
+					</div>
+					<div class="topNavMenu noarrow">
+						<span><a class="blackLink" href="/about.html">About</a></span>
+					</div>
+					<div class="topNavMenu noarrow">
+						<span><a class="blackLink" href="/farming.html">Farming</a></span>
 					</div>
 				</div>
 			</nav>
 		</div>
 		<main class="minMaxFinder">
+			<p>
+				MinMaxFinder is a tool for analyzing datasets to find their minimum and maximum values. Use the controls below to input your data and visualize the results in a graphical format.
+			</p>
 			<div class="controls">
 				<div class="buttons">
 					<button id="#reset">Re-run</button>
@@ -90,8 +111,14 @@
 					</div>
 				</div>
 			</div>
+			<div><code id="derivative"></code></div>
+			<div><code id="original"></code></div>
 			<div class="minMaxFinder-canvas-wrapper"></div>
 		</main>
+		<footer>
+			<p><small>🖋 This page was last updated on <b>04/20/2025</b></small></p>
+			<div id="#copyrightNotice"></div>
+		</footer>
 	</body>
 
 </html>
