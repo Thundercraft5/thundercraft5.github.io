@@ -1,12 +1,56 @@
-{      
-        "extends": "@thundercraft5/tsconfig/node18.tsconfig.json",
-        "compilerOptions": {
-                "moduleResolution": "bundler",
-                "module": "ESNext",
-                "moduleDetection": "auto"
-        },
-        "include": [
-                "**/*.ts",
-                "**/*.mdx",
-        ],
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleDetection": "auto",
+    "allowJs": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules"
+      },
+      {
+        "name": "@mdx-js/typescript-plugin"
+      },
+      {
+        "name": "next"
+      }
+    ],
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "skipLibCheck": true,
+    "strict": false,
+    "incremental": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
+  },
+  "mdx": {
+    "checkMdx": true,
+    "plugins": [
+      [
+        "remark-frontmatter",
+        [
+          "toml",
+          "yaml"
+        ]
+      ],
+      "remark-gfm"
+    ]
+  },
+  "exclude": [
+    "**/*.mdx"
+  ],
+  "include": [
+    "**/*.ts",
+    ".next/types/**/*.ts",
+    "pages/_app.tsx",
+    "next.config.ts"
+  ]
 }
