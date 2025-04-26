@@ -1,0 +1,1 @@
+import { decodeNumericCharacterReference } from 'micromark-util-decode-numeric-character-reference';
