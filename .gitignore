@@ -3,9 +3,10 @@
 **/*.crt
 **/*.key
 **/dist
-node_modules/**
-!**/*.html
+**/node_modules/**
 thundercraft5.github.io.md
 builds
 localhost.crt
 localhost.key
+.next
+node_modules/**
