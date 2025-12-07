@@ -2,13 +2,26 @@ import createMDX from "@next/mdx";
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 import remarkGfm from 'remark-gfm';
+import { typescript } from "monaco-editor";
+import { NextConfig } from "next";
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+const isProd = process.env.NODE_ENV === 'production';
+
+
+const nextConfig: NextConfig = {
   reactStrictMode: true,
+  basePath: isProd ? '/thundercraft5.github.io' : '',
   poweredByHeader: false,
-  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
+  pageExtensions: ["mdx"],
+  output: "export",
   sassOptions: {},
+  typescript: { ignoreBuildErrors: true },
+  images: {
+    unoptimized: true,
+  },
+  eslint: {
+    "ignoreDuringBuilds": true
+  },
   "allowedDevOrigins": ["172.29.112.1", "localhost"],
   experimental: {
     // mdxRs must be false to use remark/rehype plugins
