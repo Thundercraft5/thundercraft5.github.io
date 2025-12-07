@@ -36,7 +36,6 @@
 		"lws-static": "^3.1.1",
 		"math-js": "^1.0.1",
 		"morgan": "^1.10.1",
-		"npm": "^11.6.4",
 		"sass": "^1.94.2",
 		"style-loader": "^4.0.0",
 		"ttf-loader": "^1.0.2",
@@ -74,7 +73,7 @@
 	"version": "1.0.0",
 	"main": "index.js",
 	"scripts": {
-		"dev": "next dev -p 5000",
+		"dev": "next dev --turbo -p 5000",
 		"update": "ncu -u && pnpm install",
 		"serve": "nodemon --no-deprecation ./scripts/server.js",
 		"serve:debug": "nodemon --no-deprecation --inspect=3000 ./scripts/server.js",
