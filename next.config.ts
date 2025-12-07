@@ -4,13 +4,13 @@ import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 import remarkGfm from 'remark-gfm';
 import { typescript } from "monaco-editor";
 import { NextConfig } from "next";
+import { CssIcon } from './components/icons/CSS';
 
 const isProd = process.env.NODE_ENV === 'production';
 
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  basePath: isProd ? '/thundercraft5.github.io' : '',
   poweredByHeader: false,
   pageExtensions: ["mdx", "tsx"],
   output: "export",
@@ -34,6 +34,7 @@ const withMDX = createMDX({
   extension: /\.mdx?$/,
   options: {
     remarkPlugins: [
+      
       ['remark-gfm'],
       ['remark-frontmatter'],
       ['remark-frontmatter'],
