@@ -1,0 +1,16 @@
+.canvasDots-wrapper {
+    border: 1px solid black;
+    margin: 10px;
+    display: flex;
+}
+
+#canvasDots-canvas,
+.canvasDots-wrapper {
+    display: flex;
+}
+
+.canvasDots-reset {
+    display: inline-flex;
+    width: min-content;
+    margin: 10px;
+}
