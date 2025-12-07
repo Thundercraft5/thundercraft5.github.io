@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   basePath: isProd ? '/thundercraft5.github.io' : '',
   poweredByHeader: false,
-  pageExtensions: ["mdx"],
+  pageExtensions: ["mdx", "tsx", "ts"],
   output: "export",
   sassOptions: {},
   typescript: { ignoreBuildErrors: true },
@@ -36,6 +36,7 @@ const withMDX = createMDX({
     remarkPlugins: [
       ['remark-gfm'],
       ['remark-frontmatter'],
+      ['remark-callouts'],
       ['remark-mdx-frontmatter', { name: 'frontmatter' }] // Array syntax allows passing options
     ],
     rehypePlugins: [],
