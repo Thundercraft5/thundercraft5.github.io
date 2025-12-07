@@ -9,7 +9,7 @@
 	"bugs": {
 		"url": "https://github.com/Thundercraft5/thundercraft5.github.io/issues"
 	},
-	"packageManager": "pnpm@9.13.0",
+	"packageManager": "pnpm@10.24.0",
 	"private": true,
 	"devDependencies": {
 		"@mdx-js/language-service": "^0.7.3",
