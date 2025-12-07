@@ -1,23 +1,24 @@
 import React from 'react'
-import MDXProvider from '../components/MDXProvider'
-import NextConfig from '../next.config.js'
-import '../styles/global.scss'
+import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import { giantText, mainContent } from './_app.module.scss'
-import Link from 'next/link';
+import Link from 'next/link'
+import MDXProvider from '../components/MDXProvider'
 import { TopNav } from '../components/TopNav'
 import Footer from '../components/Footer'
-// import $ from 'jquery'
 
-// globalThis.$ = $; // HACK: make jQuery globally available for legacy project scripts 
+// ✅ 1. Import Global Styles (Next.js handles the injection)
+import '../styles/global.scss'
 
-export default ({ Component, pageProps }: { Component: any, pageProps: React.PropsWithChildren }) => {
+// ✅ 2. Import Module Styles as a default object
+import { mainContent } from './_app.module.scss'
+
+export default function App({ Component, pageProps }: AppProps) {
   // Try to read frontmatter exported from the MDX page module or passed in pageProps
-  const fm = (Component && (Component as any).frontmatter) ?? (pageProps && (pageProps as any).frontmatter) ?? undefined
+  const fm = (Component as any).frontmatter ?? (pageProps as any).frontmatter ?? undefined
 
   // Helpful debug: log when frontmatter is missing vs present
   if (!fm) {
-    console.debug('[_app] frontmatter missing for page', Component?.displayName || Component?.name || 'Unknown')
+    console.debug('[_app] frontmatter missing for page', Component.displayName || Component.name || 'Unknown')
   } else {
     console.debug('[_app] frontmatter for page', fm)
   }
@@ -26,12 +27,18 @@ export default ({ Component, pageProps }: { Component: any, pageProps: React.Pro
     <MDXProvider>
       <Head>
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-        <link rel="stylesheet" href='/styles/global.scss' />
-        <title>{fm ? fm.title ?? fm : 'Thundercraft5'}</title>
+        {/* ✅ Next.js automatically injects the compiled CSS here. Do not add <link rel="stylesheet"> manually. */}
+        <title>{fm ? fm.title ?? 'thundercraft5.github.io' : 'Thundercraft5'}</title>
       </Head>
+
       <TopNav />
-      <main className={mainContent}><Component {...pageProps} /></main>
+
+      {/* ✅ 3. Use the styles object */}
+      <main className={mainContent}>
+        <Component {...pageProps} />
+      </main>
+
       <Footer />
-    </MDXProvider >
+    </MDXProvider>
   )
 }
