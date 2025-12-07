@@ -1,3 +1,9 @@
 .giantText {
     font-size: 2em;
 }
+
+.mainContent {
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+}
