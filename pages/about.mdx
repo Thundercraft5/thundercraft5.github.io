@@ -15,6 +15,7 @@ export let k = 6;
 
 	About
 
+
 	OBJ A test MDX page. **Test!** YO Test. Test
 
 	<div>
@@ -30,3 +31,5 @@ export let k = 6;
 
 
 </AboutPage>
+
+export const getStaticProps = async () => ({ props: { frontmatter: frontmatter || {} } })

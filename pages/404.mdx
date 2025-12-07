@@ -1,21 +1,14 @@
 ---
-s: 0
+title: 404 | Page Not Found
 ---
-import { giantText, centerText } from "./404.module.scss"
+import { giantText, centerText, largeText } from "./404.module.scss";
 
-export const metadata = {
-  title: 'Understanding AI',
-  description: 'A brief overview on neural networks and language models.',
-  alternates: {
-    canonical: '/n/ai',
-    giantText,
-    giantText
-  }
-};
-
-export const k = console.log("k")
-
-<div className={`${giantText} ${ centerText }`}>
-  <h1>404</h1> 
+<div className={`${giantText} ${centerText}`}>
+  <h1>404</h1>
   <p>Page not found</p>
 </div>
+<div className={`${centerText} ${largeText}`}>
+Return to <a href="/">home page</a>.
+</div>
+
+export const getStaticProps = async () => ({ props: { frontmatter } })

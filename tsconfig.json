@@ -29,7 +29,8 @@
     "strict": false,
     "incremental": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "strictNullChecks": true
   },
   "mdx": {
     "checkMdx": true,
@@ -45,12 +46,16 @@
     ]
   },
   "exclude": [
-    "**/*.mdx"
+    "node_modules"
   ],
   "include": [
+    "next-env.d.ts",
+    "**/*.mdx",
     "**/*.ts",
+    "**/*.tsx",
     ".next/types/**/*.ts",
     "pages/_app.tsx",
-    "next.config.ts"
+    "next.config.ts",
+    ".next/dev/types/**/*.ts"
   ]
 }
