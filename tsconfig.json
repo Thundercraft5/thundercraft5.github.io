@@ -57,7 +57,7 @@
     "**/*.tsx",
     // ".next/types/**/*.ts",
     "pages/_app.tsx",
-    "next.config.ts",
+    "next.config.mts",
     ".next/dev/types/**/*.ts"
   ]
 }
