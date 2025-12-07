@@ -10,3 +10,4 @@ localhost.crt
 localhost.key
 .next
 node_modules/**
+node_modules
