@@ -24,8 +24,14 @@ export default function App({ Component, pageProps, router }: AppProps) {
   } else {
     console.debug('[_app] frontmatter for page', fm)
   }
-  if (!fm) throw new PageError("MISSING_FRONTMATTER", router.route)
-  if (!fm['last-updated'] || !fm['created']) throw new PageError("MISSING_FRONTMATTER_DATE", router.route)
+
+    const isSystemPage = router.pathname === '/404' || router.pathname === '/_error' || router.pathname === '/bad-request';
+
+    // Strict Validation Logic
+  if (!isSystemPage) {
+    if (!fm) throw new PageError("MISSING_FRONTMATTER", router.route)
+    if (!fm['last-updated'] || !fm['created']) throw new PageError("MISSING_FRONTMATTER_DATE", router.route)
+  }
 
   const LayoutComponent = router.pathname.startsWith('/blog') ? BlogLayout : DefaultLayout
 

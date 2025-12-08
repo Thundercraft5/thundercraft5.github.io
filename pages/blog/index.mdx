@@ -1,0 +1,31 @@
+---
+title: Blog
+description: "Read my latest blog posts and updates."
+created: 2025-11-07
+last-updated: 2025-11-07
+---
+import fs from "fs/promises";
+import path from "path";
+import matter from "gray-matter";
+import Post from "../../components/Post";
+import YearlyPostGroup from "../../components/YearlyPostGroup";
+
+{props.posts.map(([year, yearlyPosts]) => {
+    return <YearlyPostGroup key={year} year={year}>
+        {yearlyPosts.map(post => <Post key={post.frontmatter.title}  {...post.frontmatter} />)}
+    </YearlyPostGroup>
+})}
+
+export const getStaticProps = async () => {
+    const postsDirectory = path.join(process.cwd(), "pages", "blog", "posts");
+    const posts = [];
+
+    for await (const file of await fs.glob(postsDirectory + "\\\**\\*.mdx", { recursive: true })) posts.push({
+        frontmatter: {...JSON.parse(JSON.stringify(matter(await fs.readFile(file)).data)), url: `/blog/posts/${path.relative(postsDirectory, file).replace(/\\/g, "/").replace(/\.mdx?$/, "")}`},
+        fileName: file,
+    });
+
+
+
+    return ({ props: { frontmatter, posts: Object.entries(Object.groupBy(posts, post => new Date(post.frontmatter.created).getFullYear())) } })
+}
