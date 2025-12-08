@@ -1,6 +1,6 @@
 import React from "react";
 import { Icon, type IconProps } from "./Icon";
 
-export function JavaScriptIcon(props: IconProps) {
+export function JavaScriptIcon(props: Partial<IconProps>) {
     return <Icon {...props} src="/icons/JavaScript-logo.png" alt="JavaScript" />;
 }

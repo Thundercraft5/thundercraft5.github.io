@@ -6,3 +6,15 @@
     flex-direction: column;
     flex-grow: 1;
 }
+
+.lastUpdated {
+    margin: 0;
+    text-align: center;
+    color: white;
+}
+
+.flexRow {
+    display: flex;
+    flex-direction: row;
+    gap: 2.5vw;
+}

@@ -9,6 +9,11 @@ nav.topnav {
     z-index: 100;
 }
 
+.headerImage {
+    height: 40px;
+    width: 40px;
+}
+
 .logo img {
     border-radius: 50%;
 }
@@ -90,10 +95,20 @@ nav.topnav {
     transition: color 0.3s ease, background 0.3s ease;
 }
 
-.topNavMenu>ul>li:hover>a {
+.topNavMenu>ul>li:hover {
     text-decoration: none;
     color: rgb(71, 71, 71);
     background: rgba(0, 0, 0, 0.1);
+}
+
+.topNavMenu>ul>li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.topNavMenu>ul.codeList>li {
+    font-family: consolas, monospace;
 }
 
 
@@ -172,4 +187,42 @@ nav.topnav {
     .navMenu {
         font-size: 0.9em;
     }
+}
+
+.blackLink {
+    text-decoration: none;
+    color: rgb(31, 31, 31);
+    transition: color 0.3s ease;
+}
+
+.blackLink:hover {
+    text-decoration: none;
+    color: rgb(71, 71, 71);
+}
+
+.blueLink {
+    text-decoration: none;
+    color: #2583ff;
+    transition: color 0.3s ease;
+}
+
+.blueLink:hover {
+    text-decoration: none;
+    color: #0b3264;
+}
+
+.lightLink {
+    text-decoration: none;
+    color: rgb(225, 225, 225);
+    transition: color 0.3s ease;
+    cursor: pointer;
+}
+
+.lightLink:hover {
+    text-decoration: none;
+    color: rgb(150, 150, 150);
+}
+
+.bold {
+    font-weight: bold;
 }
