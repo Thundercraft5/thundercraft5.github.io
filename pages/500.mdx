@@ -1,0 +1,16 @@
+---
+title: 500 | Internal Server Error
+description: "The server encountered an internal error or misconfiguration and was unable to complete your request."
+last-updated: 2025-11-07
+created: 2025-11-07
+---
+import { giantText, centerText, largeText } from "./404.module.scss";
+
+<div className={`${largeText} ${centerText}`}>
+  <h1>404</h1>
+</div>
+<div className={`${centerText} ${largeText}`}>
+The server encountered an internal error or misconfiguration and was unable to complete your request. Return to <a href="/">home page</a>.
+</div>
+
+export const getStaticProps = async () => ({ props: { frontmatter } })

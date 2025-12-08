@@ -1,0 +1,45 @@
+---
+title: YoutubeFullscreen
+description: "A small utility to open YouTube videos in a fullscreen overlay/window."
+last-updated: 2025-11-07
+created: 2025-11-07
+package: YoutubeFullscreen
+repo: https://github.com/Thundercraft5/YoutubeFullscreen
+---
+
+import { GithubLink } from '../../components/links/GithubLink.tsx'
+
+## YoutubeFullscreen
+
+A lightweight extension for opening YouTube videos in a fullscreen overlay or separate window. This package is maintained in a small repository and is intended for simple integration into web projects.
+
+- **Repository:** <GithubLink url="https://github.com/Thundercraft5/YoutubeFullscreen" />
+- **Package name:** `YoutubeFullscreen`
+
+## Install
+
+Install from the project's Releases (CRX or ZIP). Below are the platform-specific instructions summarized from the repository README.
+
+### Chromium browsers (Chrome, Edge, Brave, etc.)
+
+- Note for Brave: unsigned extensions cannot be installed directly. Extract the ZIP and load it as an "Unpacked" extension.
+- Steps:
+	1. Open `chrome://extensions` and enable *Developer mode*.
+	2. Download the CRX (or ZIP) from the Releases for this repository.
+	3. If you have a CRX file, drag it from your downloads into the `chrome://extensions` page and confirm *Add*.
+	4. If the browser blocks CRX (or you use Brave), extract the ZIP and use *Load unpacked* to install the extension folder.
+
+### Firefox
+
+1. Open `about:debugging#/runtime/this-firefox` in Firefox.
+2. Click *Load temporary add-on* and select the ZIP file from the Releases.
+3. Grant the requested permissions for the addon to work.
+
+### Notes
+
+- The README documents manual installation from the Releases page (CRX/ZIP). For distribution to a wider audience consider publishing to the Chrome Web Store and Mozilla Add-ons (these require packaging and store-specific steps).
+- The extension works by setting `allowfullscreen` on YouTube iframe embeds and then reloading the iframe so fullscreen is available when the embed/site didn't enable it.
+
+---
+
+export const getStaticProps = async () => ({ props: { frontmatter } })
