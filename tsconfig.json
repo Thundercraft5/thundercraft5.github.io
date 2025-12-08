@@ -34,7 +34,9 @@
     "jsx": "preserve",
     "strictNullChecks": true,
     "paths": {
-      "@/components": ["components"]
+      "@/components": [
+        "./components"
+      ]
     }
   },
   "mdx": {
@@ -50,7 +52,6 @@
       "remark-gfm"
     ]
   },
-
   "exclude": [
     "node_modules"
   ],
