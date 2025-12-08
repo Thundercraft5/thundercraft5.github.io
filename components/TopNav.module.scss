@@ -137,14 +137,14 @@ nav.topnav {
     color: black;
     line-height: 28px;
     font: bold x-large Rubik;
-    height: -webkit-fill-available;
+    height: auto;
 }
 
 .headerTextContainer {
     left: 0;
     text-align: center;
     padding: 5px;
-    height: -webkit-fill-available;
+    height: auto;
     display: inline-flex;
     vertical-align: top;
     padding-top: 8px;
