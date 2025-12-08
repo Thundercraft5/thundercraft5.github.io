@@ -14,7 +14,7 @@ import { PageError } from '../src/util/errors'
 import DefaultLayout from '../layouts/DefaultLayout'
 import BlogLayout from '../layouts/BlogLayout'
 
-export default function App({ Component, pageProps, router }: AppProps) {
+export default function App({ Component, pageProps, router, ...d }: AppProps) {
   // Try to read frontmatter exported from the MDX page module or passed in pageProps
   const fm = (Component as any).frontmatter ?? (pageProps as any).frontmatter ?? undefined
 
@@ -26,6 +26,8 @@ export default function App({ Component, pageProps, router }: AppProps) {
   }
 
   const isSystemPage = router.pathname === '/404' || router.pathname === '/_error' || router.pathname === '/bad-request';
+
+  console.log(fm, d)
 
   // Strict Validation Logic
   if (!isSystemPage) {
