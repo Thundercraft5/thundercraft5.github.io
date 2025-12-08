@@ -1,5 +1,4 @@
-export default {
-    packages: {
+export const packages = {
 		"@thundercraft5/weak-utils": ["TS", "https://github.com/Thundercraft5/weak-utils"],
 		"@thundercraft5/tsconfig": ["TS", "https://github.com/Thundercraft5/tsconfig"],
 		"@thundercraft5/node-errors": ["TS", "https://github.com/Thundercraft5/node-errors"],
@@ -9,13 +8,22 @@ export default {
 		"YoutubeFullscreen": ["Chrome", "https://github.com/Thundercraft5/YoutubeFullscreen"],
 		"obsidian-pgn-viewer": ["Obsidian", "https://github.com/Thundercraft5/obsidian-pgn-viewer"],
 		"Class.lua": ["Lua", "https://github.com/Thundercraft5/Class.lua"],
-    },
-    projects: [
+	} as const,
+	links = {
+		"discord": "",
+		"github": "https://github.com/Thundercraft5",
+		"npm": "https://www.npmjs.com/~thundercraft5",
+		"stackoverflow": "https://stackoverflow.com/users/16423247/thundercraft5",
+		"wikipedia": "https://en.wikipedia.org/wiki/User:Thundercraft5",
+		"fandom": "https://community.fandom.com/wiki/User:Thundercraft5",
+		"lichess": "https://lichess.org/@/nkgplays",
+		"obsidian": "https://forum.obsidian.md/u/thundercraft5",
+	},
+	projects = [
 		"CannonballBox",
 		"CanvasDots",
 		"InfectionTable",
 		"EslintEditor",
 		"MinMaxFinder",
-	]
+	];
 
-}

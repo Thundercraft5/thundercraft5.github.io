@@ -1,35 +1,16 @@
-import AboutPage from "../layouts/AboutPage";
+---
+title: "About Me"
+description: "Learn more about Thundercraft5, my journey as a developer, and my interests in open-source, web development, and innovative technologies."
+last-updated: 2025-11-07
+created: 2025-04-20
+---
 
-{/**
-  * @typedef Props
-  * @property {string} name
-  *   Who to greet.
-  */}
+# 👤 About Thundercraft5
+I am an open-source developer and aspiring farmer with interests in web development, cybersecurity, slow food, and regenerative agriculture. My journey began with a passion for creating innovative solutions and contributing to the open-source community. Over the years I have worked on various projects ranging from personal experiments to large online communities, including the [Hypixel SkyBlock Wiki](https://hypixel-skyblock.fandom.com/wiki/Hypixel_SkyBlock_Wiki).
 
-export let k = 6;
+## 🌱 My Interests
+- **Open-Source Development**: I love contributing to open-source projects and sharing my work with the community. Check out my [work page](/work) to see some of my contributions.
+- **Cybersecurity**: I am motivated by a need to secure infrastructure against both emerging and established threats with new technologies such as [Fully Homomorphic Encryption](/fhe). 
+- **Regenerative Agriculture**: I am passionate about sustainable farming practices that restore and enhance the health of our ecosystems. Learn more about my journey in farming on my [farming page](/farming).
 
-# Hello { props.name }	
-[Test](./about)
-
-<AboutPage>
-
-	About
-
-
-	OBJ A test MDX page. **Test!** YO Test. Test
-
-	<div>
-		test
-	</div>
-
-	!#
-
-	Test
-
-	This is a test { 3 }
-	{k}
-
-
-</AboutPage>
-
-export const getStaticProps = async () => ({ props: { frontmatter: frontmatter || {} } })
+export const getStaticProps = async () => ({ props: { frontmatter: frontmatter } })

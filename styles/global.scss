@@ -13,3 +13,38 @@ body {
     display: flex;
     flex-direction: column;
 }
+
+* {
+    vertical-align: baseline;
+    word-wrap: break-word;
+    white-space-collapse: collapse;
+}
+
+:root {
+    --dark-text-color: rgb(31, 31, 31);
+    --dark-text-color--hover: rgb(71, 71, 71);
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+.qoute::before {
+    content: "";
+    background-color: #2583ff;
+    border-radius: 2px;
+    margin: 5px;
+    margin-right: 10px;
+    padding: 1px;
+}
+
+.qoute::after {
+    display: block;
+    content: "--" attr(author);
+    border-radius: 2px;
+    margin: 5px;
+    margin-right: 10px;
+    padding: 1px;
+}
+
+.callout>.quote>span~strong {
+    display: none !important;
+}

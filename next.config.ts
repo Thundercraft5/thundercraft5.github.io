@@ -37,7 +37,7 @@ const withMDX = createMDX({
       
       ['remark-gfm'],
       ['remark-frontmatter'],
-      ['remark-frontmatter'],
+      ['remark-callouts'],
       ['remark-mdx-frontmatter', { name: 'frontmatter' }] // Array syntax allows passing options
     ],
     rehypePlugins: [],

@@ -1,14 +1,16 @@
 ---
 title: 404 | Page Not Found
+description: "The page you are looking for does not exist."
+last-updated: 2025-11-07
+created: 2025-11-07
 ---
 import { giantText, centerText, largeText } from "./404.module.scss";
 
-<div className={`${giantText} ${centerText}`}>
+<div className={`${largeText} ${centerText}`}>
   <h1>404</h1>
-  <p>Page not found</p>
 </div>
 <div className={`${centerText} ${largeText}`}>
-Return to <a href="/">home page</a>.
+The page you are looking for does not exist. Return to <a href="/">home page</a>.
 </div>
 
 export const getStaticProps = async () => ({ props: { frontmatter } })
