@@ -35,6 +35,9 @@ export default function BlogLayout({ children, frontmatter }: BlogLayoutProps) {
 
     return (
         <>
+            <Head>
+                <meta property="og:image" content={frontmatter?.image?.path || ''} />
+            </Head>
             <TopNav />
 
             {/* A distinctive wrapper for blog content */}

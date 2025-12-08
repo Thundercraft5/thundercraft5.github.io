@@ -22,11 +22,14 @@ export function TopNav() {
                     <div className={topNavMenu}>
                         <span><a className={blackLink} href="/packages/">Packages</a></span>
                         <ul className={`${topNavMenuDropdown} ${codeList}`}>{
-                            Object.keys(packages).map(pkg => <li key={pkg}>{getIcon(packages[pkg][0], { size: 16 })}<a className={blackLink} href={`/packages/${pkg}/`}>{pkg}</a></li>)
+                            Object.keys(packages).map(pkg => <li key={pkg}>{getIcon(packages[pkg][0], { size: 16 })}<a className={blackLink} href={packages[pkg][1]}>{pkg}</a></li>)
                         }</ul>
                     </div>
                     <div className={topNavMenu}>
                         <span><a className={blackLink} href="/work/">Work</a></span>
+                    </div>
+                    <div className={`${topNavMenu} ${noarrow}`}>
+                        <span><a className={blackLink} href="/farming">Farming</a></span>
                     </div>
                     <div className={`${topNavMenu} ${noarrow}`}>
                         <span><a className={blackLink} href="/about">About</a></span>
@@ -34,9 +37,8 @@ export function TopNav() {
                     <div className={`${topNavMenu} ${noarrow}`}>
                         <span><a className={blackLink} href="/philosophy">Philosophy</a></span>
                     </div>
+
                     <div className={`${topNavMenu} ${noarrow}`}>
-                        <span><a className={blackLink} href="/farming">Farming</a></span>
-                    </div>                    <div className={`${topNavMenu} ${noarrow}`}>
                         <span><a className={blackLink} href="/blog">Blog</a></span>
                     </div>
                 </div>
