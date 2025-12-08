@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { smallText, enlarged, image } from "./MDXImage.module.scss";
+import { smallText, enlarged, image, imageContainer } from "./MDXImage.module.scss";
 export type Props = {
     src: string;
     alt: string;
@@ -10,7 +10,7 @@ export type Props = {
 
 export default function MDXImage({ ...props }: Props) {
     return <>
-        <div onClick={e => {
+        <div className={imageContainer} onClick={e => {
             e.currentTarget.classList.toggle(enlarged);
         }}><Image {...props} className={image} onClick={e => {
             e.currentTarget.height = e.currentTarget.height === props.height ? props.height! * 2 : props.height!;

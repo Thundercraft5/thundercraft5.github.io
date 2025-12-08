@@ -14,3 +14,14 @@
 .image {
     transition: transform 0.3s ease-in-out;
 }
+
+.imageContainer .image {
+    object-fit: cover;
+    /* This is the key property */
+    object-position: center;
+}
+
+.imageContainer {
+    overflow: hidden;
+    position: relative;
+}
