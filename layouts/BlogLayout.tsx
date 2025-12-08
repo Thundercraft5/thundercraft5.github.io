@@ -35,10 +35,6 @@ export default function BlogLayout({ children, frontmatter }: BlogLayoutProps) {
 
     return (
         <>
-            <Head>
-                <title>{pageTitle}</title>
-            </Head>
-
             <TopNav />
 
             {/* A distinctive wrapper for blog content */}
