@@ -1,0 +1,16 @@
+.smallText {
+    font-size: 12px;
+}
+
+.enlarged {
+    transform: scale(1.5);
+    position: fixed;
+    z-index: 9999999;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+}
+
+.image {
+    transition: transform 0.3s ease-in-out;
+}
