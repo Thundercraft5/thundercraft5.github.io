@@ -20,7 +20,7 @@ export const getStaticProps = async () => {
     const postsDirectory = path.join(process.cwd(), "pages", "blog", "posts");
     const posts = [];
 
-    for await (const file of await fs.glob(postsDirectory + "\\\**\\*.mdx", { recursive: true })) posts.push({
+    for await (const file of await fs.glob(postsDirectory + "\\\**\\*.mdx", { recursive: true })) if (!file.endsWith("index.mdx")) posts.push({
         frontmatter: {...JSON.parse(JSON.stringify(matter(await fs.readFile(file)).data)), url: `/blog/posts/${path.relative(postsDirectory, file).replace(/\\/g, "/").replace(/\.mdx?$/, "")}`},
         fileName: file,
     });
