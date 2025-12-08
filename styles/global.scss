@@ -45,6 +45,6 @@ body {
     padding: 1px;
 }
 
-.callout>.quote>span~strong {
+.callout>.quote>span~strong:has(:not(p)) {
     display: none !important;
 }
