@@ -1,10 +1,16 @@
 import CopyrightNotice from "./CopyrightNotice";
 import Links from "./Links";
-import { footer } from './Footer.module.scss'
+import { footer, lastUpdated, flexRow } from './Footer.module.scss'
+import { plainlist } from "./Links.module.scss";
+import Tools from "./Tools";
 
-export default function Footer() {
+export default function Footer({ date, created }: { date?: string, created?: string }) {
     return <footer className={footer}>
-        <CopyrightNotice />
-        <Links />
+        <ul className={plainlist}>
+            {date && <li><span className={lastUpdated}>🖋 This page was last updated on <b>{date}</b></span></li>}
+            {created && <li><span className={lastUpdated}>🖋 This page was created on <b>{created}</b></span></li>}
+            <li><CopyrightNotice /></li>
+            <li className={flexRow}><Links /><Tools /></li>
+        </ul>
     </footer>
 }

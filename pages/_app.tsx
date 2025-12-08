@@ -8,37 +8,32 @@ import Footer from '../components/Footer'
 
 // ✅ 1. Import Global Styles (Next.js handles the injection)
 import '../styles/global.scss'
-
 // ✅ 2. Import Module Styles as a default object
 import { mainContent } from './_app.module.scss'
+import { PageError } from '../src/util/errors'
+import DefaultLayout from '../layouts/DefaultLayout'
+import BlogLayout from '../layouts/BlogLayout'
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps, router }: AppProps) {
   // Try to read frontmatter exported from the MDX page module or passed in pageProps
   const fm = (Component as any).frontmatter ?? (pageProps as any).frontmatter ?? undefined
 
   // Helpful debug: log when frontmatter is missing vs present
-  if (!fm) {
+  if (fm) {
     console.debug('[_app] frontmatter missing for page', Component.displayName || Component.name || 'Unknown')
   } else {
     console.debug('[_app] frontmatter for page', fm)
   }
+  if (!fm) throw new PageError("MISSING_FRONTMATTER", router.route)
+  if (!fm['last-updated'] || !fm['created']) throw new PageError("MISSING_FRONTMATTER_DATE", router.route)
+
+  const LayoutComponent = router.pathname.startsWith('/blog') ? BlogLayout : DefaultLayout
 
   return (
     <MDXProvider>
-      <Head>
-        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-        {/* ✅ Next.js automatically injects the compiled CSS here. Do not add <link rel="stylesheet"> manually. */}
-        <title>{fm ? fm.title ?? 'thundercraft5.github.io' : 'Thundercraft5'}</title>
-      </Head>
-
-      <TopNav />
-
-      {/* ✅ 3. Use the styles object */}
-      <main className={mainContent}>
+      <LayoutComponent title={fm.title + ' - thundercraft5.github.io'} frontmatter={fm}>
         <Component {...pageProps} />
-      </main>
-
-      <Footer />
+      </LayoutComponent>
     </MDXProvider>
   )
 }
