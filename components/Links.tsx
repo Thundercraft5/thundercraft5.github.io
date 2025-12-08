@@ -8,7 +8,7 @@ import { StackOverflowLink } from './links/StackOverflowLink'
 import { WikipediaLink } from './links/WikipediaLink'
 
 export default function Links() {
-    return <ul className={plainlist}>
+    return <ul className={`${plainlist}`}>
         <li><GithubLink /></li>
         <li><NpmLink /></li>
         <li><StackOverflowLink /></li>
