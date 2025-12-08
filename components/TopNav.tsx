@@ -17,7 +17,7 @@ export function TopNav() {
                 <div className={navMenu}>
                     <div className={topNavMenu}>
                         <span><a className={blackLink} href="/projects">Projects</a></span>
-                        <ul className={topNavMenuDropdown}>{projects.map(project => <li key={project}><a className={blackLink} href={`/projects/${project}/`}>{project}</a></li>)}</ul>
+                        <ul className={topNavMenuDropdown}>{projects.map(project => <li key={project}><a className={blackLink} href={`/projects/${project}`}>{project}</a></li>)}</ul>
                     </div>
                     <div className={topNavMenu}>
                         <span><a className={blackLink} href="/packages">Packages</a></span>
