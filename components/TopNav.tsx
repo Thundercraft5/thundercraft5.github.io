@@ -16,17 +16,17 @@ export function TopNav() {
                 </div>
                 <div className={navMenu}>
                     <div className={topNavMenu}>
-                        <span><a className={blackLink} href="/projects/">Projects</a></span>
+                        <span><a className={blackLink} href="/projects">Projects</a></span>
                         <ul className={topNavMenuDropdown}>{projects.map(project => <li key={project}><a className={blackLink} href={`/projects/${project}/`}>{project}</a></li>)}</ul>
                     </div>
                     <div className={topNavMenu}>
-                        <span><a className={blackLink} href="/packages/">Packages</a></span>
+                        <span><a className={blackLink} href="/packages">Packages</a></span>
                         <ul className={`${topNavMenuDropdown} ${codeList}`}>{
                             Object.keys(packages).map(pkg => <li key={pkg}>{getIcon(packages[pkg][0], { size: 16 })}<a className={blackLink} href={packages[pkg][1]}>{pkg}</a></li>)
                         }</ul>
                     </div>
                     <div className={topNavMenu}>
-                        <span><a className={blackLink} href="/work/">Work</a></span>
+                        <span><a className={blackLink} href="/work">Work</a></span>
                     </div>
                     <div className={`${topNavMenu} ${noarrow}`}>
                         <span><a className={blackLink} href="/farming">Farming</a></span>
