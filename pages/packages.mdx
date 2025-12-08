@@ -1,0 +1,44 @@
+---
+title: "My Packages"
+description: "Packages I have published publically"
+last-updated: 2025-11-07
+created: 2025-11-08
+---
+
+## Packages
+
+Below is a curated index of packages, libraries and plugins I've published. Each entry includes a short summary and a link to the repository where you can find installation instructions, examples and source code.
+
+**TypeScript Libraries**
+
+- **@thundercraft5/weak-utils** — Iterable weak collections and weak proxies. A zero-dependency TS library that provides `IterableWeakMap`, `IterableWeakSet` and a `WeakProxy` helper using `FinalizationRegistry` for optional finalizers. Useful when you need weakly-referenced collections that are still iterable.
+	- Repo: https://github.com/Thundercraft5/weak-utils
+
+- **@thundercraft5/tsconfig** — A collection of reusable `tsconfig` presets for Node (multiple node targets), browser builds and ESM/CommonJS permutations. Use these bases to keep consistent TypeScript compiler settings across projects.
+	- Repo: https://github.com/Thundercraft5/tsconfig
+
+- **@thundercraft5/node-errors** — Small ESM-only library to create message-coded error classes. Exposes `makeErrors()` to generate custom error classes from message maps and also provides built-in error classes. Zero dependencies and targeted at ESNext.
+	- Repo: https://github.com/Thundercraft5/node-errors
+
+- **@thundercraft5/mixin.js** — Lightweight TypeScript helper for implementing mixins/traits using proxies. Provides a pattern to compose behavior into classes while keeping full TypeScript support (generics and declaration merging).
+	- Repo: https://github.com/Thundercraft5/mixin.js
+
+- **@thundercraft5/eslint-plugin** — A personal ESLint plugin that bundles a set of opinionated configs for various targets (base, esnext, modules, node, react, typescript). Marked WIP/alpha — use with caution for production projects.
+	- Repo: https://github.com/Thundercraft5/eslint-plugin
+
+- **@thundercraft5/node-cron** — Cron job manager for large-scale cron orchestration. Provides a `CronJobManager` API to register and start cron jobs programmatically.
+	- Repo: https://github.com/Thundercraft5/node-cron
+
+**Tools & Extensions**
+- **YoutubeFullscreen** — Tiny browser extension (Chromium & Firefox) that enables fullscreen on YouTube embeds by ensuring the `allowfullscreen` attribute is present on iframes. Useful when sites embed YouTube without fullscreen enabled.
+	- Repo: https://github.com/Thundercraft5/YoutubeFullscreen
+
+- **obsidian-pgn-viewer** — An Obsidian plugin (based on the Obsidian sample plugin) to display and embed PGN files using the Lichess PGN viewer. Includes the usual plugin manifest and build instructions for Obsidian plugin development.
+	- Repo: https://github.com/Thundercraft5/obsidian-pgn-viewer
+
+**Other**
+- **Class.lua** — Lua module (MediaWiki-friendly / Lua module style) providing a performant class system: class creation, inheritance, static members, metamethod support and test cases demonstrating performance. MIT licensed.
+	- Repo: https://github.com/Thundercraft5/Class.lua
+
+
+export const getStaticProps = async () => ({ props: { frontmatter } })
