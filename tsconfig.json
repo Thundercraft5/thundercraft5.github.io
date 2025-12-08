@@ -60,8 +60,7 @@
     "**/*.mdx",
     "**/*.ts",
     "**/*.tsx",
-    // ".next/types/**/*.ts",
-    "pages/_app.tsx",
+    // ".next/typepages/_app.page.tsx   "pages/_app.tsx",
     "next.config.mts",
     ".next/dev/types/**/*.ts"
   ]

@@ -12,7 +12,7 @@ const isProd = process.env.NODE_ENV === 'production';
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
-  pageExtensions: ["mdx",],
+  pageExtensions: ["mdx","page.tsx"],
   output: "export",
   sassOptions: {},
   typescript: { ignoreBuildErrors: true },
