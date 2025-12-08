@@ -34,7 +34,7 @@ const withMDX = createMDX({
   extension: /\.mdx?$/,
   options: {
     remarkPlugins: [
-      
+      ['remark-breaks'],
       ['remark-gfm'],
       ['remark-frontmatter'],
       ['remark-callouts'],
