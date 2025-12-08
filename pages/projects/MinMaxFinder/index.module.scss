@@ -1,0 +1,29 @@
+/* Placeholder styles for MinMaxFinder project. Keep original layout rules in root CSS where applicable. */
+.minmax-root {
+    margin: 10px;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    width: min-content;
+    height: min-content;
+}
+
+.params>div {
+    display: inline-flex;
+}
+
+.params {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+}
+
+.buttons {
+    display: inline-flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    width: fit-content;
+}

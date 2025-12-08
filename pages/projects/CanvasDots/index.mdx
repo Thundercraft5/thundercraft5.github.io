@@ -1,0 +1,19 @@
+---
+title: CanvasDots
+description: "A node visualization project using HTML5 Canvas"
+last-updated: 11-07-25
+created: 04-20-25
+---
+
+import styles from './css/index.module.scss'
+
+## CanvasDots 
+
+A visualization project using HTML5 Canvas. ⚠ Currently broken due to MDX migration.
+
+<div className={styles['canvasDots-wrapper']}>
+  {/* The original project relies on JS under /pages/static/projects/CanvasDots/js/; keep those files in place. */}
+  <canvas id="canvasDots-canvas"></canvas>
+</div>
+
+export const getStaticProps = async () => ({ props: { frontmatter } })
