@@ -1,7 +1,7 @@
 import base from "@thundercraft5/eslint-plugin";
 import * as mdx from "eslint-plugin-mdx"
 
-export default [ {
+export default [base, {
     ...mdx.flat,
     // optional, if you want to lint code blocks at the same
     processor: mdx.createRemarkProcessor({
