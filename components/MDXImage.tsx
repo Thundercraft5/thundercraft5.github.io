@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { smallText, enlarged, image, imageContainer } from "./MDXImage.module.scss";
 import { useEffect } from "react";
-import { useImageModal } from "./ImageModal/ImageModalProvider";
+import { useImageModal } from "./ImageModal/ImageModalProvider.tsx";
 export type Props = {
     src: string;
     alt: string;
