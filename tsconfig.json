@@ -1,4 +1,5 @@
 {
+  "extends": "@thundercraft5/tsconfig/node22.tsconfig.json",
   "compilerOptions": {
     "allowImportingTsExtensions": true,
     "allowArbitraryExtensions": true,
@@ -21,14 +22,14 @@
         "name": "next"
       }
     ],
-    "target": "ES2017",
+    "target": "esnext",
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext"
+      "esnext",
     ],
     "skipLibCheck": true,
-    "strict": false,
+    "strict": true,
     "incremental": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -36,7 +37,10 @@
     "paths": {
       "@/components": [
         "./components"
-      ]
+      ],
+      "@/pages": [
+        "./pages"
+      ],
     }
   },
   "mdx": {
@@ -62,6 +66,7 @@
     "**/*.tsx",
     // ".next/typepages/_app.page.tsx   "pages/_app.tsx",
     "next.config.mts",
-    ".next/dev/types/**/*.ts"
+    ".next/dev/types/**/*.ts",
+    "pages/projects/CanvasDots/ts/Workers/TreeWorker/TreeWorker.worker.ts"
   ]
 }

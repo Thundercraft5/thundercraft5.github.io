@@ -1,27 +1,24 @@
+import type { PointLike } from "../../types.ts";
 import {
 	DuplicateNodeException,
 	NodeDepthOutOfBoundsException,
 	TooManyChildNodesException,
+	TreeException,
 	getRandomInt,
-} from "../utils.js";
+} from "../utils.ts";
+import type { AbstractTree } from "./AbstractTree.ts";
 
-/**
- * @typedef {import("./index.js").AbstractTree} AbstractTree
- */
+import "native-extensions"
 
 export default class AbstractPoint {
 	x = NaN;
 	y = NaN;
-	/** @type {AbstractPoint} */
-	parent = null;
-	/** @type {AbstractTree} */
-	tree = null;
-	/** @type {AbstractPoint[]} */
-	childNodes = [];
-	/** @type {AbstractPoint[]} */
-	siblings = [];
-	depth = -1;
-	pointSize = 0;
+	parent?: AbstractPoint;
+	tree?: AbstractTree;
+	childNodes: AbstractPoint[] = [];
+	siblings: AbstractPoint[] = [];
+	depth: number = -1;
+	pointSize: number = 0;
 	id = getRandomInt(0, 10_000_000_000_000_000_000_000);
 	maxDepth = Infinity;
 	maxChildren = Infinity;
@@ -33,36 +30,42 @@ export default class AbstractPoint {
 	}
 
 	get depthInBounds() {
+		if (!this.tree) throw new TreeException("NO_ROOT");
 		return this.depth + 1 <= this.tree.maxDepth;
 	}
 
 	get childrenAmountInBounds() {
+		if (!this.tree) throw new TreeException("NO_ROOT");
+
 		const nextAmount = this.childNodes.length + 1;
 
 		return nextAmount <= this.maxChildren && nextAmount <= this.tree.maxChildren;
 	}
 
-	/**
-	 * @param {{
-	 *	x?: number,
-	 *	y?: number,
-	 *	color?: string,
-	 *	parent?: AbstractPoint,
-	 *	tree?: Tree,
-	 *  pointSize?: number,
-	 *  maxChildren?: number,
-	 * }}
-	 */
+	#assertHasTree() {
+		if (!this.tree) throw new TreeException("NO_TREE");
+	}
+
 	constructor({
 		x = 0,
 		y = 0,
-		parent = null,
-		tree = null,
+		parent,
+		tree,
 		pointSize = 0,
 		maxChildren = Infinity,
 		isRoot = false,
 		insertionIndex = -1,
-	} = {}) {
+	}: {
+		x?: number,
+		y?: number,
+		color?: string,
+		parent?: AbstractPoint,
+		tree?: AbstractTree,
+		pointSize?: number,
+		maxChildren?: number,
+		isRoot?: boolean,
+		insertionIndex?: number;
+	} = {} as any) {
 		Object.assign(this, {
 			x,
 			y,
@@ -80,29 +83,30 @@ export default class AbstractPoint {
 		if (tree) this.setTree(tree);
 	}
 
-	createChild({ x = 0, y = 0 } = {}) {
-		const p = new AbstractPoint({ x, y, parent: this, tree: this.tree });
+	createChild({ x = 0, y = 0 }: Point = {} as any) {
+	const p = new AbstractPoint({ x, y, parent: this, tree: this.tree });
 
-		this.childNodes.push(p);
+	this.childNodes.push(p);
 
-		return p;
-	}
+	return p;
+}
 
-	removeChild(x = 0, y = 0) {
-		if (typeof x === "object") return this.removeChild(x.x, x.y);
+	removeChild(x: number, y: number): AbstractPoint | undefined;
+	removeChild(point: PointLike | number, y?: number) {
+		if (typeof point === "object") return this.removeChild(point.x, point.y);
 
-		return this.childNodes.find(p => p.x === x && p.y === y)?.remove();
+		return this.childNodes.find(p => p.x === point.x && p.y === point.y)?.remove();
 	}
 
 	remove() {
 		this.childNodes.forEach(p => p.remove());
-		this.siblings.forEach(p => p.siblings.remove(this));
-		this.parent.childNodes.remove(this);
-		this.tree.nodes.remove(this);
+		this.siblings.forEach(p => p.siblings.filter(a => a !== this));
+		this.parent.childNodes.filter(a => a !== this);
+		this.tree.nodes.filter(a => a !== this);
 
-		this.parent = null;
+		this.parent = undefined;
 		this.depth = -1;
-		this.tree = null;
+		this.tree = undefined;
 		this.insertionIndex = -1;
 		this.siblings = [];
 		this.isRoot = false;
@@ -110,21 +114,14 @@ export default class AbstractPoint {
 		return this;
 	}
 
-	/**
-	 * @param {AbstractPoint} parent
-	 */
-	appendTo(parent = null) {
+	appendTo(parent: AbstractPoint) {
 		parent.append(this);
 
 		return this;
 	}
 
-	/**
-	 * @param {AbstractPoint} point
-	 * @throws {DepthOutOfRangeException}
-	 * @throws {TooManyChildNodesException}
-	 */
-	append(point) {
+
+	append(point: AbstractPoint) {
 		if (!this.depthInBounds) throw new NodeDepthOutOfBoundsException(this);
 		else if (!this.childrenAmountInBounds) throw new TooManyChildNodesException(point, this);
 
@@ -143,10 +140,8 @@ export default class AbstractPoint {
 		return this;
 	}
 
-	/**
-	 * @param {AbstractTree} tree
-	 */
-	setTree(tree) {
+
+	setTree(tree: AbstractTree) {
 		this.tree = tree;
 		this.pointSize ||= this.tree.pointSize;
 		this.addToTree();
@@ -155,6 +150,8 @@ export default class AbstractPoint {
 	}
 
 	addToTree() {
+		this.#assertHasTree();
+		if (!this.tree.nodes) console.log(this.tree)
 		this.tree.nodes.push(this);
 
 		return this;
@@ -175,9 +172,9 @@ export default class AbstractPoint {
 		return new AbstractPoint({ ...this, tree: null, insertionIndex: -1, parent: null });
 	}
 
-	static deserialize(point) {
+	static deserialize(point: unknown) {
 		Object.setPrototypeOf(point, this.prototype);
 
-		return point;
+		return point as AbstractPoint;
 	}
 }

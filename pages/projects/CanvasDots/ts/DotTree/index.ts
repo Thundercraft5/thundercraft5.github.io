@@ -1,17 +1,14 @@
-import AbstractPoint from "./AbstractPoint.js";
-import AbstractTree from "./AbstractTree.js";
-import Canvas from "./canvas.js";
-import Point from "./Point.js";
-
+import AbstractPoint from "./AbstractPoint.ts";
+import AbstractTree from "./AbstractTree.ts";
+import Canvas from "./Canvas.ts";
+import Point from "./Point.ts";
+	
 class Tree extends AbstractTree {
 	static Canvas = Canvas;
 	static Tree = Tree;
 	static Point = Point;
 
-	/** @type {Canvas} */
-	canvas = null;
-	/** @type {Point[]} */
-	nodes = [];
+	nodes: Point[] = [];
 	static {}
 	constructor({
 		canvas = null,
@@ -77,7 +74,7 @@ class Tree extends AbstractTree {
 		return super.setCenter(x, y);
 	}
 
-	static fromAbstract(/** @type {AbstractTree} */ abstractTree, {
+	static fromAbstract(abstractTree: Tree, {
 		height = 1000,
 		width = 1000,
 		attrs = {},

@@ -18,7 +18,7 @@ const ModalContext = createContext<ModalContextType>({
     hideModal() { throw new ComponentError("CALLBACK_NOT_IMPLEMENTED", "hide") },
 });
 
-export function ImageModalProvider({ children }: { children: React.ReactNode }) {
+export function ImageModalProvider({ children }: { children?: React.ReactNode }) {
     const [modalProps, setModalProps] = useState<ModalState | null>(null);
 
     // The function you call from your components

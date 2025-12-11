@@ -29,6 +29,9 @@ importers:
       '@next/mdx':
         specifier: ^15.5.7
         version: 15.5.7(@mdx-js/loader@3.1.1(acorn@8.15.0)(webpack@5.103.0(esbuild@0.17.19)))(@mdx-js/react@3.1.1(@types/react@19.2.7)(react@19.2.1))
+      '@thundercraft5/node-deferred':
+        specifier: ^1.0.6
+        version: 1.0.6
       '@thundercraft5/node-errors':
         specifier: ^1.5.0
         version: 1.5.0
@@ -119,7 +122,7 @@ importers:
         version: 2.1.6(babel-plugin-macros@3.1.0)(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
       '@thundercraft5/tsconfig':
         specifier: latest
-        version: 2.0.0
+        version: 2.1.0
       '@types/react':
         specifier: 19.2.7
         version: 19.2.7
@@ -1422,11 +1425,14 @@ packages:
     peerDependencies:
       eslint: latest
 
+  '@thundercraft5/node-deferred@1.0.6':
+    resolution: {integrity: sha512-N+zvSO6aMYohu81PmhgiwVnzKVRGGlY4BgVA6w6UdH+WGMXlRSWuSNDBmv3xmTagMZhMOVoxXaPtVjVw5JpC9w==}
+
   '@thundercraft5/node-errors@1.5.0':
     resolution: {integrity: sha512-dSOvqL+tLfGwFgSYZXhF7JQcjMzOOQDu7D/gbe30nrRPWWYUbaXj+tM3VzwR1a3wqQH1EVSwvZEcR7Zlo2ROdw==}
 
-  '@thundercraft5/tsconfig@2.0.0':
-    resolution: {integrity: sha512-rI1rtk+4/Rl3nLdqjyRGz3smZbnnE46MO9/bJvHLKUtqHWdcnFZaqUUWMDSYPhrsWztFSbhEnWG17omiSuWgwA==}
+  '@thundercraft5/tsconfig@2.1.0':
+    resolution: {integrity: sha512-C+ljXl0sUMW5+So5sjKPYVGnrdIfq+LVAkEdyb3ldKcQqc9VLbr3AXnOI9lEFBMed1BU0MuVqYWmBrO7DoAs+w==}
     engines: {node: 18.x}
 
   '@tufjs/canonical-json@2.0.0':
@@ -8034,9 +8040,13 @@ snapshots:
       - supports-color
       - typescript
 
+  '@thundercraft5/node-deferred@1.0.6':
+    dependencies:
+      '@thundercraft5/node-errors': 1.5.0
+
   '@thundercraft5/node-errors@1.5.0': {}
 
-  '@thundercraft5/tsconfig@2.0.0': {}
+  '@thundercraft5/tsconfig@2.1.0': {}
 
   '@tufjs/canonical-json@2.0.0': {}
 
