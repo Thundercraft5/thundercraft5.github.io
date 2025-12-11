@@ -3,7 +3,7 @@ import remarkFrontmatter from 'remark-frontmatter';
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 import remarkGfm from 'remark-gfm';
 import { typescript } from "monaco-editor";
-import { NextConfig } from "next";
+import type { NextConfig } from "next";
 import { CssIcon } from './components/icons/CSS';
 
 const isProd = process.env.NODE_ENV === 'production';
@@ -24,6 +24,7 @@ const nextConfig: NextConfig = {
   },
   "allowedDevOrigins": ["172.29.112.1", "localhost"],
   experimental: {
+    // nextScriptWorkers: true,
     // mdxRs must be false to use remark/rehype plugins
     mdxRs: false,
     // ⚠️ Do NOT include 'turbo: {}' here. It is deprecated and causes validation errors.

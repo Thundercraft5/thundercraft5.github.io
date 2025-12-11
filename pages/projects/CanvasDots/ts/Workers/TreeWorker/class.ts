@@ -1,6 +1,27 @@
-import MessageHandler from "../MessageHandler.js";
+import { WorkerError } from "../../../../../../src/util/errors.ts";
+import MessageHandler from "../MessageHandler.ts";
 
-export default class TreeWorker extends Worker {
+console.log("TreeWorker loaded");
+
+/**
+ * Get the URL for the worker script based on the current environment
+ */
+function getWorkerUrl(): string {
+	// In browser environment, construct URL dynamically
+	if (typeof window !== 'undefined') {
+		// For development: use relative path to the worker file
+		if (process.env.NODE_ENV === 'development') {
+			const workerUrl = new URL('./TreeWorker.worker.ts', import.meta.url);
+			console.log(workerUrl);
+			return workerUrl.href;
+		}
+	}
+
+	throw new WorkerError("INVALID_ENV");
+}
+
+export default class TreeWorker extends EventTarget {
+	private worker: Worker;
 	static Message = class Message {
 		command = "";
 		data = [];
@@ -19,11 +40,15 @@ export default class TreeWorker extends Worker {
 
 	#eventListeners = new Map();
 	/** @type {import("..").MessageHandler} */
+	
 	messageHandler = null;
 
-	constructor(url = "./js/Workers/TreeWorker/worker.js", { name = "", type = "module" } = {}) {
-		super(url, { name, type });
-		this.messageHandler = new MessageHandler(this, this.#handleSend);
+	constructor(worker: Worker) {
+		super();
+
+		// create underlying Worker instance instead of extending Worker
+		this.worker = worker;
+		this.messageHandler = new MessageHandler(this.worker, this.#handleSend.bind(this));
 	}
 
 	addListener(command, listener) {
@@ -61,6 +86,6 @@ export default class TreeWorker extends Worker {
 	}
 
 	#handleSend(command, ...data) {
-		this.postMessage({ command, data });
+		this.worker.postMessage({ command, data });
 	}
 }

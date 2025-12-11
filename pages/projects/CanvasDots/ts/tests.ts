@@ -1,6 +1,7 @@
-import "native-extensions";
+// import "native-extensions";
 
 import { AbstractPoint, AbstractTree } from "./DotTree/AbstractTree.js";
+import type { Point } from "../types.ts";
 // import { webcrypto as crypto } from "crypto";
 
 const tree = new AbstractTree();
@@ -9,11 +10,11 @@ const tree = new AbstractTree();
 tree.root.append(new AbstractPoint({ x: 2, y: 2 }));
 tree.root.append(new AbstractPoint({ x: 5, y: 5 }));
 tree.root.append(new AbstractPoint({ x: 8, y: 8 }));
-tree.nodes[1].append(new AbstractPoint({ x: 3, y: 3 }));
+tree!.nodes[1].append(new AbstractPoint({ x: 3, y: 3 }));
 console.log(tree.clone().traverse(console.log));
 
 // Test tree node distance sorting with fake data
-function distance(a, b) {
+function distance(a: Point, b: Point) {
 	const dx = a.x - b.x,
 		dy = a.y - b.y;
 

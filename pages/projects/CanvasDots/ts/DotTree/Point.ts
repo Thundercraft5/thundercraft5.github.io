@@ -1,4 +1,4 @@
-import AbstractPoint from "./AbstractPoint.js";
+import AbstractPoint from "./AbstractPoint.ts";
 
 /**
  * @typedef {import("./index.js").Tree} Tree

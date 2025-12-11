@@ -1,0 +1,90 @@
+.canvasDots-wrapper {
+    border: 1px solid black;
+    margin: 10px;
+    display: flex;
+    width: 100%;
+    min-height: 800px;
+}
+
+#canvasDots-canvas,
+.canvasDots-wrapper {
+    display: flex;
+}
+
+.flexInput {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.canvasDots-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px;
+    max-width: 300px;
+
+    label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+
+        input {
+            flex: 1;
+            min-width: 100px;
+
+            &[type="range"] {
+                cursor: pointer;
+
+                &:disabled {
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                }
+            }
+
+            &[type="checkbox"] {
+                cursor: pointer;
+                width: auto;
+
+                &:disabled {
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                }
+            }
+        }
+
+        .value {
+            display: inline-block;
+            min-width: 40px;
+            text-align: right;
+        }
+    }
+}
+
+.canvasDots-reset {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    margin: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+
+    &:hover:not(:disabled) {
+        background-color: #0056b3;
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .text {
+        font-weight: 500;
+    }
+}

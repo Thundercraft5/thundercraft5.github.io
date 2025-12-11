@@ -1,8 +1,16 @@
-import { AbstractPoint, AbstractTree } from "../../DotTree/AbstractTree.js";
-import { NullValueException,distance,drawOutArray,getRandomInt } from "../../utils.js";
-import MessageHandler from "../MessageHandler.js";
+import type { CanvasDotsOptions } from "../../../CanvasDots.tsx";
+import { AbstractPoint, AbstractTree } from "../../DotTree/AbstractTree.ts";
+import { NullValueException, distance, drawOutArray, getRandomInt } from "../../utils.ts";
+import MessageHandler from "../MessageHandler.ts";
 
+import "native-extensions"
+
+Math.clamp = function (value: number, min: number, max: number) {
+	return Math.min(Math.max(value, min), max);
+}
 const handler = new MessageHandler(self);
+
+console.log("TreeWorker initialized");
 
 handler.addListeners({
 	"process"(command, {
@@ -14,8 +22,8 @@ handler.addListeners({
 		MIN_DIST,
 		MAX_CHILDREN,
 		MAX_DEPTH,
-		/** @type {import("../..").CONSTANTS} */ CONSTANTS,
-	}) {
+		CONSTANTS,
+	}: CanvasDotsOptions) {
 		let nodeCount = 0;
 		const tree = new AbstractTree({
 			pointSize: CONSTANTS.POINT_SIZE,
@@ -49,7 +57,7 @@ handler.addListeners({
 
 				if (tree.nodes.length > 2) closest = drawOutArray(tree.nodes, 2).greatest((prev, cur) => distance(prev, candidate) >= distance(cur, candidate));
 				else if (tree.nodes[1] && distance(tree.nodes[1], candidate) > distance(tree.nodes[0], candidate)) [, closest] = tree.nodes;
-				else [closest] = tree.nodes;
+				else[closest] = tree.nodes;
 
 				// discard if parent node has reached it's limit
 				if (!closest.childrenAmountInBounds || !closest.depthInBounds) continue outer;
@@ -59,7 +67,7 @@ handler.addListeners({
 					closest,
 					node: candidate,
 				});
-				else throw new NullValueException(`Closest node not found: index ${ index }, node number ${ nodeCount }, candidate number: ${ j }`);
+				else throw new NullValueException(`Closest node not found: index ${index}, node number ${nodeCount}, candidate number: ${j}`);
 			}
 
 			const { closest: parent, node } = candidates.greatest((prev, cur) => distance(prev.closest, prev.node) <= distance(cur.closest, cur.node));

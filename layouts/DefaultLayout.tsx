@@ -4,6 +4,7 @@ import { mainContent } from "../pages/_app.module.scss";
 import Footer from "../components/Footer";
 import Head from "next/head";
 import { Router } from "next/router";
+import { ImageModalProvider } from "@/components";
 
 export interface Frontmatter {
     title?: string;
@@ -14,13 +15,14 @@ export interface Frontmatter {
 
 export default function DefaultLayout({ children, title, frontmatter, router }: { children: React.ReactNode, title: string, frontmatter: Frontmatter, router: Router }) {
     return (<>
+        <ImageModalProvider>
+            <TopNav />
 
-        <TopNav />
-
-        {/* ✅ 3. Use the styles object */}
-        <main className={mainContent}>
-            {children}
-        </main>
-        <Footer created={frontmatter.created} date={frontmatter["last-updated"]} />
+            {/* ✅ 3. Use the styles object */}
+            <main className={mainContent}>
+                {children}
+            </main>
+            <Footer created={frontmatter.created} date={frontmatter["last-updated"]} />
+        </ImageModalProvider>
     </>)
 }

@@ -1,17 +1,18 @@
 /* eslint-disable prefer-rest-params */
-import { TreeException } from "../utils.js";
-import AbstractPoint from "./AbstractPoint.js";
+import type { PointLike } from "../../types.ts";
+import { TreeException } from "../utils.ts";
+import AbstractPoint from "./AbstractPoint.ts";
+
+
 
 class AbstractTree {
 	static AbstractTree = AbstractTree;
 	static AbstractPoint = AbstractPoint;
 
-	/** @type {AbstractPoint[]}*/
-	nodes = [];
+	nodes: AbstractPoint[] = [];
 	maxDepth = Infinity;
 	maxChildren = Infinity;
-	/** @type {AbstractPoint} */
-	root = null;
+	root: AbstractPoint;
 	pointSize = 0;
 	x = -1;
 	y = -1;
@@ -22,7 +23,7 @@ class AbstractTree {
 		maxChildren = Infinity,
 		x = 0,
 		y = 0,
-		root = new AbstractPoint({ tree: this, x, y, isRoot: true }),
+		root = undefined,
 		pointSize = 10,
 	} = {}) {
 		Object.assign(this, {
@@ -30,22 +31,22 @@ class AbstractTree {
 			pointSize,
 			maxChildren,
 		});
-		this.setRoot(root ?? undefined);
+		this.setRoot(root ?? new AbstractPoint({ tree: this, x, y, isRoot: true }))
+
 	}
 
 	#assertHasRoot() {
-		if (!this.root) throw new TreeException("The tree has no root node.");
+		if (!this.root) throw new TreeException("NO_ROOT");
 
 		return this;
 	}
 
-	/** @returns {AbstractPoint}*/
 	add({
 		x = 0,
 		y = 0,
 		parent = this.root,
 		maxDepth = Infinity,
-	} = {}) {
+	} = {}): AbstractPoint {
 		this.#assertHasRoot();
 		const [p] = arguments;
 
@@ -65,12 +66,18 @@ class AbstractTree {
 	}
 
 
-	remove(x = 0, y = 0) {
+	remove(point: PointLike): AbstractPoint
+	remove(x: number, y: number): AbstractPoint;
+
+	remove(x: number | PointLike = 0, y: number = 0) {
 		if (typeof x === "object") return this.remove(x.x, x.y);
 		const p = this.find(x, y);
+		
+		if (!p || p === null) throw new TreeException("NODE_NOT_FOUND", x, y);
 
-		p.parent = null;
-		p.tree = null;
+		delete p.parent;
+		delete p.tree;
+
 		p.depth = -1;
 		this.nodes.remove(p);
 
@@ -98,7 +105,7 @@ class AbstractTree {
 		});
 	}
 
-	setRoot(/** @type {AbstractPoint} */ { x, y } = {}) {
+	setRoot({ x, y }: AbstractPoint) {
 		if (!arguments[0]) return this;
 		// eslint-disable-next-line prefer-destructuring
 		this.root = arguments[0];
@@ -111,8 +118,8 @@ class AbstractTree {
 		return this;
 	}
 
-	traverse(traverseFunc) {
-		const traverser = node => {
+	traverse(traverseFunc: (node: AbstractPoint, tree: AbstractTree) => void) {
+		const traverser = (node: AbstractPoint) => {
 			if (node.isRoot) {
 				traverseFunc(node, this);
 				this.root.childNodes.forEach(child => {
@@ -132,7 +139,7 @@ class AbstractTree {
 
 	clone(TreeCloner = AbstractTree, PointCloner = AbstractPoint) {
 		const newTree = new TreeCloner({ ...this, root: null }),
-			recurseTree = (/** @type {AbstractPoint}*/ node, /** @type {AbstractPoint}*/ newParentNode = null) => {
+			recurseTree = (node: AbstractPoint, newParentNode: AbstractPoint) => {
 				if (node.isRoot) {
 					newTree.setRoot(new PointCloner({
 						x: this.root.x,
@@ -162,11 +169,12 @@ class AbstractTree {
 		return newTree;
 	}
 
-	static deserialize(tree) {
-		tree.nodes.forEach(p => AbstractPoint.deserialize(p));
+	static deserialize(tree: unknown) {
 		Object.setPrototypeOf(tree, this.prototype);
+		tree.nodes = [];
+		tree.nodes.forEach(p => AbstractPoint.deserialize(p));
 
-		return tree;
+		return tree as AbstractTree;
 	}
 }
 

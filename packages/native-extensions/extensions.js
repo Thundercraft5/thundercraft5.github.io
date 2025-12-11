@@ -1,5 +1,7 @@
 // import { webcrypto as crypto } from "crypto";
 
+throw new Error("This package has been deprecated. Native extensions have been moved to the 'native-extensions' package. Please install it and import 'native-extensions/extensions' instead.");
+
 Object.defineProperties(Object, {
 	assignMethods: { // Test
 		value: {
@@ -204,7 +206,7 @@ Object.assignMethods(Array, {
 	},
 
 	insert(index = 0, ...values) {
-		if (isNaN(index)) throw new TypeError(`Array index must be a number: ${ index }`);
+		if (isNaN(index)) throw new TypeError(`Array index must be a number: ${index}`);
 		this.splice(index, 0, ...values);
 
 		return this;
