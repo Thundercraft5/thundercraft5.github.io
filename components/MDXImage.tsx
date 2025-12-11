@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { smallText, enlarged, image, imageContainer } from "./MDXImage.module.scss";
+import { useEffect } from "react";
+import { useImageModal } from "./ImageModal/ImageModalProvider";
 export type Props = {
     src: string;
     alt: string;
@@ -9,14 +11,12 @@ export type Props = {
 
 
 export default function MDXImage({ ...props }: Props) {
-    return <>
-        <div className={imageContainer} onClick={e => {
-            e.currentTarget.classList.toggle(enlarged);
-        }}><Image {...props} className={image} onClick={e => {
-            e.currentTarget.height = e.currentTarget.height === props.height ? props.height! * 2 : props.height!;
-            e.currentTarget.width = e.currentTarget.width === props.width ? props.width! * 2 : props.width!;
+    const { showModal } = useImageModal();
 
-        }} /></div>
+    return <>
+        <div className={imageContainer} onClick={e => showModal(props.src, props.alt)}>
+            <Image className={image} src={props.src} alt={props.alt} width={props.width} height={props.height} />
+        </div>
         <small className={smallText}>{props.alt}</small>
     </>;
 }
