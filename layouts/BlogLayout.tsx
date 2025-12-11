@@ -10,7 +10,7 @@ import { PageError } from "../src/util/errors";
 // OR reuse the app module if you just want to change logic
 import styles from "../pages/_app.module.scss";
 import { Frontmatter } from "./DefaultLayout";
-import { ImageModalProvider } from "../components/ImageModal/ImageModalProvider";
+import { ImageModalProvider } from "../components";
 
 interface BlogLayoutProps {
     children: React.ReactNode;
