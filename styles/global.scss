@@ -48,3 +48,16 @@ body {
 .callout>.quote>span~strong:has(:not(p)) {
     display: none !important;
 }
+
+button {
+    padding: 5px;
+    border: none;
+    border-radius: 2px;
+    transition: 0.2s filter ease;
+    margin: 1em;
+}
+
+button:hover {
+    cursor: pointer;
+    filter: brightness(65%);
+}

@@ -10,6 +10,7 @@ import { PageError } from "../src/util/errors";
 // OR reuse the app module if you just want to change logic
 import styles from "../pages/_app.module.scss";
 import { Frontmatter } from "./DefaultLayout";
+import { ImageModalProvider } from "../components/ImageModal/ImageModalProvider";
 
 interface BlogLayoutProps {
     children: React.ReactNode;
@@ -34,11 +35,12 @@ export default function BlogLayout({ children, frontmatter }: BlogLayoutProps) {
         : 'Blog';
 
     return (
-        <>
+        <ImageModalProvider>
             <Head>
                 <meta property="og:image" content={frontmatter?.image?.path || ''} />
             </Head>
             <TopNav />
+
 
             {/* A distinctive wrapper for blog content */}
             <div className={styles.blogContainer}>
@@ -64,6 +66,6 @@ export default function BlogLayout({ children, frontmatter }: BlogLayoutProps) {
                 date={frontmatter?.['last-updated']}
                 created={frontmatter?.['created']}
             />
-        </>
+        </ImageModalProvider>
     );
 }
