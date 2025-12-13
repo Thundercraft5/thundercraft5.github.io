@@ -28,7 +28,7 @@ export function TopNav() {
                                         dropdown = members[1].map(project => <li key={project}>{getIcon(group, { size: 16 })}<a className={blackLink} href={`/projects/${project}`}>{project}</a></li>);
                                         break;
                                     case "GitHub":
-                                        dropdown = members[1].map(project => <li key={project}>{getIcon(group, { size: 16 })}<a className={blackLink} href={`${members[0]}/{${project}`}>{project}</a></li>);
+                                        dropdown = members[1].map(project => <li key={project}>{getIcon(group, { size: 16 })}<a className={blackLink} href={`${members[0]}{${project}`}>{project}</a></li>);
 
                                         break;
                                     default: throw new TopNavError("INVALID_GROUP", group);
