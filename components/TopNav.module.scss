@@ -73,6 +73,7 @@ nav.topnav {
 .topNavMenu>*:nth-child(1) {
     margin: 3px 8px 3px 8px;
     font-weight: bold;
+    display: flex;
 }
 
 .topNavMenu>ul {
@@ -115,12 +116,14 @@ nav.topnav {
 
 .topNavMenu:not(.noarrow):hover::after,
 .topNavMenu::after:is(* > ul:hover) {
-    transform: rotate(-45deg) translateY(40%) translateX(-25%);
+    transform: rotate(-45deg) translateY(50%) translateX(-35%);
+    transform-origin: center;
+
 }
 
 .topNavMenu:not(.noarrow)::after {
     content: "";
-    display: inline-block;
+    display: flex;
     width: 6px;
     height: 6px;
     border-radius: 0px;
@@ -130,6 +133,9 @@ nav.topnav {
     border-right: 2px solid #2f2f2f;
     transform: rotate(135deg);
     transition: transform 0.3s ease;
+    transform-origin: center;
+    align-self: anchor-center;
+    margin-bottom: 5px;
 }
 
 .headerText {
