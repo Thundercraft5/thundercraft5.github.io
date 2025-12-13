@@ -1,154 +1,204 @@
+"use client";
 
 import React from 'react';
-import { controls, minmaxRoot, params } from './css/index.module.scss';
-import Canvas from './js/Graph/Canvas';
+import { controls, minmaxRoot, params } from './scss/index.module.scss';
+import Canvas from './ts/Graph/Canvas';
 
 import * as math from "mathjs";
+import type { PointLike } from '../CanvasDots/types';
+import { distance, shiftToPositive } from "./ts/utils.ts";
+import CanvasComponent from './ts/CanvasComponent.tsx';
 
-// import Canvas from "./Graph/Canvas.js";
-// import Graph from "./Graph/index.js";
-// import ScaledGraphPoint from "./Graph/Point/ScaledGraphPoint.js";
-// import { distance, shiftToPositive } from "./utils.js";
 
-// console.log(math);
+// Configuration constants
+const maxDist = 100;
+const divisions = 100;
+const stepSize = 0.25;
+const graphDivisionDist = maxDist / divisions;
+const xThreshold = 0.1;
 
-// // Ensure variables are defined before use
+// Get canvas size from DOM
+const canvasElement = document.querySelector(".minMaxFinder-canvas-wrapper") as HTMLElement | null;
+const canvasSize: number = canvasElement ? canvasElement.clientWidth : 800;
 
-// // Fix function `getPointAt` to use defined variables
-// function getPointAt({ x, y }) {
-//     x = x * scaling + halfScaledDist;
-//     y = -y * scaling + halfScaledDist;
+const canvas = new Canvas({
+    width: canvasSize,
+    height: canvasSize,
+});
 
-//     return { x, y };
-// }
+const scaling: number = canvasSize / maxDist;
+const scaledDist: number = scaling * maxDist;
+const halfScaledDist: number = scaledDist / 2;
 
-// // Fix `plotFunction` to ensure variables are properly scoped
-// function plotFunction(func, targetVariable = "x", color = "#f00", includeDerivative = false) {
-//     const expr = math.parse(func),
-//         compiledExpr = expr.compile(),
-//         plots = [];
+console.log(scaledDist);
 
-//     console.log(func);
+interface PlotPoint {
+    x: number;
+    y: number;
+}
 
-//     // Plot function
-//     for (let input = -maxDist, i = 0; input < maxDist; input += stepSize, i++) {
-//         let x = input,
-//             y = compiledExpr.evaluate({ [targetVariable]: x });
+// Transform world coordinates to canvas coordinates
+function getPointAt({ x, y }: PlotPoint): PlotPoint {
+    x = x * scaling + halfScaledDist;
+    y = -y * scaling + halfScaledDist;
+    return { x, y };
+}
 
-//         plots.push({ x, y });
+interface PlotResult {
+    plots: PlotPoint[];
+    derivative?: PlotPoint[];
+}
 
-//         if (plots[i - 1] && Math.floor(y) <= maxDist) {
-//             const { x: lastX, y: lastY } = getPointAt(plots[i - 1]);
+// Plot a mathematical function on the canvas
+function plotFunction(
+    func: string,
+    targetVariable: string = "x",
+    color: string = "#f00",
+    includeDerivative: boolean = false,
+): PlotPoint[] | PlotResult {
+    const expr = math.parse(func);
+    const compiledExpr = expr.compile();
+    const plots: PlotPoint[] = [];
 
-//             ({ x, y } = getPointAt({ x, y }));
+    console.log(func);
 
-//             canvas.fillLine(lastX, lastY, x, y, color, 3);
-//         }
-//     }
+    // Plot function points
+    for (let input = -maxDist, i = 0; input < maxDist; input += stepSize, i++) {
+        let x: number = input;
+        let y: number = compiledExpr.evaluate({ [targetVariable]: x });
 
-//     if (includeDerivative) {
-//         const derivativePlots = plotFunction(math.derivative(expr.value, targetVariable).toString(), targetVariable, "blue", false);
+        plots.push({ x, y });
 
-//         return {
-//             plots,
-//             derivative: derivativePlots,
-//         };
-//     }
+        if (plots[i - 1] && Math.floor(y) <= maxDist) {
+            const { x: lastX, y: lastY } = getPointAt(plots[i - 1]);
+            const transformed = getPointAt({ x, y });
+            x = transformed.x;
+            y = transformed.y;
+            canvas.fillLine(lastX, lastY, x, y, color, 3);
+        }
+    }
 
-//     return plots;
-// }
+    if (includeDerivative) {
+        console.log(expr.toString())
+        const derivativePlots = plotFunction(
+            (math.derivative(expr as any, targetVariable) as any).toString(),
+            targetVariable,
+            "blue",
+            false,
+        ) as PlotPoint[];
 
-// // Fix `taylorExpansion` to ensure proper variable usage
-// function taylorExpansion(func, derivativeCount = 10, a = 0, symbol = "x") {
-//     const expr = math.parse(func);
-//     let derivative;
-//     const terms = [],
-//         derivatives = [];
+        console.log(derivativePlots);
 
-//     for (let k = 0; k++ < derivativeCount;) {
-//         derivative = math.derivative(derivative || expr?.value || expr, symbol);
-//         derivatives.push(derivative);
-//         console.log(derivative.toString());
+        return {
+            plots,
+            derivative: derivativePlots,
+        };
+    }
 
-//         terms.push(new math.OperatorNode("*", "multiply", [
-//             new math.OperatorNode("/", "divide", [
-//                 new math.ConstantNode(derivative.compile().evaluate({ x: a })),
-//                 new math.ConstantNode(math.factorial(k)),
-//             ]),
-//             new math.OperatorNode("^", "pow", [
-//                 new math.OperatorNode("-", "subtract", [
-//                     new math.SymbolNode("x"),
-//                     new math.ConstantNode(a),
-//                 ]),
-//                 new math.ConstantNode(k),
-//             ]),
-//         ]));
+    return plots;
+}
 
-//         console.log(math.simplify(terms[k - 1]).toString());
-//     }
+// Compute Taylor expansion of a function
+function taylorExpansion(
+    func: string,
+    derivativeCount: number = 10,
+    a: number = 0,
+    symbol: string = "x",
+): any {
+    const expr = math.parse(func);
+    let derivative: any;
+    const terms: any[] = [];
+    const derivatives: any[] = [];
 
-//     console.log(derivatives);
+    for (let k = 0; k++ < derivativeCount;) {
+        derivative = math.derivative(derivative || (expr as any).value || expr, symbol);
+        derivatives.push(derivative);
+        console.log(derivative.toString());
 
-//     return new math.OperatorNode("+", "add", terms);
-// }
+        terms.push(
+            new (math as any).OperatorNode("*", "multiply", [
+                new (math as any).OperatorNode("/", "divide", [
+                    new (math as any).ConstantNode(derivative.compile().evaluate({ x: a })),
+                    new (math as any).ConstantNode(math.factorial(k)),
+                ]),
+                new (math as any).OperatorNode("^", "pow", [
+                    new (math as any).OperatorNode("-", "subtract", [
+                        new (math as any).SymbolNode("x"),
+                        new (math as any).ConstantNode(a),
+                    ]),
+                    new (math as any).ConstantNode(k),
+                ]),
+            ]),
+        );
 
-// canvas.attach(".minMaxFinder-canvas-wrapper");
+        console.log(math.simplify(terms[k - 1]).toString());
+    }
 
-// // Draw X/Y graph divisions
-// for (let x = -maxDist; x < maxDist; x += graphDivisionDist) {
-//     if (x === 0) continue;
-//     const { x: startX, y: startY } = getPointAt({ x, y: -maxDist }),
-//         { x: endX, y: endY } = getPointAt({ x, y: maxDist });
+    console.log(derivatives);
 
-//     canvas.fillLine(startX, startY, endX, endY, "#ccc");
-// }
+    return new (math as any).OperatorNode("+", "add", terms);
+}
 
-// for (let y = -maxDist; y < maxDist; y += graphDivisionDist) {
-//     if (y === 0) continue;
-//     const { x: startX, y: startY } = getPointAt({ x: -maxDist, y }),
-//         { x: endX, y: endY } = getPointAt({ x: maxDist, y });
+// Attach canvas to DOM
+canvas.attach(".minMaxFinder-canvas-wrapper");
 
-//     canvas.fillLine(startX, startY, endX, endY, "#ccc");
-// }
+// Draw X/Y grid divisions
+for (let x = -maxDist; x < maxDist; x += graphDivisionDist) {
+    if (x === 0) continue;
+    const { x: startX, y: startY } = getPointAt({ x, y: -maxDist });
+    const { x: endX, y: endY } = getPointAt({ x, y: maxDist });
+    canvas.fillLine(startX, startY, endX, endY, "#ccc");
+}
 
-// console.log(-maxDist * scaling, scaling);
-// // Draw X/Y Axis
-// canvas.fillLine(-maxDist * scaling, halfScaledDist, maxDist * scaling, halfScaledDist, "#000", 2);
-// canvas.fillLine(halfScaledDist, -maxDist * scaling, halfScaledDist, maxDist * scaling, "#000", 2);
-// console.log(-maxDist * scaling);
+for (let y = -maxDist; y < maxDist; y += graphDivisionDist) {
+    if (y === 0) continue;
+    const { x: startX, y: startY } = getPointAt({ x: -maxDist, y });
+    const { x: endX, y: endY } = getPointAt({ x: maxDist, y });
+    canvas.fillLine(startX, startY, endX, endY, "#ccc");
+}
 
-// {
-//     const { x, y } = getPointAt({ x: 5, y: 5 });
+console.log(-maxDist * scaling, scaling);
+// Draw X/Y axes
+canvas.fillLine(-maxDist * scaling, halfScaledDist, maxDist * scaling, halfScaledDist, "#000", 2);
+canvas.fillLine(halfScaledDist, -maxDist * scaling, halfScaledDist, maxDist * scaling, "#000", 2);
+console.log(-maxDist * scaling);
 
-//     canvas.fillCircle("#000", x, y, 5);
-// }
+// Plot test point
+{
+    const { x, y } = getPointAt({ x: 5, y: 5 });
+    canvas.fillCircle("#000", x, y, 5);
+}
 
-// const { plots } = plotFunction("y = x^2", "x", "#f00", true);
-// let [lastPlot] = plots,
-//     min,
-//     orig = "sin(x)",
-//     taylor = taylorExpansion(orig, 10, 3, "x").toString();
+// Plot sample functions
+const result = plotFunction("x^2", "x", "#f00", true) as PlotResult;
+const { plots } = result;
+let lastPlot: PlotPoint = plots[0];
+let min: PlotPoint | undefined;
+const orig: string = "sin(x)";
+const taylor: string = taylorExpansion(orig, 10, 3, "x").toString();
 
-// $("#original").text(`Original function: ${orig}`);
-// $("#derivative").text(`Taylor Expansion: ${taylor}`);
 
-// plotFunction(taylor, "x", "#ccc");
-// plotFunction("sin(x)", "x", "#ee0");
+plotFunction(taylor, "x", "#ccc");
+plotFunction("sin(x)", "x", "#ee0");
 
-// canvas.attach(".minMaxFinder-canvas-wrapper");
+// Find minimum point
+for (const [i, { x, y }] of plots.slice(1).entries()) {
+    const { x: lastX, y: lastY } = lastPlot;
 
-// for (const [i, { x, y }] of plots.slice(1).entries()) {
-//     const { x: lastX, y: lastY } = lastPlot;
+    if (Math.abs((math as any).abs(y) - (math as any).abs(lastY)) < xThreshold) {
+        min = { x, y };
+        break;
+    }
 
-//     if (Math.abs(math.abs(y) - math.abs(lastY)) < xThreshold) {
-//         min = { x, y };
-//         break;
-//     }
+    lastPlot = plots[i];
+}
 
-//     lastPlot = plots[i];
-// }
+if (min) {
+    console.log(`x: ${min.x}, y: ${min.y}`);
+}
 
-// console.log(`x: ${min.x}, y: ${min.y}`);
+console.log(min)
+
 
 export function RangeInput({ label, min, max, id, className, onChange, defaultValue = 0 }: { label: string; min: number; max: number; id: string; className: string, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void, defaultValue?: number }) {
     const [value, setValue] = React.useState<number>(defaultValue);
@@ -210,16 +260,16 @@ export function Controls({ onChange }: { onChange?: (state: State) => void }) {
             <CheckboxInput defaultChecked className="canvasDots-showLines" label="Show node lines" id="showLines" onChange={createStateUpdater("showLines")} />
             <CheckboxInput defaultChecked className="canvasDots-showColors" label="Show node color" id="showColors" onChange={createStateUpdater("showColors")} />
         </div>
-        <div><code id="derivative"></code></div>
-        <div><code id="original"></code></div>
+        <div><code id="derivative">Taylor Expansion: {taylor}</code></div>
+        <div><code id="original">Original Expression: {orig}</code></div>
     </div>
 }
 
-export default () => {
-
+export default function MinMaxFinder() {
     return <div className={minmaxRoot}>
         <div id="minmax-app">
             <Controls />
+            <CanvasComponent height={canvasSize} width={canvasSize} manager={canvas} />
         </div>
     </div>
 }

@@ -13,11 +13,11 @@ Fully Homomorphic Encryption may be best described by the locked-box analogy:
 > Imagine you have a box that is locked, but has a special opening which allows you to insert your hands, but you can't take anything out of it, you can only shuffle things around inside. 
 > You lock the box, send it to your friend, they move things around in the box, then they send it back to you and you unlock the box, without your friend ever seeing what was inside.
 
-export const getStaticProps = async () => ({ props: { frontmatter } })
 
 This flow can be broken down into four main steps:
-![alt text](https://i.imgur.com/G5KV9Ab.png)
 - **Encryption:** The data owner encrypts their sensitive data. This is like placing the data (A and B) into the box and locking it with a private key.
 - **Processing: **The encrypted data (the locked box) is sent to an untrusted third party, like a cloud server. This server can then perform the desired computations (e.g., A + B) on the data while it is still encrypted. The server never sees the actual contents.
 - **Return:** The server returns the result of the computation, which is itself encrypted (the box is still locked).
 - **Decryption: **The data owner uses their private key to unlock the box, revealing the final, computed result (C).
+
+export const getStaticProps = async () => ({ props: { frontmatter } })

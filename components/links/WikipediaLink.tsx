@@ -1,7 +1,7 @@
 import React from 'react'
 import { WikipediaIcon } from '../icons'
 import { lightLink, bold } from '../TopNav.module.scss'
-import { links } from '../../pages/data'
+import { links } from '../../src/data';
 
 export function WikipediaLink({ className = `${bold} ${lightLink}`, url = links.wikipedia }: { className?: string, url?: string }) {
     return (

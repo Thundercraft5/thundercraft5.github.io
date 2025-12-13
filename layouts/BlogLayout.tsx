@@ -11,6 +11,7 @@ import { PageError } from "../src/util/errors";
 import styles from "../pages/_app.module.scss";
 import { Frontmatter } from "./DefaultLayout";
 import { ImageModalProvider } from "../components";
+import BreadCrumbs from "../components/Breadcrumbs";
 
 interface BlogLayoutProps {
     children: React.ReactNode;
@@ -41,7 +42,6 @@ export default function BlogLayout({ children, frontmatter }: BlogLayoutProps) {
             </Head>
             <TopNav />
 
-
             {/* A distinctive wrapper for blog content */}
             <div className={styles.blogContainer}>
                 {/* Maybe add a Sidebar here? */}
@@ -49,6 +49,8 @@ export default function BlogLayout({ children, frontmatter }: BlogLayoutProps) {
 
                 <main className={styles.mainContent}>
                     {/* Inject Global Blog Header if needed */}
+                    <BreadCrumbs router={router} />
+
                     {router.pathname === '/blog' ? null : (<>
                         <div className={styles.returnLink}></div>
                         <div className="post-header">

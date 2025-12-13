@@ -67,6 +67,7 @@
     // ".next/typepages/_app.page.tsx   "pages/_app.tsx",
     "next.config.mts",
     ".next/dev/types/**/*.ts",
-    "pages/projects/CanvasDots/ts/Workers/TreeWorker/TreeWorker.worker.ts"
+    "pages/projects/CanvasDots/ts/Workers/TreeWorker/TreeWorker.worker.ts",
+    "layouts/index.tdx"
   ]
 }

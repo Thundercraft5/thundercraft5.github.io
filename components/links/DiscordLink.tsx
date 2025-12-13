@@ -1,7 +1,7 @@
 import React from 'react'
 import { DiscordIcon } from '../icons'
 import { bold } from 'colors'
-import { links } from '../../pages/data'
+import { links } from '../../src/data';
 import { lightLink } from '../TopNav.module.scss'
 
 export function DiscordLink({ className = `${bold} ${lightLink}`, url = links.discord }: { className?: string, url?: string }) {

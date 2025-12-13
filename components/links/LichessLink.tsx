@@ -1,7 +1,7 @@
 import React from 'react'
 import { LichessIcon } from '../icons'
 import { lightLink, bold } from '../TopNav.module.scss'
-import { links } from '../../pages/data'
+import { links } from '../../src/data';
 
 export function LichessLink({ className = `${bold} ${lightLink}`, url = links.lichess }: { className?: string, url?: string }) {
     return (

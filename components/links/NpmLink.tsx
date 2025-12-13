@@ -1,7 +1,7 @@
 import React from 'react'
 import { NpmIcon } from '../icons'
 import { lightLink, bold } from '../TopNav.module.scss'
-import { links } from '../../pages/data'
+import { links } from '../../src/data';
 
 export function NpmLink({ className = `${bold} ${lightLink}`, url = links.npm }: { className?: string, url?: string }) {
     return (

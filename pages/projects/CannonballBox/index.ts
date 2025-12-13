@@ -53,7 +53,7 @@ const [
 	$mass,
 	$drag,
 ] = "#starting-height-input, #angle-input, #speed-input, #bounciness-input, #mass-input, #drag-input"
-	.split(/\s*,\s*/)
+	.split(/\s*,\s*)
 	.map($.bindParamsLimit(1));
 
 function clearCanvas() {
