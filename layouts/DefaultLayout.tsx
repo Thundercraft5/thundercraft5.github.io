@@ -22,7 +22,7 @@ export default function DefaultLayout({ children, title, frontmatter }: { childr
 
             {/* ✅ 3. Use the styles object */}
             <main className={mainContent}>
-                {router.pathname === "/" ? "" : <BreadCrumbs />}
+                {(router.pathname === "/" || router.pathname === "/404" || router.pathname === "/500" || router.pathname === "/_error") ? "" : <BreadCrumbs />}
                 {children}
             </main>
             <Footer created={frontmatter.created} date={frontmatter["last-updated"]} />
