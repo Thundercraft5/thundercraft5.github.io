@@ -21,7 +21,7 @@ export const packages = {
 		"fandom": "https://community.fandom.com/wiki/User:Thundercraft5",
 		"lichess": "https://lichess.org/@/nkgplays",
 		"obsidian": "https://forum.obsidian.md/u/thundercraft5",
-	},
+	} as const,
 	projects = {
 		"Local": ["/projects", [
 			"CannonballBox",
@@ -30,8 +30,8 @@ export const packages = {
 			"ESlintEditor",
 			"MinMaxFinder",
 		]],
-		"GitHub": ["https://github.com/Thundercraft5/", ["obsidian-keepassxc", "thundercraft5.github.io", "Celestia", "cli-manager", "obsidian-pgn-viewer"]]
+		"GitHub": ["https://github.com/Thundercraft5", ["obsidian-keepassxc", "thundercraft5.github.io", "Celestia", "cli-manager", "obsidian-pgn-viewer"]]
 
 		
-	};
+	} as const;
 
