@@ -10,9 +10,10 @@ import Footer from '../components/Footer'
 import '../styles/global.scss'
 // ✅ 2. Import Module Styles as a default object
 import { mainContent } from './_app.module.scss'
-import { PageError } from '../src/util/errors'
+import { PageError } from '../src/util/errors';
 import DefaultLayout from '../layouts/DefaultLayout'
 import BlogLayout from '../layouts/BlogLayout'
+import ProjectLayout from '../layouts/ProjectLayout'
 
 export default function App({ Component, pageProps, router, ...d }: AppProps) {
   // Try to read frontmatter exported from the MDX page module or passed in pageProps
@@ -35,31 +36,49 @@ export default function App({ Component, pageProps, router, ...d }: AppProps) {
     if (!fm['last-updated'] || !fm['created']) throw new PageError("MISSING_FRONTMATTER_DATE", router.route)
   }
 
-  const LayoutComponent = router.pathname.startsWith('/blog') ? BlogLayout : DefaultLayout
-  const title = fm?.title ? fm.title + ' - thundercraft5.github.io' : 'thundercraft5.github.io'
+  let LayoutComponent: React.Component<any, any> | React.FC<any, any>
+
+  switch (true) {
+    case router.pathname.startsWith('/blog'):
+      LayoutComponent = BlogLayout
+      break;
+    case router.pathname.startsWith('/projects'):
+      LayoutComponent = ProjectLayout
+      break;
+    default:
+      LayoutComponent = DefaultLayout
+      break;
+  }
+
+  const pageTitle = fm?.title ? fm.title + ' - thundercraft5.github.io' : 'thundercraft5.github.io'
+  console.log(router);
 
   return (
     <MDXProvider>
       <Head>
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         {/* ✅ Next.js automatically injects the compiled CSS here. Do not add <link rel="stylesheet"> manually. */}
-        <title>{title}</title>
+        <title>{pageTitle}</title>
         <meta name="google-site-verification" content="6uW4e_9-NPFLASD-TLV4cjbbNOb9lptKjdJB8ibxsmg" />
-        <meta property="og:title" content={title} />
+        <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={fm?.["description"] || ""} />
         <meta property="og:url" content={"https://thundercraft5.github.io" + router.pathname} />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="/resources/images/Logo.png" />
 
-        <meta name="twitter:title" content={title} />
+        <meta name="twitter:title" content={pageTitle} />
         <meta name="twitter:description" content={fm?.["description"] || ""} />
         <meta name="twitter:image" content="/resources/images/Logo.png" />
         <meta name="twitter:card" content="summary_large_image" />
 
       </Head>
-      <LayoutComponent title={fm.title + ' - thundercraft5.github.io'} frontmatter={fm}>
-        <Component {...pageProps} />
+      <LayoutComponent title={fm.title} frontmatter={fm} router={router}>
+        <Component {...pageProps} isIndex={router.pathname} />
       </LayoutComponent>
     </MDXProvider>
   )
+}
+
+App.getStaticProps = () => {
+  throw new TypeError()
 }

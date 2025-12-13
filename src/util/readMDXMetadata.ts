@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 
-export function readMDXMetadata(filePath: string) {
+export default function readMDXMetadata(filePath: string) {
   console.log("Reading MDX metadata from:", filePath);
   // Read MDX content
   const fileContent = fs.readFileSync(path.resolve(filePath), 'utf-8')

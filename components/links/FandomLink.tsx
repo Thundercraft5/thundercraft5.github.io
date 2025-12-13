@@ -1,7 +1,7 @@
 import React from 'react'
 import { FandomIcon } from '../icons'
 import { lightLink, bold } from '../TopNav.module.scss'
-import { links } from '../../pages/data'
+import { links } from '../../src/data';
 
 export function FandomLink({ className = `${bold} ${lightLink}`, url = links.fandom }: { className?: string, url?: string }) {
     return (

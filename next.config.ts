@@ -1,10 +1,6 @@
 import createMDX from "@next/mdx";
-import remarkFrontmatter from 'remark-frontmatter';
-import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
-import remarkGfm from 'remark-gfm';
-import { typescript } from "monaco-editor";
+
 import type { NextConfig } from "next";
-import { CssIcon } from './components/icons/CSS';
 
 const isProd = process.env.NODE_ENV === 'production';
 

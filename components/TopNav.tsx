@@ -1,5 +1,5 @@
 import { headerTextContainer, topnavWrapper, topnav, headerText, logo, topNavMenu, noarrow, headerImage, codeList, topNavMenuDropdown, blackLink, navMenu } from './TopNav.module.scss';
-import { packages, projects } from '../pages/data';
+import { packages, projects } from '../src/data';
 import { getIcon } from './getIcon';
 
 export function TopNav() {
