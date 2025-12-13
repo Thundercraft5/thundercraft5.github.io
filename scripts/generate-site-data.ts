@@ -91,7 +91,7 @@ async function generateSitemaps(routeMap: Record<string, any>) {
   const urlEntries = urls.map(u => {
     const lastmod = u.lastmod ? `\n  <lastmod>${u.lastmod}</lastmod>` : '';
     const description = u.description ? `\n  <description>${escapeXml(String(u.description).trim())}</description>` : '';
-    const changefreq = `\n  <changefreq>${escapeXml(String((u as any).changefreq ?? 'weekly'))}</changefreq>`;
+    const changefreq = `\n  <changefreq>${escapeXml(String((u as any).changefreq ?? 'daily'))}</changefreq>`;
     return `  <url>\n    <loc>${u.loc}</loc>${lastmod}${changefreq}${description}\n  </url>`;
   }).join('\n');
 
