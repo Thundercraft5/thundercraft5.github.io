@@ -1,7 +1,5 @@
 // import { webcrypto as crypto } from "crypto";
 
-throw new Error("This package has been deprecated. Native extensions have been moved to the 'native-extensions' package. Please install it and import 'native-extensions/extensions' instead.");
-
 Object.defineProperties(Object, {
 	assignMethods: { // Test
 		value: {
