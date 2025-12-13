@@ -86,11 +86,11 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "concurrently \"next dev --turbo -p 5000\" \"pnpm run dev:manifest\"",
-		"dev:manifest": "node ./scripts/generate-static-routes.ts watch ./pages",
+		"dev:manifest": "node ./scripts/generate-site-data.ts watch ./pages",
 		"update": "ncu -u && pnpm install",
 		"build": "next build",
 		"postbuild": "pnpm run build:manifest",
-		"build:manifest": "node ./scripts/generate-static-routes.ts generate",
+		"build:manifest": "node ./scripts/generate-site-data.ts generate",
 		"watch": "lerna watch --parallel",
 		"deploy": "next build"
 	},

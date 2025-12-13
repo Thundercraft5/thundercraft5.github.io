@@ -48,7 +48,64 @@ const app = subcommands({
 })
 
 async function writeManifest() {
-    fs.writeFile(path.relative(process.cwd(), "./public/routes-manifest.json"), JSON.stringify(await generateRouteMap(), null, 2))
+  const routeMap = await generateRouteMap();
+  await fs.writeFile(path.relative(process.cwd(), "./public/routes-manifest.json"), JSON.stringify(routeMap, null, 2))
+  await generateSitemaps(routeMap);
+}
+
+async function generateSitemaps(routeMap: Record<string, any>) {
+  const SITE_URL = process.env.SITE_URL ?? 'https://thundercraft5.github.io';
+
+  const urls: Array<{ loc: string; lastmod?: string; description?: string }> = [];
+
+  for (const [route, { path: displayPath, frontmatter }] of Object.entries(routeMap)) {
+    // Skip dynamic or explicitly excluded routes
+    if (route.includes('[')) continue;
+    if (frontmatter?.sitemap === false) continue;
+    if (frontmatter?.noindex) continue;
+    if (frontmatter?.ignoreSegment) continue;
+
+    // Determine lastmod: frontmatter.date or file mtime
+    let lastmod: string | undefined;
+    if (frontmatter?.date) {
+      try { lastmod = new Date(frontmatter.date).toISOString().split('T')[0]; } catch { /* ignore */ }
+    }
+    if (!lastmod) {
+      try {
+        const stat = await fs.stat(path.join(process.cwd(), displayPath));
+        lastmod = stat.mtime.toISOString().split('T')[0];
+      } catch { /* ignore */ }
+    }
+
+        urls.push({ loc: SITE_URL.replace(/\/$/, '') + route, lastmod, description: frontmatter?.description, changefreq: frontmatter?.changefreq });
+  }
+
+  // Build sitemap-0.xml (one file for now)
+  const urlsetHeader = `<?xml version="1.0" encoding="UTF-8"?>\n` +
+    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">\n`;
+
+  function escapeXml(s: string) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+  }
+
+  const urlEntries = urls.map(u => {
+    const lastmod = u.lastmod ? `\n  <lastmod>${u.lastmod}</lastmod>` : '';
+    const description = u.description ? `\n  <description>${escapeXml(String(u.description).trim())}</description>` : '';
+    const changefreq = `\n  <changefreq>${escapeXml(String((u as any).changefreq ?? 'weekly'))}</changefreq>`;
+    return `  <url>\n    <loc>${u.loc}</loc>${lastmod}${changefreq}${description}\n  </url>`;
+  }).join('\n');
+
+  const urlsetFooter = `\n</urlset>`;
+
+  const sitemapContent = urlsetHeader + urlEntries + urlsetFooter;
+
+  await fs.writeFile(path.relative(process.cwd(), './public/sitemap-0.xml'), sitemapContent, { encoding: 'utf-8' });
+
+  // Write sitemap index
+  const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n<sitemap><loc>${SITE_URL.replace(/\/$/, '')}/sitemap-0.xml</loc></sitemap>\n</sitemapindex>`;
+
+  await fs.writeFile(path.relative(process.cwd(), './public/sitemap.xml'), sitemapIndex, { encoding: 'utf-8' });
+  logMessage('Wrote sitemap.xml and sitemap-0.xml');
 }
 
 async function asyncForeach<T extends unknown[]>(array: T, callback: (value: T[number], index: number, arr: T) => Promise<any>): Promise<T> {
