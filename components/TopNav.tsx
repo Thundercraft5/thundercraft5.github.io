@@ -1,6 +1,8 @@
-import { headerTextContainer, topnavWrapper, topnav, headerText, logo, topNavMenu, noarrow, headerImage, codeList, topNavMenuDropdown, blackLink, navMenu } from './TopNav.module.scss';
+import { headerTextContainer, topnavWrapper, topnav, headerText, logo, topNavMenu, noarrow, headerImage, codeList, topNavMenuSecondLevel, topNavMenuDropdown, blackLink, navMenu } from './TopNav.module.scss';
 import { packages, projects } from '../src/data';
 import { getIcon } from './getIcon';
+import type { JSX } from 'react';
+import { TopNavError } from '../src/util/errors';
 
 export function TopNav() {
     return (
@@ -17,10 +19,31 @@ export function TopNav() {
                 <div className={navMenu}>
                     <div className={topNavMenu}>
                         <span><a className={blackLink} href="/projects">Projects</a></span>
-                        <ul className={topNavMenuDropdown}>{projects.map(project => <li key={project}><a className={blackLink} href={`/projects/${project}`}>{project}</a></li>)}</ul>
+                        <ul className={topNavMenuDropdown}>{
+                            Object.entries(projects).map(([group, members]) => {
+                                let dropdown: JSX.Element;
+
+                                switch (group) {
+                                    case "Local":
+                                        dropdown = members[1].map(project => <li key={project}>{getIcon(group, { size: 16 })}<a className={blackLink} href={`/projects/${project}`}>{project}</a></li>);
+                                        break;
+                                    case "GitHub":
+                                        dropdown = members[1].map(project => <li key={project}>{getIcon(group, { size: 16 })}<a className={blackLink} href={`${members[0]}/{${project}`}>{project}</a></li>);
+
+                                        break;
+                                    default: throw new TopNavError("INVALID_GROUP", group);
+                                }
+
+                                return <li>{getIcon(group, { size: 16 })}<a href={members[0]}>{group}</a>
+                                    <ul className={`${topNavMenuSecondLevel} ${topNavMenuDropdown} ${codeList}`}>{
+                                        dropdown
+                                    }</ul></li>
+                            })
+                        }</ul>
                     </div>
                     <div className={topNavMenu}>
                         <span><a className={blackLink} href="/packages">Packages</a></span>
+
                         <ul className={`${topNavMenuDropdown} ${codeList}`}>{
                             Object.keys(packages).map(pkg => <li key={pkg}>{getIcon(packages[pkg][0], { size: 16 })}<a className={blackLink} href={packages[pkg][1]}>{pkg}</a></li>)
                         }</ul>

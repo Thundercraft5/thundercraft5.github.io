@@ -51,11 +51,14 @@ nav.topnav {
     padding: 0;
 }
 
-.topNavMenu:not(:hover)>ul:not(:hover) {
+.topNavMenu:not(:hover)>ul:not(:hover):not(:has(> li > ul:hover)):not(:has(> * *:hover)),
+.topNavMenu>ul>li:not(:hover):not(:has(> ul:hover))>ul:not(:hover) {
     display: none;
 }
 
-.topNavMenu>ul:hover {
+.topNavMenu>ul:hover,
+.topNavMenu>ul:has(>li>ul:hover),
+.topNavMenu>ul>li>ul:has(*:hover) {
     display: initial !important;
 }
 
@@ -76,7 +79,8 @@ nav.topnav {
     display: flex;
 }
 
-.topNavMenu>ul {
+.topNavMenu>ul,
+.topNavMenu>ul>li>ul {
     background-color: white;
     list-style: none;
     padding: 7px;
@@ -89,7 +93,15 @@ nav.topnav {
     z-index: 99999;
 }
 
-.topNavMenu>ul>li>a {
+.topNavMenu>ul>li>ul {
+    margin-top: 25px;
+    margin-left: -9px;
+    left: 100%;
+    top: -25%;
+}
+
+.topNavMenu>ul>li>a,
+.topNavMenu>ul>li>ul>li>a {
     text-decoration: none;
     padding: 3px 10px;
     display: block;
@@ -97,19 +109,19 @@ nav.topnav {
     transition: color 0.3s ease, background 0.3s ease;
 }
 
-.topNavMenu>ul>li:hover {
+.topNavMenu ul>li:hover {
     text-decoration: none;
     color: rgb(71, 71, 71);
     background: rgba(0, 0, 0, 0.1);
 }
 
-.topNavMenu>ul>li {
+.topNavMenu ul>li {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
-.topNavMenu>ul.codeList>li {
+.topNavMenu ul.codeList>li {
     font-family: consolas, monospace;
 }
 
