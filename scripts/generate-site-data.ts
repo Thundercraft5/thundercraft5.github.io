@@ -80,7 +80,7 @@ async function generateSitemaps(routeMap: Record<string, any>) {
         urls.push({ loc: SITE_URL.replace(/\/$/, '') + route, lastmod, description: frontmatter?.description, changefreq: frontmatter?.changefreq });
   }
 
-  // Build sitemap-0.xml (one file for now)
+  // Build sitemap-1.xml (one file for now)
   const urlsetHeader = `<?xml version="1.0" encoding="UTF-8"?>\n` +
     `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
@@ -99,7 +99,7 @@ async function generateSitemaps(routeMap: Record<string, any>) {
 
   const sitemapContent = urlsetHeader + urlEntries + urlsetFooter;
 
-  await fs.writeFile(path.relative(process.cwd(), './public/sitemap-0.xml'), sitemapContent, { encoding: 'utf-8' });
+  await fs.writeFile(path.relative(process.cwd(), './public/sitemap-1.xml'), sitemapContent, { encoding: 'utf-8' });
 
   // Write sitemap index
   const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n<sitemap><loc>${SITE_URL.replace(/\/$/, '')}/sitemap-0.xml</loc></sitemap>\n</sitemapindex>`;
