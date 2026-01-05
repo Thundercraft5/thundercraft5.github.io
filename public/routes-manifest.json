@@ -1,42 +1,4 @@
 {
-  "/404": {
-    "path": "pages\\404.mdx",
-    "frontmatter": {
-      "title": "404 | Page Not Found",
-      "description": "The page you are looking for does not exist.",
-      "last-updated": "2025-11-07T00:00:00.000Z",
-      "created": "2025-11-07T00:00:00.000Z"
-    },
-    "breadcrumbs": [
-      [
-        "/",
-        "Thundercraft5's Homepage"
-      ],
-      [
-        "/404",
-        "404 | Page Not Found"
-      ]
-    ]
-  },
-  "/500": {
-    "path": "pages\\500.mdx",
-    "frontmatter": {
-      "title": "500 | Internal Server Error",
-      "description": "The server encountered an internal error or misconfiguration and was unable to complete your request.",
-      "last-updated": "2025-11-07T00:00:00.000Z",
-      "created": "2025-11-07T00:00:00.000Z"
-    },
-    "breadcrumbs": [
-      [
-        "/",
-        "Thundercraft5's Homepage"
-      ],
-      [
-        "/500",
-        "500 | Internal Server Error"
-      ]
-    ]
-  },
   "/about": {
     "path": "pages\\about.mdx",
     "frontmatter": {
@@ -53,26 +15,6 @@
       [
         "/about",
         "About Me"
-      ]
-    ]
-  },
-  "/bad-request": {
-    "path": "pages\\bad-request.mdx",
-    "frontmatter": {
-      "title": "Malformed URL",
-      "meta": {
-        "description": "",
-        "viewport": "width=device-width, initial-scale=1"
-      }
-    },
-    "breadcrumbs": [
-      [
-        "/",
-        "Thundercraft5's Homepage"
-      ],
-      [
-        "/bad-request",
-        "Malformed URL"
       ]
     ]
   },

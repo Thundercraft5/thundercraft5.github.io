@@ -82,7 +82,7 @@ async function generateSitemaps(routeMap: Record<string, any>) {
 
   // Build sitemap-0.xml (one file for now)
   const urlsetHeader = `<?xml version="1.0" encoding="UTF-8"?>\n` +
-    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">\n`;
+    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
   function escapeXml(s: string) {
 
@@ -120,7 +120,7 @@ const PAGES_DIR = await fs.access(path.join(process.cwd(), 'src/pages')).then(()
   ? path.join(process.cwd(), 'src/pages') 
   : path.join(process.cwd(), 'pages');
 
-const IGNORE_FILES = ['_app', '_document', '_error', 'api'];
+const IGNORE_FILES = ['_app', '_document', '_error', 'api', '404', '500', 'bad-request'];
 const PAGE_EXTENSIONS = nextJSConfig.pageExtensions?.map(v => `.${v}`) ?? []
 
 async function getFileList(dir: Dir) {
@@ -174,7 +174,7 @@ function resolvePath(fullPath: string) {
 
   // 3. Skip non-page files as defined by configuration (styles, tests, etc) if necessary
   if (!PAGE_EXTENSIONS.includes(parsed.ext)) return;
-  if (fileName.startsWith('_') && IGNORE_FILES.includes(fileName)) return;
+  if (fileName.startsWith('_') || IGNORE_FILES.includes(fileName)) return;
 
   // 4. Construct the Route
   let route = '/' + dirName.split(path.sep).join('/');
