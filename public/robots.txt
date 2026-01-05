@@ -1,2 +1,3 @@
 User-Agent: *
 Allow: /
+Sitemap: https://thundercraft5.github.io/sitemap.xml
