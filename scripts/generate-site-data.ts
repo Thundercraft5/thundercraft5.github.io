@@ -85,14 +85,14 @@ async function generateSitemaps(routeMap: Record<string, any>) {
     `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">\n`;
 
   function escapeXml(s: string) {
+
     return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
   }
 
   const urlEntries = urls.map(u => {
     const lastmod = u.lastmod ? `\n  <lastmod>${u.lastmod}</lastmod>` : '';
-    const description = u.description ? `\n  <description>${escapeXml(String(u.description).trim())}</description>` : '';
     const changefreq = `\n  <changefreq>${escapeXml(String((u as any).changefreq ?? 'daily'))}</changefreq>`;
-    return `  <url>\n    <loc>${u.loc}</loc>${lastmod}${changefreq}${description}\n  </url>`;
+    return `  <url>\n    <loc>${u.loc}</loc>${lastmod}${changefreq}\n  </url>`;
   }).join('\n');
 
   const urlsetFooter = `\n</urlset>`;

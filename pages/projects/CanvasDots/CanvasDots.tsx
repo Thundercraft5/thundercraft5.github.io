@@ -47,11 +47,20 @@ function CheckboxInput({ label, id, className, onChange, disabled = false, check
     </div>
 }
 
+function ColorList({ colors }: { colors: string[] }) {
+    return <div className={styles.colorsList}>
+        {colors.map((color, i) => {
+            return <span key={i} className={styles.colorSample}>{color}</span>
+        })}
+    </div>
+}
+
 export default function CanvasDots() {
     const containerRef = useRef<HTMLDivElement>(null);
     const treeWorkerRef = useRef<TreeWorker | null>(null);
     const [isRunning, setIsRunning] = useState(false);
     const [options, setOptions] = useState<CanvasDotsOptions>(DEFAULT_OPTIONS);
+    const [colors, setColorsList] = useState<string[]>([]);
     const { promise: workerReady, resolve, reject } = Promise.withResolvers<void>();
 
     // Lazy-load TreeWorker on client-side only
@@ -76,10 +85,10 @@ export default function CanvasDots() {
             if (!containerRef.current || !treeWorker) return;
 
             setIsRunning(true);
+            setColorsList([])
 
             try {
                 containerRef.current.innerHTML = '';
-
                 const canvasHeight = 800;
                 const canvasWidth = containerRef.current.clientWidth;
 
@@ -129,6 +138,7 @@ export default function CanvasDots() {
                             .toString(16)
                             .split('.')[0]
                             .padEnd(6, '0')}`;
+                        colors.push(color)
 
                         node.draw(color);
                     } else {
@@ -148,6 +158,8 @@ export default function CanvasDots() {
                 });
             } finally {
                 setIsRunning(false);
+                console.log(colors);
+
             }
         },
         [treeWorkerRef]
@@ -243,6 +255,7 @@ export default function CanvasDots() {
                     disabled={isRunning}
                     checked={options.SHOW_COLORS}
                 />
+                <ColorList colors={colors} />
             </div>
 
             <button

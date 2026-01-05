@@ -12,7 +12,8 @@ export function extend(target, targetPrototype, methods) {
 	Object.defineProperties(targetPrototype ? target.prototype : target, methods);
 
 	return target;
-}export function extendProperties(target, properties) {
+}
+export function extendProperties(target, properties) {
 	for (const [k, v] of Object.entries(properties)) {
 		let constant = false,
 			enumerable, value,
@@ -27,7 +28,6 @@ export function extend(target, targetPrototype, methods) {
 		});
 
 		Object.assign(options, { enumerable, value });
-		console.log(value);
 
 		Object.defineProperty(target, k, options);
 	}
