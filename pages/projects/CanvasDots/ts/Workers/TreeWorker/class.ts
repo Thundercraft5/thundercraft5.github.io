@@ -12,7 +12,6 @@ function getWorkerUrl(): string {
 		// For development: use relative path to the worker file
 		if (process.env.NODE_ENV === 'development') {
 			const workerUrl = new URL('./TreeWorker.worker.ts', import.meta.url);
-			console.log(workerUrl);
 			return workerUrl.href;
 		}
 	}

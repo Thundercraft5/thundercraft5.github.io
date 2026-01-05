@@ -74,8 +74,7 @@ export default class MessageHandler<T extends EventTarget = EventTarget> {
 		const parent = this;
 		const cb: EventHandler<T> = function (this: T, command: string, ...args: SerializableObject[]): any {
 			listener.call(this, command, ...args);
-			console.log(this);
-			parent.removeListener(command, cb);
+			parent.removeListener(command, cb);	
 		};
 
 		this.addListener(command, cb);
