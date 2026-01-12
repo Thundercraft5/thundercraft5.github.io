@@ -12,6 +12,7 @@ import styles from "../pages/_app.module.scss";
 import { Frontmatter } from "./DefaultLayout";
 import { ImageModalProvider } from "../components";
 import BreadCrumbs from "../components/Breadcrumbs";
+import MDXImage from "../components/MDXImage";
 
 interface BlogLayoutProps {
     children: React.ReactNode;
@@ -54,6 +55,9 @@ export default function BlogLayout({ children, frontmatter }: BlogLayoutProps) {
                     {router.pathname === '/blog' ? null : (<>
                         <div className={styles.returnLink}></div>
                         <div className="post-header">
+                            <div className={styles.postImage}>
+                                <span><MDXImage src={frontmatter?.image?.path || ''} alt={frontmatter?.image?.caption || 'Blog Post Image'} width={frontmatter?.image?.width || 800} height={frontmatter?.image?.height || 400} /></span>
+                            </div>
                             <h1>{frontmatter?.title}</h1>
                             <small>{frontmatter?.created ? 'Created - ' + new Date(frontmatter.created).toLocaleDateString() : ''}{
                                 frontmatter?.['last-updated'] ? ' | Edited - ' + new Date(frontmatter['last-updated']).toLocaleDateString() : ''

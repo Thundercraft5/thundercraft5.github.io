@@ -14,6 +14,8 @@ import { PageError } from '../src/util/errors';
 import DefaultLayout from '../layouts/DefaultLayout'
 import BlogLayout from '../layouts/BlogLayout'
 import ProjectLayout from '../layouts/ProjectLayout'
+import * as mdx from 'eslint-plugin-mdx';
+import { useMDXComponents } from './mdx-components'
 
 export default function App({ Component, pageProps, router, ...d }: AppProps) {
   // Try to read frontmatter exported from the MDX page module or passed in pageProps
@@ -75,7 +77,7 @@ export default function App({ Component, pageProps, router, ...d }: AppProps) {
       <LayoutComponent title={fm.title} frontmatter={fm} router={router}>
         <Component {...pageProps} isIndex={router.pathname} />
       </LayoutComponent>
-    </MDXProvider>
+    </MDXProvider >
   )
 }
 

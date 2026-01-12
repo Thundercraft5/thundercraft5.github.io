@@ -120,6 +120,29 @@
       ]
     ]
   },
+  "/blog/posts/2026/01/11": {
+    "path": "pages\\blog\\posts\\2026\\01\\11.mdx",
+    "frontmatter": {
+      "title": "The Inflation of Meta-Knowledge and lack of Wisdom: Notes which note notes of notes which note nothing",
+      "description": "The Dark Side of note-taking apps and the endless pursuit of empty meta-knowledge and meta-notes, without wisdom.",
+      "last-updated": "2026-01-11T06:00:00.000Z",
+      "created": "2026-01-11T06:00:00.000Z"
+    },
+    "breadcrumbs": [
+      [
+        "/",
+        "Thundercraft5's Homepage"
+      ],
+      [
+        "/blog",
+        "Blog"
+      ],
+      [
+        "/blog/posts/2026/01/11",
+        "The Inflation of Meta-Knowledge and lack of Wisdom: Notes which note notes of notes which note nothing"
+      ]
+    ]
+  },
   "/example": {
     "path": "pages\\example.mdx",
     "frontmatter": {

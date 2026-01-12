@@ -10,7 +10,7 @@ import matter from "gray-matter";
 import Post from "../../components/Post";
 import YearlyPostGroup from "../../components/YearlyPostGroup";
 
-{props.posts.map(([year, yearlyPosts]) => {
+{props.posts.reverse().map(([year, yearlyPosts]) => {
     return <YearlyPostGroup key={year} year={year}>
         {yearlyPosts.map(post => <Post key={post.frontmatter.title}  {...post.frontmatter} />)}
     </YearlyPostGroup>
@@ -21,7 +21,7 @@ export const getStaticProps = async () => {
     const posts = [];
 
     for await (const file of await fs.glob(postsDirectory + "\\\**\\*.mdx", { recursive: true })) if (!file.endsWith("index.mdx")) posts.push({
-        frontmatter: {...JSON.parse(JSON.stringify(matter(await fs.readFile(file)).data)), url: `/blog/posts/${path.relative(postsDirectory, file).replace(/\\/g, "/").replace(/\.mdx?$/, "")}`},
+        frontmatter: { ...JSON.parse(JSON.stringify(matter(await fs.readFile(file)).data)), url: `/blog/posts/${path.relative(postsDirectory, file).replace(/\\/g, "/").replace(/\.mdx?$/, "")}` },
         fileName: file,
     });
 

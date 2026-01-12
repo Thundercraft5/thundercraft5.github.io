@@ -1,0 +1,22 @@
+.hashLink {
+    text-decoration: none;
+    color: rgb(31, 31, 31);
+    transition: color 0.3s ease;
+
+
+    &:hover {
+        text-decoration: underline;
+        color: rgb(71, 71, 71);
+    }
+
+    &:target {
+        text-decoration: underline;
+    }
+
+}
+
+.hashHeader {
+    &:target {
+        text-decoration: underline;
+    }
+}

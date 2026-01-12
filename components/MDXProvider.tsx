@@ -1,12 +1,10 @@
 import React from 'react'
-import {MDXProvider} from '@mdx-js/react'
+import { MDXProvider } from '@mdx-js/react'
+import { useMDXComponents } from '../pages/mdx-components'
 
-const mdComponents = {
-  h1: props => <h1 style={{color: 'green'}} {...props} />
-}
 
-export default ({children}) => (
-  <MDXProvider components={mdComponents}>
+export default ({ children }) => (
+  <MDXProvider components={useMDXComponents(children)}>
     {children}
   </MDXProvider>
 )
