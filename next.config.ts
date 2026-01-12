@@ -1,7 +1,6 @@
 import createMDX from "@next/mdx";
 
 import type { NextConfig } from "next";
-
 const isProd = process.env.NODE_ENV === 'production';
 
 
@@ -11,6 +10,7 @@ const nextConfig: NextConfig = {
   pageExtensions: ["mdx","page.tsx"],
   output: "export",
   sassOptions: {},
+
   typescript: { ignoreBuildErrors: true },
   images: {
     unoptimized: true,
@@ -28,16 +28,25 @@ const nextConfig: NextConfig = {
 };
 
 const withMDX = createMDX({
+
   extension: /\.mdx?$/,
   options: {
     remarkPlugins: [
+      ["remark-toc"],
       ['remark-breaks'],
       ['remark-gfm'],
       ['remark-frontmatter'],
       ['remark-callouts'],
       ['remark-mdx-frontmatter', { name: 'frontmatter' }] // Array syntax allows passing options
     ],
-    rehypePlugins: [],
+    rehypePlugins: [
+      ['rehype-slug'],
+      ['@stefanprobst/rehype-extract-toc'],
+      // ['rehype-autolink-headings', {
+      //   fragment: true,
+      //   behavior: "none",
+      // }]
+    ]
   },
 });
 
