@@ -75,7 +75,8 @@
         "path": "/blog/images/2025/11/07.3/valley.png",
         "width": 400,
         "height": 300,
-        "caption": "Looking over Tappen Bluff"
+        "caption": "Looking over Tappen Bluff",
+        "credit": "Myself"
       }
     },
     "breadcrumbs": [
@@ -123,10 +124,16 @@
   "/blog/posts/2026/01/11": {
     "path": "pages\\blog\\posts\\2026\\01\\11.mdx",
     "frontmatter": {
-      "title": "The Inflation of Meta-Knowledge and lack of Wisdom: Notes which note notes of notes which note nothing",
+      "title": "The Inflation of Meta-Knowledge and Lack of Wisdom: Notes which note notes of notes which note nothing",
       "description": "The Dark Side of note-taking apps and the endless pursuit of empty meta-knowledge and meta-notes, without wisdom.",
       "last-updated": "2026-01-11T06:00:00.000Z",
-      "created": "2026-01-11T06:00:00.000Z"
+      "created": "2026-01-11T06:00:00.000Z",
+      "image": {
+        "path": "/blog/images/2026/01/11/obsidian-logo-and-name-on-an-obsidian-background-and-some-white-dots (1).avif",
+        "width": 400,
+        "height": 300,
+        "caption": "Credit: Obsidian"
+      }
     },
     "breadcrumbs": [
       [
@@ -139,7 +146,7 @@
       ],
       [
         "/blog/posts/2026/01/11",
-        "The Inflation of Meta-Knowledge and lack of Wisdom: Notes which note notes of notes which note nothing"
+        "The Inflation of Meta-Knowledge and Lack of Wisdom: Notes which note notes of notes which note nothing"
       ]
     ]
   },
