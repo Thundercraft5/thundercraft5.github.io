@@ -69,8 +69,8 @@ export default function BlogLayout({ children, frontmatter }: BlogLayoutProps) {
             </div>
 
             <Footer
-                date={frontmatter?.['last-updated']}
-                created={frontmatter?.['created']}
+                date={new Date(frontmatter?.['last-updated']!).toLocaleDateString()}
+                created={new Date(frontmatter?.['created']!).toLocaleDateString()}
             />
         </ImageModalProvider>
     );

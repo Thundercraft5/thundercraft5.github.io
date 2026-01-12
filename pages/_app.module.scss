@@ -19,6 +19,9 @@
     width: 100%;
     height: auto;
     margin-bottom: 1em;
-    display: block;
+    display: flex;
     margin: auto;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
 }
