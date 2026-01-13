@@ -1,0 +1,16 @@
+.whiteHeader {
+    color: white;
+}
+
+.backlinksList {
+    font-size: 14px;
+}
+
+.backlinksList li::marker {
+    content: "🔗"
+}
+
+.noBacklinks {
+    color: white;
+    font-style: italic;
+}

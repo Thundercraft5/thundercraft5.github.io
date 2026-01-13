@@ -5,6 +5,9 @@ import nextJSConfig from "../next.config.ts"
 import parseCommandLine, {command, subcommands, run, string, positional, restPositionals} from "cmd-ts"
 import frontmatter from "gray-matter";
 import "colors";
+import JSDom from "jsdom";
+
+
 
 const generate = command({
     "name": "generate",
@@ -49,8 +52,57 @@ const app = subcommands({
 
 async function writeManifest() {
   const routeMap = await generateRouteMap();
+  const linksMap = await generateLinksMap();
   await fs.writeFile(path.relative(process.cwd(), "./public/routes-manifest.json"), JSON.stringify(routeMap, null, 2))
+  await fs.writeFile(path.relative(process.cwd(), "./public/links-manifest.json"), JSON.stringify(linksMap, null, 2))
   await generateSitemaps(routeMap);
+}
+
+async function generateLinksMap() {
+  const files = await getFileList(PAGES_DIR);
+  const nodes = [];
+  const links = [];
+
+  const patterns = [
+    /\[.*?\]\((.*?)\)/g,                // Markdown: [text](/url)
+    /href=["'](\/blog\/posts\/.*?)["']/g, // HTML: href="/url"
+    /href=\{["'](\/blog\/posts\/.*?)["']\}/g // JSX: href={'/url'}
+  ];
+
+  for (const fullPath of files) {
+    // 1. Get relative path from pages dir (e.g., 'blog/index.tsx')
+    const { displayPath, route } = resolvePath(fullPath) ?? {}
+    if (!displayPath || !route) continue;
+    const content = await fs.readFile(fullPath, "utf8");
+    const frontmatter = await getFrontMatter(displayPath);
+    nodes.push({ id: route, name: frontmatter?.title ?? '', external: false });
+
+    for (const pattern of patterns) {
+      const matches = content.matchAll(pattern);
+      for (const match of matches) {
+        const target = match[1];
+        links.push({ source: route, target, title: frontmatter.title, external: !target.startsWith('/') });
+      }
+    }
+
+  }
+
+  await Promise.all(links.map(async (link, i) => {
+    if (!link.target.startsWith('/')) {
+      links[i].title = await getPageTitle(link.target);
+    }
+  }));
+
+  links.forEach(link => {
+    if (!nodes.find(n => n.id === link.target)) {
+      nodes.push({ id: link.target, name: link.title, external: !link.target.startsWith('/') });
+    }
+  });
+
+  return {
+    nodes,
+    links,
+  }
 }
 
 async function generateSitemaps(routeMap: Record<string, any>) {
@@ -120,7 +172,7 @@ const PAGES_DIR = await fs.access(path.join(process.cwd(), 'src/pages')).then(()
   ? path.join(process.cwd(), 'src/pages') 
   : path.join(process.cwd(), 'pages');
 
-const IGNORE_FILES = ['_app', '_document', '_error', 'api', '404', '500', 'bad-request'];
+const IGNORE_FILES = ['_app', '_document', '[slug]', '_error', 'api', '404', '500', 'bad-request'];
 const PAGE_EXTENSIONS = nextJSConfig.pageExtensions?.map(v => `.${v}`) ?? []
 
 async function getFileList(dir: Dir) {
@@ -143,22 +195,25 @@ async function getFileList(dir: Dir) {
 
 async function generateRouteMap() {
   const files = await getFileList(PAGES_DIR);
-    const routeMap = {};
+  const routeMap = {};
     
-  
+    
 
-for (const fullPath of files) {
-    // 1. Get relative path from pages dir (e.g., 'blog/index.tsx')
-  const {displayPath, route} = resolvePath(fullPath) ?? {}
-  if (!displayPath || !route) continue;
-  const frontmatter = await getFrontMatter(displayPath);
-  const split = route.split("/");
-    routeMap[route] = { path: displayPath, frontmatter, breadcrumbs: [] };
+  for (const fullPath of files) {
+      // 1. Get relative path from pages dir (e.g., 'blog/index.tsx')
+    const {displayPath, route} = resolvePath(fullPath) ?? {}
+    if (!displayPath || !route) continue;
+    const frontmatter = await getFrontMatter(displayPath);
+    const split = route.split("/");
+      routeMap[route] = { path: displayPath, frontmatter, breadcrumbs: [] };
   };
 
   for (const [route, { path, frontmatter }] of Object.entries(routeMap)) {
     const split = route.split("/");
-    if (!frontmatter.ignoreSegment) routeMap[route].breadcrumbs = split.map((value, i) => ["/" + split.slice(1, i+1).join("/"), routeMap["/" + split.slice(1, i+1).join("/")]?.frontmatter.title]).filter(([,title]) => title)
+    if (!frontmatter.ignoreSegment)
+      routeMap[route].breadcrumbs = split
+        .map((value, i) => ["/" + split.slice(1, i + 1).join("/"), routeMap["/" + split.slice(1, i + 1).join("/")]?.frontmatter.title])
+        .filter(([, title]) => title);
   }
 
   return routeMap;
@@ -204,8 +259,65 @@ async function getFrontMatter(pathname: string) {
     return frontmatter(await fs.readFile(pathname, { encoding: "utf-8" })).data;
 } 
 
+function blank(text: string): boolean {
+  return text === undefined || text === null || text === ''
+}
+
+function notBlank(text: string): boolean {
+  return !blank(text)
+}
+
+// https://github.com/zolrath/obsidian-auto-link-title/blob/main/scraper.ts
+async function scrape(url: string): Promise<string> {
+  try {
+    const response = await fetch(url).then(r => r)
+    if (!response.headers.get('content-type')!.includes('text/html')) return getUrlFinalSegment(url)
+    const html = await response.text()
+
+    const doc = new JSDom.JSDOM();
+    const parser = new doc.window.DOMParser()
+    const parsed = parser.parseFromString(html, 'text/html');
+    const title = parsed.getElementsByTagName('title')
+
+    if (blank(title[0]?.textContent!)) {
+      // If site is javascript based and has a no-title attribute when unloaded, use it.
+      var noTitle = title[0]?.getAttribute('no-title')
+      if (notBlank(noTitle!)) {
+        return noTitle!
+      }
+
+      // Otherwise if the site has no title/requires javascript simply return Title Unknown
+      return url
+    }
+
+    return title[0]?.textContent
+  } catch (ex) {
+    console.error(ex)
+    return ''
+  }
+}
+
+function getUrlFinalSegment(url: string): string {
+  try {
+    const segments = new URL(url).pathname.split('/')
+    const last = segments.pop() || segments.pop() // Handle potential trailing slash
+    return last
+  } catch (_) {
+    return 'File'
+  }
+}
+
+export default async function getPageTitle(url: string) {
+  if (!(url.startsWith('http') || url.startsWith('https'))) {
+    url = 'https://' + url
+  }
+
+  return scrape(url)
+}
+
 function logMessage(...messages: string[]) {
     console.log(`${"[".blue.bold}${path.basename(process.argv[1]!).blue.bold}${"]".blue.bold} [${new Date().toLocaleTimeString()}]`, ...messages);
 }
+
 
 run(app, process.argv.slice(2))

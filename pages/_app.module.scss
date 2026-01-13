@@ -6,7 +6,19 @@
     padding: 1em;
     padding-top: 4em;
     display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+
+    &>aside {
+        justify-self: self-end;
+    }
+}
+
+.mainContentContainer {
+    display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 @media screen and (max-width: 1000px) {

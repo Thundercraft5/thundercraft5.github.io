@@ -150,6 +150,35 @@
       ]
     ]
   },
+  "/blog/posts/2026/01/12": {
+    "path": "pages\\blog\\posts\\2026\\01\\12.mdx",
+    "frontmatter": {
+      "title": "My WWOOF at Crown Hill Farm",
+      "description": "My Third WWOOF experience at Crown Hill Farm, NY and my thoughts on farming going forward.",
+      "last-updated": "2026-01-11T06:00:00.000Z",
+      "created": "2026-01-11T06:00:00.000Z",
+      "image": {
+        "path": "/blog/images/2026/01/12/image.png",
+        "width": 400,
+        "height": 300,
+        "caption": "Credit: Crown Hill Farm"
+      }
+    },
+    "breadcrumbs": [
+      [
+        "/",
+        "Thundercraft5's Homepage"
+      ],
+      [
+        "/blog",
+        "Blog"
+      ],
+      [
+        "/blog/posts/2026/01/12",
+        "My WWOOF at Crown Hill Farm"
+      ]
+    ]
+  },
   "/example": {
     "path": "pages\\example.mdx",
     "frontmatter": {

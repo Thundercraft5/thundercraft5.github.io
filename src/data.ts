@@ -1,4 +1,5 @@
 export { default as routesManifest } from "../public/routes-manifest.json"
+export { default as graphData } from "../public/links-manifest.json"
 
 export const packages = {
 	"@thundercraft5/weak-utils": ["TS", "https://github.com/Thundercraft5/weak-utils"],

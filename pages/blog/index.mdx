@@ -9,18 +9,28 @@ import path from "path";
 import matter from "gray-matter";
 import Post from "../../components/Post";
 import YearlyPostGroup from "../../components/YearlyPostGroup";
+import Slugger from "github-slugger";
 
-{props.posts.reverse().map(([year, yearlyPosts]) => {
+### Table of contents
+<ol>{
+    props.posts.reverse().map(([year, yearlyPosts]) => {
+        return <li>
+            <a key={year} href={"#" + year}>{year}</a>
+            <ol>{yearlyPosts.reverse().map(post => <li><a href={"#" + new Slugger().slug(post.frontmatter.title)}>{post.frontmatter.title}</a></li>)}</ol>
+        </li>
+    })
+}</ol>
+
+{props.posts.map(([year, yearlyPosts]) => {
     return <YearlyPostGroup key={year} year={year}>
         {yearlyPosts.map(post => <Post key={post.frontmatter.title}  {...post.frontmatter} />)}
     </YearlyPostGroup>
 })}
-
 export const getStaticProps = async () => {
     const postsDirectory = path.join(process.cwd(), "pages", "blog", "posts");
     const posts = [];
 
-    for await (const file of await fs.glob(postsDirectory + "\\\**\\*.mdx", { recursive: true })) if (!file.endsWith("index.mdx")) posts.push({
+    for await (const file of await fs.glob(postsDirectory + "\\\**\\*.mdx", { recursive: true })) if (!file.endsWith("index.mdx") && !file.includes("[slug]")) posts.push({
         frontmatter: { ...JSON.parse(JSON.stringify(matter(await fs.readFile(file)).data)), url: `/blog/posts/${path.relative(postsDirectory, file).replace(/\\/g, "/").replace(/\.mdx?$/, "")}` },
         fileName: file,
     });

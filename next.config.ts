@@ -15,6 +15,7 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  trailingSlash: true,
   eslint: {
     "ignoreDuringBuilds": true
   },
@@ -32,7 +33,9 @@ const withMDX = createMDX({
   extension: /\.mdx?$/,
   options: {
     remarkPlugins: [
-      ["remark-toc"],
+      ["remark-toc", {
+        ordered: true
+      }],
       ['remark-breaks'],
       ['remark-gfm'],
       ['remark-frontmatter'],

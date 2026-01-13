@@ -13,6 +13,7 @@ import { Frontmatter } from "./DefaultLayout";
 import { ImageModalProvider } from "../components";
 import BreadCrumbs from "../components/Breadcrumbs";
 import MDXImage from "../components/MDXImage";
+import Sidebar from "../components/sidebar/Sidebar";
 
 interface BlogLayoutProps {
     children: React.ReactNode;
@@ -46,25 +47,32 @@ export default function BlogLayout({ children, frontmatter }: BlogLayoutProps) {
             {/* A distinctive wrapper for blog content */}
             <div className={styles.blogContainer}>
                 {/* Maybe add a Sidebar here? */}
-                <aside style={{ display: 'none' }}>Sidebar</aside>
 
                 <main className={styles.mainContent}>
                     {/* Inject Global Blog Header if needed */}
-                    <BreadCrumbs router={router} />
+                    <div className={styles.mainContentContainer}>
+                        <BreadCrumbs router={router} />
 
-                    {router.pathname === '/blog' ? null : (<>
-                        <div className={styles.returnLink}></div>
-                        <div className="post-header">
-                            <div className={styles.postImage}>
-                                <span><MDXImage src={frontmatter?.image?.path || ''} alt={frontmatter?.image?.caption || 'Blog Post Image'} width={frontmatter?.image?.width || 800} height={frontmatter?.image?.height || 400} /></span>
+                        {router.pathname === '/blog' ? null : (<>
+                            <div className={styles.returnLink}></div>
+                            <div className="post-header">
+                                <div className={styles.postImage}>
+                                    <span><MDXImage src={frontmatter?.image?.path || ''} alt={frontmatter?.image?.caption || 'Blog Post Image'} width={frontmatter?.image?.width || 800} height={frontmatter?.image?.height || 400} /></span>
+                                </div>
+                                <h1>{frontmatter?.title}</h1>
+                                <small><i>{frontmatter?.created ? 'Created - ' + new Date(frontmatter.created).toLocaleDateString() : ''}</i>{
+                                    frontmatter?.['last-updated'] ? <b> | </b> : ""
+                                }<i>{
+                                    frontmatter?.['last-updated'] ? `Edited - ` : ""
+                                }{
+                                            new Date(frontmatter['last-updated']).toLocaleDateString()
+                                        }</i></small>
+                                <hr />
                             </div>
-                            <h1>{frontmatter?.title}</h1>
-                            <small>{frontmatter?.created ? 'Created - ' + new Date(frontmatter.created).toLocaleDateString() : ''}{
-                                frontmatter?.['last-updated'] ? ' | Edited - ' + new Date(frontmatter['last-updated']).toLocaleDateString() : ''
-                            }</small>
-                        </div>
-                    </>)}
-                    {children}
+                        </>)}
+                        {children}
+                    </div>
+                    <Sidebar />
                 </main>
             </div>
 
