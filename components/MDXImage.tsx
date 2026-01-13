@@ -7,7 +7,7 @@ export type Props = {
     alt: string;
     width?: number;
     height?: number;
-}
+} & React.ComponentProps<typeof Image>;
 
 
 export default function MDXImage({ ...props }: Props) {
@@ -15,7 +15,7 @@ export default function MDXImage({ ...props }: Props) {
 
     return <>
         <div className={imageContainer} onClick={e => showModal(props.src, props.alt)}>
-            <Image className={image} src={props.src} alt={props.alt} width={props.width} height={props.height} />
+            <Image className={image} {...props} />
         </div>
         <small className={smallText}>{props.alt}</small>
     </>;
