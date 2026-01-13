@@ -1,0 +1,770 @@
+{
+  "nodes": [
+    {
+      "id": "/about",
+      "name": "About Me",
+      "external": false
+    },
+    {
+      "id": "/blog",
+      "name": "Blog",
+      "external": false
+    },
+    {
+      "id": "/blog/posts/2025/11/07.2",
+      "name": "First blog post",
+      "external": false
+    },
+    {
+      "id": "/blog/posts/2025/11/07.3",
+      "name": "Reflecting on my first WWOOF trip",
+      "external": false
+    },
+    {
+      "id": "/blog/posts/2025",
+      "name": "2025 Posts",
+      "external": false
+    },
+    {
+      "id": "/blog/posts/2026/01/11",
+      "name": "The Inflation of Meta-Knowledge and Lack of Wisdom: Notes which note notes of notes which note nothing",
+      "external": false
+    },
+    {
+      "id": "/blog/posts/2026/01/12",
+      "name": "My WWOOF at Crown Hill Farm",
+      "external": false
+    },
+    {
+      "id": "/example",
+      "name": "Example Page",
+      "external": false
+    },
+    {
+      "id": "/farming",
+      "name": "Farming",
+      "external": false
+    },
+    {
+      "id": "/fhe",
+      "name": "Fully Homomorphic Encryption",
+      "external": false
+    },
+    {
+      "id": "/",
+      "name": "Thundercraft5's Homepage",
+      "external": false
+    },
+    {
+      "id": "/packages",
+      "name": "Packages",
+      "external": false
+    },
+    {
+      "id": "/packages/YoutubeFullscreen",
+      "name": "YoutubeFullscreen",
+      "external": false
+    },
+    {
+      "id": "/philosophy",
+      "name": "My Philosophy",
+      "external": false
+    },
+    {
+      "id": "/projects/CannonballBox",
+      "name": "CannonballBox",
+      "external": false
+    },
+    {
+      "id": "/projects/CanvasDots",
+      "name": "CanvasDots",
+      "external": false
+    },
+    {
+      "id": "/projects/ESlintEditor",
+      "name": "ESlintEditor",
+      "external": false
+    },
+    {
+      "id": "/projects",
+      "name": "My Projects",
+      "external": false
+    },
+    {
+      "id": "/projects/InfectionTable",
+      "name": "InfectionTable",
+      "external": false
+    },
+    {
+      "id": "/projects/MinMaxFinder",
+      "name": "MinMaxFinder",
+      "external": false
+    },
+    {
+      "id": "/work",
+      "name": "My Work",
+      "external": false
+    },
+    {
+      "id": "https://hypixel-skyblock.fandom.com",
+      "name": "Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://github.com/blacksmithgu/obsidian-dataview",
+      "name": "GitHub - blacksmithgu/obsidian-dataview: A data index and query language over Markdown files, for https://obsidian.md/.",
+      "external": true
+    },
+    {
+      "id": "https://github.com/silentvoid13/templater",
+      "name": "GitHub - SilentVoid13/Templater: A template plugin for obsidian",
+      "external": true
+    },
+    {
+      "id": "https://en.wikipedia.org/wiki/Alfred_North_Whitehead",
+      "name": "Alfred North Whitehead - Wikipedia",
+      "external": true
+    },
+    {
+      "id": "https://en.wikipedia.org/wiki/Man%27s_Search_for_Meaning",
+      "name": "Man's Search for Meaning - Wikipedia",
+      "external": true
+    },
+    {
+      "id": "https://www.copperhorsefarm.com",
+      "name": "copper horse farm | ancient grain flour",
+      "external": true
+    },
+    {
+      "id": "https://www.copperhorsefarm.com/about",
+      "name": "Copper Horse Farm direct farmer to customer experience for ancient wheat flour",
+      "external": true
+    },
+    {
+      "id": "https://en.wiktionary.org/wiki/τέχνη#Ancient_Greek",
+      "name": "τέχνη - Wiktionary, the free dictionary",
+      "external": true
+    },
+    {
+      "id": "/about.html",
+      "name": "My Work",
+      "external": false
+    },
+    {
+      "id": "/packages.html",
+      "name": "My Work",
+      "external": false
+    },
+    {
+      "id": "https://dev.fandom.com/wiki/MoreDropdown",
+      "name": "MoreDropdown | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://dev.fandom.com/wiki/BlockListTools",
+      "name": "BlockListTools | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://dev.fandom.com/wiki/BlockLookup",
+      "name": "BlockLookup | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://dev.fandom.com/wiki/AjaxAbuseLog",
+      "name": "AjaxAbuseLog | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://dev.fandom.com/wiki/AjaxContentModel",
+      "name": "AjaxContentModel | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://dev.fandom.com/wiki/AjaxRename",
+      "name": "AjaxRename | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://dev.fandom.com/wiki/QuickPurge",
+      "name": "QuickPurge | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://dev.fandom.com/wiki/GlobalJSLinks",
+      "name": "GlobalJSLinks | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://dev.fandom.com/wiki/CollapseGlobalNavButton",
+      "name": "CollapseGlobalNavButton | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://dev.fandom.com/wiki/TitleBlacklistHighlight",
+      "name": "TitleBlacklistHighlight | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://dev.fandom.com/wiki/Reconstitution",
+      "name": "Reconstitution | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://dev.fandom.com/wiki/RevisionDelete",
+      "name": "RevisionDelete | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://dev.fandom.com/wiki/PageReport",
+      "name": "PageReport | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://dev.fandom.com/wiki/Nuke",
+      "name": "Nuke | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://dev.fandom.com/wiki/UserAndIPTools",
+      "name": "UserAndIPTools | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://dev.fandom.com/wiki/MultipleFileDelete",
+      "name": "MultipleFileDelete | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://dev.fandom.com/wiki/SnowStorm",
+      "name": "SnowStorm | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://dev.fandom.com/wiki/DeleteUserpage",
+      "name": "DeleteUserpage | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://dev.fandom.com/wiki/PowerDelete",
+      "name": "PowerDelete | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://dev.fandom.com/wiki/QDmodal",
+      "name": "QDmodal | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://dev.fandom.com/wiki/CopyTitle",
+      "name": "CopyTitle | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://dev.fandom.com/wiki/Global_Lua_Modules/MultiRequire",
+      "name": "Global Lua Modules/MultiRequire | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "dev.fandom.com/wiki/BlockLookup",
+      "name": "BlockLookup | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "dev.fandom.com/wiki/AjaxRename",
+      "name": "AjaxRename | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "dev.fandom.com/wiki/OldWikiaBar",
+      "name": "OldWikiaBar | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "dev.fandom.com/wiki/OldFandomColors",
+      "name": "OldFandomColors | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://hypixel-skyblock.fandom.com/wiki/MediaWiki:Common.js/ANIReport.js",
+      "name": "MediaWiki:Common.js/ANIReport.js | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://hypixel-skyblock.fandom.com/wiki/MediaWiki:Gadget-RoleScripts.js",
+      "name": "MediaWiki:Gadget-RoleScripts.js | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://hypixel-skyblock.fandom.com/wiki/MediaWiki:Gadget-TooltipsEditor.js",
+      "name": "MediaWiki:Gadget-TooltipsEditor.js | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://hypixel-skyblock.fandom.com/wiki/MediaWiki:Gadget-SearchPages.js",
+      "name": "MediaWiki:Gadget-SearchPages.js | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://hypixel-skyblock.fandom.com/wiki/MediaWiki:Gadget-StaffColorsUpdater.js",
+      "name": "MediaWiki:Gadget-StaffColorsUpdater.js | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://hypixel-skyblock.fandom.com/wiki/MediaWiki:Gadget-TitleBlacklisthighlight.js",
+      "name": "MediaWiki:Gadget-TitleBlacklisthighlight.js | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://hypixel-skyblock.fandom.com/wiki/ediaWiki:Common.js/staff-tagger.js",
+      "name": "EdiaWiki:Common.js/staff-tagger.js | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://hypixel-skyblock.fandom.com/wiki/MediaWiki:Common.js/lua-doc.js",
+      "name": "MediaWiki:Common.js/lua-doc.js | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://hypixel-skyblock.fandom.com/MediaWiki:Custom-common.less/CodeHighlight.less",
+      "name": "MediaWiki:Custom-common.less/CodeHighlight.less | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://hypixel-skyblock.fandom.com/MediaWiki:Custom-common.less/fonts.less",
+      "name": "MediaWiki:Custom-common.less/fonts.less | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://hypixel-skyblock.fandom.com/MediaWiki:Custom-common.less/AceEditor.less",
+      "name": "MediaWiki:Custom-common.less/AceEditor.less | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://hypixel-skyblock.fandom.com/MediaWiki:Custom-common.less/WikiaMenuButton.less",
+      "name": "MediaWiki:Custom-common.less/WikiaMenuButton.less | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "id": "https://hypixel-skyblock.fandom.com/wiki/Module:Class",
+      "name": "Module:Class | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    }
+  ],
+  "links": [
+    {
+      "source": "/about",
+      "target": "https://hypixel-skyblock.fandom.com",
+      "title": "Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/about",
+      "target": "/work",
+      "title": "About Me",
+      "external": false
+    },
+    {
+      "source": "/about",
+      "target": "/farming",
+      "title": "About Me",
+      "external": false
+    },
+    {
+      "source": "/about",
+      "target": "/fhe",
+      "title": "About Me",
+      "external": false
+    },
+    {
+      "source": "/about",
+      "target": "/fhe",
+      "title": "About Me",
+      "external": false
+    },
+    {
+      "source": "/about",
+      "target": "/philosophy",
+      "title": "About Me",
+      "external": false
+    },
+    {
+      "source": "/blog/posts/2026/01/11",
+      "target": "https://github.com/blacksmithgu/obsidian-dataview",
+      "title": "GitHub - blacksmithgu/obsidian-dataview: A data index and query language over Markdown files, for https://obsidian.md/.",
+      "external": true
+    },
+    {
+      "source": "/blog/posts/2026/01/11",
+      "target": "https://github.com/silentvoid13/templater",
+      "title": "GitHub - SilentVoid13/Templater: A template plugin for obsidian",
+      "external": true
+    },
+    {
+      "source": "/blog/posts/2026/01/11",
+      "target": "https://en.wikipedia.org/wiki/Alfred_North_Whitehead",
+      "title": "Alfred North Whitehead - Wikipedia",
+      "external": true
+    },
+    {
+      "source": "/farming",
+      "target": "/blog/posts/2025/11/07.3",
+      "title": "Farming",
+      "external": false
+    },
+    {
+      "source": "/",
+      "target": "/blog",
+      "title": "Thundercraft5's Homepage",
+      "external": false
+    },
+    {
+      "source": "/",
+      "target": "/projects",
+      "title": "Thundercraft5's Homepage",
+      "external": false
+    },
+    {
+      "source": "/",
+      "target": "/projects/CannonballBox",
+      "title": "Thundercraft5's Homepage",
+      "external": false
+    },
+    {
+      "source": "/",
+      "target": "/projects/CanvasDots",
+      "title": "Thundercraft5's Homepage",
+      "external": false
+    },
+    {
+      "source": "/",
+      "target": "/projects/InfectionTable",
+      "title": "Thundercraft5's Homepage",
+      "external": false
+    },
+    {
+      "source": "/",
+      "target": "/about",
+      "title": "Thundercraft5's Homepage",
+      "external": false
+    },
+    {
+      "source": "/",
+      "target": "/philosophy",
+      "title": "Thundercraft5's Homepage",
+      "external": false
+    },
+    {
+      "source": "/philosophy",
+      "target": "https://en.wikipedia.org/wiki/Man%27s_Search_for_Meaning",
+      "title": "Man's Search for Meaning - Wikipedia",
+      "external": true
+    },
+    {
+      "source": "/philosophy",
+      "target": "https://www.copperhorsefarm.com",
+      "title": "copper horse farm | ancient grain flour",
+      "external": true
+    },
+    {
+      "source": "/philosophy",
+      "target": "https://www.copperhorsefarm.com/about",
+      "title": "Copper Horse Farm direct farmer to customer experience for ancient wheat flour",
+      "external": true
+    },
+    {
+      "source": "/philosophy",
+      "target": "https://en.wiktionary.org/wiki/τέχνη#Ancient_Greek",
+      "title": "τέχνη - Wiktionary, the free dictionary",
+      "external": true
+    },
+    {
+      "source": "/projects",
+      "target": "/projects/CannonballBox",
+      "title": "My Projects",
+      "external": false
+    },
+    {
+      "source": "/projects",
+      "target": "/projects/CanvasDots",
+      "title": "My Projects",
+      "external": false
+    },
+    {
+      "source": "/projects",
+      "target": "/projects/InfectionTable",
+      "title": "My Projects",
+      "external": false
+    },
+    {
+      "source": "/projects",
+      "target": "/projects/MinMaxFinder",
+      "title": "My Projects",
+      "external": false
+    },
+    {
+      "source": "/projects",
+      "target": "/projects/ESlintEditor",
+      "title": "My Projects",
+      "external": false
+    },
+    {
+      "source": "/work",
+      "target": "/about.html",
+      "title": "My Work",
+      "external": false
+    },
+    {
+      "source": "/work",
+      "target": "/packages.html",
+      "title": "My Work",
+      "external": false
+    },
+    {
+      "source": "/work",
+      "target": "https://dev.fandom.com/wiki/MoreDropdown",
+      "title": "MoreDropdown | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://dev.fandom.com/wiki/BlockListTools",
+      "title": "BlockListTools | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://dev.fandom.com/wiki/BlockLookup",
+      "title": "BlockLookup | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://dev.fandom.com/wiki/AjaxAbuseLog",
+      "title": "AjaxAbuseLog | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://dev.fandom.com/wiki/AjaxContentModel",
+      "title": "AjaxContentModel | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://dev.fandom.com/wiki/AjaxRename",
+      "title": "AjaxRename | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://dev.fandom.com/wiki/QuickPurge",
+      "title": "QuickPurge | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://dev.fandom.com/wiki/GlobalJSLinks",
+      "title": "GlobalJSLinks | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://dev.fandom.com/wiki/CollapseGlobalNavButton",
+      "title": "CollapseGlobalNavButton | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://dev.fandom.com/wiki/TitleBlacklistHighlight",
+      "title": "TitleBlacklistHighlight | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://dev.fandom.com/wiki/Reconstitution",
+      "title": "Reconstitution | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://dev.fandom.com/wiki/RevisionDelete",
+      "title": "RevisionDelete | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://dev.fandom.com/wiki/PageReport",
+      "title": "PageReport | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://dev.fandom.com/wiki/Nuke",
+      "title": "Nuke | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://dev.fandom.com/wiki/UserAndIPTools",
+      "title": "UserAndIPTools | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://dev.fandom.com/wiki/MultipleFileDelete",
+      "title": "MultipleFileDelete | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://dev.fandom.com/wiki/SnowStorm",
+      "title": "SnowStorm | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://dev.fandom.com/wiki/DeleteUserpage",
+      "title": "DeleteUserpage | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://dev.fandom.com/wiki/PowerDelete",
+      "title": "PowerDelete | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://dev.fandom.com/wiki/QDmodal",
+      "title": "QDmodal | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://dev.fandom.com/wiki/CopyTitle",
+      "title": "CopyTitle | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://dev.fandom.com/wiki/Global_Lua_Modules/MultiRequire",
+      "title": "Global Lua Modules/MultiRequire | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "dev.fandom.com/wiki/BlockLookup",
+      "title": "BlockLookup | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "dev.fandom.com/wiki/BlockLookup",
+      "title": "BlockLookup | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "dev.fandom.com/wiki/AjaxRename",
+      "title": "AjaxRename | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "dev.fandom.com/wiki/AjaxRename",
+      "title": "AjaxRename | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "dev.fandom.com/wiki/OldWikiaBar",
+      "title": "OldWikiaBar | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "dev.fandom.com/wiki/OldFandomColors",
+      "title": "OldFandomColors | Fandom Developers Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://hypixel-skyblock.fandom.com/wiki/MediaWiki:Common.js/ANIReport.js",
+      "title": "MediaWiki:Common.js/ANIReport.js | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://hypixel-skyblock.fandom.com/wiki/MediaWiki:Gadget-RoleScripts.js",
+      "title": "MediaWiki:Gadget-RoleScripts.js | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://hypixel-skyblock.fandom.com/wiki/MediaWiki:Gadget-TooltipsEditor.js",
+      "title": "MediaWiki:Gadget-TooltipsEditor.js | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://hypixel-skyblock.fandom.com/wiki/MediaWiki:Gadget-SearchPages.js",
+      "title": "MediaWiki:Gadget-SearchPages.js | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://hypixel-skyblock.fandom.com/wiki/MediaWiki:Gadget-StaffColorsUpdater.js",
+      "title": "MediaWiki:Gadget-StaffColorsUpdater.js | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://hypixel-skyblock.fandom.com/wiki/MediaWiki:Gadget-TitleBlacklisthighlight.js",
+      "title": "MediaWiki:Gadget-TitleBlacklisthighlight.js | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://hypixel-skyblock.fandom.com/wiki/ediaWiki:Common.js/staff-tagger.js",
+      "title": "EdiaWiki:Common.js/staff-tagger.js | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://hypixel-skyblock.fandom.com/wiki/MediaWiki:Common.js/lua-doc.js",
+      "title": "MediaWiki:Common.js/lua-doc.js | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://hypixel-skyblock.fandom.com/MediaWiki:Custom-common.less/CodeHighlight.less",
+      "title": "MediaWiki:Custom-common.less/CodeHighlight.less | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://hypixel-skyblock.fandom.com/MediaWiki:Custom-common.less/fonts.less",
+      "title": "MediaWiki:Custom-common.less/fonts.less | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://hypixel-skyblock.fandom.com/MediaWiki:Custom-common.less/AceEditor.less",
+      "title": "MediaWiki:Custom-common.less/AceEditor.less | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://hypixel-skyblock.fandom.com/MediaWiki:Custom-common.less/WikiaMenuButton.less",
+      "title": "MediaWiki:Custom-common.less/WikiaMenuButton.less | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    },
+    {
+      "source": "/work",
+      "target": "https://hypixel-skyblock.fandom.com/wiki/Module:Class",
+      "title": "Module:Class | Hypixel SkyBlock Wiki | Fandom",
+      "external": true
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+.sidebar {
+    width: 20vw;
+    padding: 10px;
+    position: sticky !important;
+    top: 30 !important;
+    align-self: flex-start;
+    /* ADD THIS */
+    height: auto;
+}
+
+.forceGraphContainer {
+    border: 1px solid #ccc;
+    border-radius: 1px;
+    min-width: 20vw;
+    min-height: 20vw;
+    border-radius: 5px;
+    box-shadow: 0 0 6px 0px #00000036;
+    background: #1a1a1a;
+}
+
+.force-graph-container>canvas {
+    border-radius: 5px;
+}

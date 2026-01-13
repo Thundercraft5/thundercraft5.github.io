@@ -1,11 +1,13 @@
 import { Component } from "react";
 import { TopNav } from "../components/TopNav";
-import { mainContent } from "../pages/_app.module.scss";
+import { mainContent, mainContentContainer } from "../pages/_app.module.scss";
 import Footer from "../components/Footer";
 import Head from "next/head";
 import { Router, useRouter } from "next/router";
 import { ImageModalProvider } from "@/components";
 import BreadCrumbs from "../components/Breadcrumbs";
+import Sidebar from "../components/sidebar/Sidebar";
+import { LinksToHere } from "../components/PageLinks";
 
 export interface Frontmatter {
     title?: string;
@@ -22,8 +24,11 @@ export default function DefaultLayout({ children, title, frontmatter }: { childr
 
             {/* ✅ 3. Use the styles object */}
             <main className={mainContent}>
-                {(router.pathname === "/" || router.pathname === "/404" || router.pathname === "/500" || router.pathname === "/_error") ? "" : <BreadCrumbs />}
-                {children}
+                <div className={mainContentContainer}>
+                    {(router.pathname === "/" || router.pathname === "/404" || router.pathname === "/500" || router.pathname === "/_error") ? "" : <BreadCrumbs />}
+                    {children}
+                </div>
+                <Sidebar />
             </main>
             <Footer created={frontmatter.created} date={frontmatter["last-updated"]} />
         </ImageModalProvider>

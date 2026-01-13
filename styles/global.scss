@@ -2,7 +2,7 @@ body {
     margin: 0 !important;
     font: normal 14px arial;
     margin: 0 !important;
-    overflow-x: hidden;
+    // overflow-x: hidden;
     display: flex;
     min-height: 100vh;
     font-family: inherit;
@@ -60,4 +60,62 @@ button {
 button:hover {
     cursor: pointer;
     filter: brightness(65%);
+}
+
+#table-of-contents {
+    margin-bottom: 1em;
+    background-color: #f9f9f9;
+    border-bottom: 0;
+    margin-bottom: 0;
+    padding: 10px;
+    padding-bottom: 0;
+    box-shadow: 0px 3px 4px 3px #0000001a
+}
+
+#table-of-contents+:is(ul, ol) {
+    padding: 10px;
+    border-top: none;
+    margin-top: 0;
+    padding: 10px;
+    margin-top: 0;
+    padding-left: 2.5em;
+    padding-right: 1em;
+    background-color: #f9f9f9;
+    box-shadow: -1px 7px 4px 3px #0000001a;
+
+}
+
+#table-of-contents::before {
+    content: "🔗"
+}
+
+h1 {
+    margin-bottom: 0.2em;
+}
+
+hr {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    border: none;
+    border-top: 1px solid grey;
+    box-shadow: 0px 1px 2px 0px #0000001a;
+}
+
+
+
+a {
+    text-decoration: none;
+    color: #2583ff;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #0b3264;
+}
+
+.force-graph-container>canvas {
+    border-radius: 5px;
+    min-height: 20vw !important;
+    min-width: 20vw !important;
 }

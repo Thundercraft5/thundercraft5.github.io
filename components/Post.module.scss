@@ -4,13 +4,20 @@
     padding: 20px;
 }
 
+.post>small {
+    font-style: italic;
+}
+
 .postTitle {
     font-size: 2.5em;
     font-weight: bold;
-    margin-bottom: 10px;
+    &:has(+ div > div) { border-bottom: 1px solid darkgrey;    margin-bottom: 10px;
+    padding-bottom: 5px;}
 }
 
 .postDescription {
+    border-top: 1px solid darkgrey;
+    padding-top: 10px;
     font-size: 1.2em;
     color: #555;
     margin-bottom: 20px;
@@ -20,4 +27,20 @@
     line-height: 1.6;
     font-size: 1em;
     color: #333;
+}
+
+.headerLink {
+    color: #0645AD;
+    /* Option A: Wikipedia Blue */
+    /* OR use color: #003366; for Option B */
+    text-decoration: none;
+    /* Clean look */
+}
+
+.headerLink:hover {
+    color: #041a3e;
+    /* Option A: Wikipedia Blue */
+    /* OR use color: #003366; for Option B */
+    text-decoration: underline;
+    /* Clean look */
 }
