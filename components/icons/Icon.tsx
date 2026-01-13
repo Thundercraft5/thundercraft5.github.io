@@ -9,7 +9,5 @@ export type IconProps = {
 } & React.PropsWithoutRef<React.ComponentProps<typeof Image>>;
 
 export function Icon({ src, alt, size, width = size, height = size, ...props }: React.PropsWithoutRef<IconProps>) {
-    console.warn(src, width, height)
-
     return <Image {...props} alt={alt} src={src} width={width} height={height} />;
 }

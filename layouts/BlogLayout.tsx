@@ -57,7 +57,7 @@ export default function BlogLayout({ children, frontmatter }: BlogLayoutProps) {
                             <div className={styles.returnLink}></div>
                             <div className="post-header">
                                 <div className={styles.postImage}>
-                                    <span><MDXImage src={frontmatter?.image?.path || ''} alt={frontmatter?.image?.caption || 'Blog Post Image'} width={frontmatter?.image?.width || 800} height={frontmatter?.image?.height || 400} /></span>
+                                    <span><MDXImage loading="eager" src={frontmatter?.image?.path || ''} alt={frontmatter?.image?.caption || 'Blog Post Image'} width={frontmatter?.image?.width || 800} height={frontmatter?.image?.height || 400} /></span>
                                 </div>
                                 <h1>{frontmatter?.title}</h1>
                                 <small><i>{frontmatter?.created ? 'Created - ' + new Date(frontmatter.created).toLocaleDateString() : ''}</i>{

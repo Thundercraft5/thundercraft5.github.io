@@ -87,15 +87,33 @@ async function generateLinksMap() {
 
   }
 
-  await Promise.all(links.map(async (link, i) => {
+  const done = new Map();
+
+  await Promise.allSettled(links.map(async (link, i) => {
     if (!link.target.startsWith('/')) {
-      links[i].title = await getPageTitle(link.target);
+      const data = await getPageData(link.target);
+      links[i].title = data.title;
+      // links[i].icon = data.icon;
+      console.log(data.icon, done.has(data.icon))
+      if (!done.has(data.icon)) {
+        const icon = await fetch(data.icon);
+        if (icon.ok) {
+          links[i].iconUrl = data.icon;
+          links[i].icon = `data:${icon.headers.get('content-type')};base64,` + Buffer.from(await icon.arrayBuffer()).toString('base64');
+          done.set(data.icon, links[i].icon);
+          console.log(done);
+        } else {
+          console.warn(`Failed to fetch icon for ${link.target}: ${data.icon}`);
+        }
+      } else { links[i].icon = done.get(data.icon); links[i].iconUrl = data.icon; }
     }
   }));
 
+
   links.forEach(link => {
     if (!nodes.find(n => n.id === link.target)) {
-      nodes.push({ id: link.target, name: link.title, external: !link.target.startsWith('/') });
+      nodes.push({ id: link.target, name: link.title, external: !link.target.startsWith('/'), icon: link.icon } );
+      delete link.icon
     }
   });
 
@@ -268,32 +286,35 @@ function notBlank(text: string): boolean {
 }
 
 // https://github.com/zolrath/obsidian-auto-link-title/blob/main/scraper.ts
-async function scrape(url: string): Promise<string> {
+async function scrape(url: string) {
   try {
     const response = await fetch(url).then(r => r)
-    if (!response.headers.get('content-type')!.includes('text/html')) return getUrlFinalSegment(url)
+    if (!response.headers.get('content-type')!.includes('text/html')) return { title: getUrlFinalSegment(url), icon: "" }
     const html = await response.text()
 
     const doc = new JSDom.JSDOM();
     const parser = new doc.window.DOMParser()
     const parsed = parser.parseFromString(html, 'text/html');
     const title = parsed.getElementsByTagName('title')
+    let icon = parsed.querySelector('link[rel="icon"]')?.getAttribute('href') || ''
+
+    if (icon.startsWith("/")) icon = new URL(icon, url).origin + icon
 
     if (blank(title[0]?.textContent!)) {
       // If site is javascript based and has a no-title attribute when unloaded, use it.
       var noTitle = title[0]?.getAttribute('no-title')
       if (notBlank(noTitle!)) {
-        return noTitle!
+        return  { title: noTitle, icon: "" }
       }
 
       // Otherwise if the site has no title/requires javascript simply return Title Unknown
-      return url
+      return { title, icon }
     }
 
-    return title[0]?.textContent
+    return { title: title[0]?.textContent, icon }
   } catch (ex) {
     console.error(ex)
-    return ''
+    return { title: "", icon: "" }
   }
 }
 
@@ -301,13 +322,13 @@ function getUrlFinalSegment(url: string): string {
   try {
     const segments = new URL(url).pathname.split('/')
     const last = segments.pop() || segments.pop() // Handle potential trailing slash
-    return last
+    return last!
   } catch (_) {
     return 'File'
   }
 }
 
-export default async function getPageTitle(url: string) {
+export default async function getPageData(url: string) {
   if (!(url.startsWith('http') || url.startsWith('https'))) {
     url = 'https://' + url
   }
