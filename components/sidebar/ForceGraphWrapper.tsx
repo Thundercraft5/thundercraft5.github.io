@@ -48,7 +48,6 @@ export default ({ ...props }) => {
                 width / 10,        // X Center (Adjust based on your container width)
                 width / 10         // Y Center
             ).strength((d) => {
-                console.log(d)
                 // Determine if node is an orphan (has no neighbors)
                 const isOrphan = !gData.links.some(l =>
                     l.source.id === d.id || l.target.id === d.id

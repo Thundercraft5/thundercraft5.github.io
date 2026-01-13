@@ -1,0 +1,12 @@
+.iconizedLink {
+    display: inline-flex;
+    align-content: center;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.iconizedLink>img {
+    bottom: -1px;
+    position: relative;
+    margin-right: 0.1em;
+}

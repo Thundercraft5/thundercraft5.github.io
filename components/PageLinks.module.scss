@@ -4,10 +4,30 @@
 
 .backlinksList {
     font-size: 14px;
+    padding-left: 0;
+    /* Remove default padding */
+    list-style: none;
+    /* 1. KILL THE DEFAULT DOTS GLOBALLY */
 }
 
-.backlinksList li::marker {
-    content: "🔗"
+/* 2. Generic settings for all list items */
+.backlinksList li {
+    display: flex;
+    /* Aligns icon/emoji with text perfectly */
+    align-items: center;
+    /* Vertically center */
+    gap: 4px;
+    /* Space between bullet/icon and text */
+    margin-bottom: 4px;
+}
+
+/* 3. INTERNAL LINKS: Add the Chain Emoji */
+/* We check for an <a> immediate child that starts with "/" */
+.backlinksList li:has(> a[href^="/"])::before {
+    content: "🔗";
+    font-size: 12px;
+    /* Adjust emoji size if needed */
+    line-height: 1;
 }
 
 .noBacklinks {
