@@ -5,10 +5,9 @@ import { Enumerate, type Add, type Increment } from "@thundercraft5/type-utils/n
 import type { BuildTuple } from '@thundercraft5/type-utils/arrays';
 import { graphData } from '../src/data';
 import Image from 'next/image';
+import IconizedLink from '../components/IconizedLink';
+import { iconizedLink } from '../components/IconizedLink.module.scss';
 
-
-console.log('hashHeader:', hashHeader);
-console.log('hashLink:', hashLink);
 
 type HeaderLevel = `h${Exclude<Enumerate<7>, 0>}`;
 
@@ -42,7 +41,6 @@ function headerComponent(Level: HeaderLevel) {
         // Now we can safely add our custom IDs, Links, and Classes
         const finalClassName = [props.className, hashHeader].filter(Boolean).join(' ');
 
-        console.log(id, Level)
         if (id) {
             return (
                 <Level id={id} className={finalClassName}>
@@ -60,22 +58,7 @@ function headerComponent(Level: HeaderLevel) {
 export function useMDXComponents(components: Record<string, React.ComponentType<{ children?: React.ReactNode }>>) {
     return {
         ...components,
-        a: (props: React.ComponentProps<'a'>) => {
-            const [mounted, setMounted] = useState(false);
-            const isInternalLink = props.href && (props.href.startsWith('/') || props.href.startsWith('#'));
-
-            useEffect(() => {
-                setMounted(true);
-            }, []);
-
-            return <a
-                {...props}
-            // className={[props.className, isInternalLink ? 'internal-link' : 'external-link'].filter(Boolean).join(' ')}
-            >
-                {!isInternalLink && mounted ? <Image width={16} height={16} src={graphData.nodes.filter(node => node.external).find(node => node.id === props.href)?.icon} /> : ""}
-                {props.children}
-            </a>;
-        },
+        a: (props: React.ComponentProps<'a'>) => <IconizedLink className={iconizedLink} {...props} />,
         ...Object.fromEntries(
             Array(6)
                 .fill(null)

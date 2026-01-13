@@ -30,8 +30,6 @@ export default function App({ Component, pageProps, router, ...d }: AppProps) {
 
   const isSystemPage = router.pathname === '/404' || router.pathname === '/_error' || router.pathname === '/bad-request';
 
-  console.log(fm, d)
-
   // Strict Validation Logic
   if (!isSystemPage && !router.pathname.endsWith(".tsx")) {
     if (!fm) throw new PageError("MISSING_FRONTMATTER", router.route)
@@ -53,7 +51,6 @@ export default function App({ Component, pageProps, router, ...d }: AppProps) {
   }
 
   const pageTitle = fm?.title ? fm.title + ' - thundercraft5.github.io' : 'thundercraft5.github.io'
-  console.log(router);
 
   return (
     <MDXProvider>

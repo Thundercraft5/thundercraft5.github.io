@@ -27,7 +27,8 @@ const watch = command({
     async "handler"({ directory }) {
         logMessage("Watching directories: ", ...directory)
         chokidar.watch(directory, {
-            persistent: true,
+          persistent: true,
+          ignored: /(^|[\/\\])\..|public/, // ignore dotfiles
         }).on("add", async path => {
             await writeManifest()
             logMessage("File added: ", path)
@@ -81,7 +82,15 @@ async function generateLinksMap() {
       const matches = content.matchAll(pattern);
       for (const match of matches) {
         const target = match[1];
-        links.push({ source: route, target, title: frontmatter.title, external: !target.startsWith('/') });
+
+        if (!target.startsWith('/') && !target.startsWith('#')) links.push({ source: route, target, title: frontmatter.title, external: !target.startsWith('/') })
+        else {
+          const { displayPath, route } = resolvePath(target) ?? {}
+          console.log(displayPath, route, target, fullPath)
+          const frontmatter = await getFrontMatter(displayPath);
+          if (!displayPath || !route) continue;
+          links.push({ source: route, target, title: frontmatter.title, external: !target.startsWith('/') });
+        }
       }
     }
 
@@ -172,10 +181,10 @@ async function generateSitemaps(routeMap: Record<string, any>) {
   await fs.writeFile(path.relative(process.cwd(), './public/sitemap-1.xml'), sitemapContent, { encoding: 'utf-8' });
 
   // Write sitemap index
-  const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n<sitemap><loc>${SITE_URL.replace(/\/$/, '')}/sitemap-0.xml</loc></sitemap>\n</sitemapindex>`;
+  const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n<sitemap><loc>${SITE_URL.replace(/\/$/, '')}/sitemap-1.xml</loc><lastmod>${new Date().toISOString().split('T')[0]}</lastmod></sitemap>\n</sitemapindex>`;
 
   await fs.writeFile(path.relative(process.cwd(), './public/sitemap.xml'), sitemapIndex, { encoding: 'utf-8' });
-  logMessage('Wrote sitemap.xml and sitemap-0.xml');
+  logMessage('Wrote sitemap.xml and sitemap-1.xml');
 }
 
 async function asyncForeach<T extends unknown[]>(array: T, callback: (value: T[number], index: number, arr: T) => Promise<any>): Promise<T> {
