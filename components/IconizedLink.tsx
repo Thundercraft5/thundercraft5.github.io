@@ -16,9 +16,9 @@ export default function IconizedLink(props: React.ComponentProps<'a'>) {
     console.log(found);
 
     return <a
-        {...props}
         className={`${iconizedLink}${props.className ? ' ' + props.className : ''}`}
-        title={mounted ? found?.name : ""}
+        {...props}
+        title={props.title || (mounted ? found?.name : "")}
     // className={[props.className, isInternalLink ? 'internal-link' : 'external-link'].filter(Boolean).join(' ')}
     >
         {!isInternalLink && mounted ? <Image width={16} height={16} src={found?.icon} /> : ""}

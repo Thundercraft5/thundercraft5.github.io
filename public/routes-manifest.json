@@ -4,7 +4,7 @@
     "frontmatter": {
       "title": "About Me",
       "description": "Learn more about Thundercraft5, my journey as a developer and regenerative farmer and my interests.",
-      "last-updated": "2025-11-07T00:00:00.000Z",
+      "last-updated": "2026-01-16T23:40:17.877Z",
       "created": "2025-04-20T00:00:00.000Z"
     },
     "breadcrumbs": [
@@ -24,7 +24,7 @@
       "title": "Blog",
       "description": "Read my latest blog posts and updates.",
       "created": "2025-11-07T00:00:00.000Z",
-      "last-updated": "2025-11-07T00:00:00.000Z"
+      "last-updated": "2026-01-16T23:40:17.877Z"
     },
     "breadcrumbs": [
       [
@@ -42,7 +42,7 @@
     "frontmatter": {
       "title": "First blog post",
       "description": "This is my first blog post created on November 7, 2025.",
-      "last-updated": "2025-11-07T06:00:00.000Z",
+      "last-updated": "2026-01-16T23:40:17.877Z",
       "created": "2025-11-07T06:00:00.000Z"
     },
     "breadcrumbs": [
@@ -70,7 +70,7 @@
       "title": "Reflecting on my first WWOOF trip",
       "description": "Sharing my experiences and lessons learned from my initial WWOOF adventure.",
       "created": "2025-11-07T00:00:00.000Z",
-      "last-updated": "2025-11-07T00:00:00.000Z",
+      "last-updated": "2026-01-16T23:40:17.878Z",
       "image": {
         "path": "/blog/images/2025/11/07.3/valley.png",
         "width": 400,
@@ -103,7 +103,7 @@
     "frontmatter": {
       "title": "2025 Posts",
       "description": "A collection of blog posts from the year 2025.",
-      "last-updated": "2025-11-07T00:00:00.000Z",
+      "last-updated": "2026-01-16T23:40:17.879Z",
       "created": "2025-11-07T00:00:00.000Z"
     },
     "breadcrumbs": [
@@ -126,7 +126,7 @@
     "frontmatter": {
       "title": "The Inflation of Meta-Knowledge and Lack of Wisdom: Notes which note notes of notes which note nothing",
       "description": "The Dark Side of note-taking apps and the endless pursuit of empty meta-knowledge and meta-notes, without wisdom.",
-      "last-updated": "2026-01-11T06:00:00.000Z",
+      "last-updated": "2026-01-16T23:40:17.879Z",
       "created": "2026-01-11T06:00:00.000Z",
       "image": {
         "path": "/blog/images/2026/01/11/obsidian-logo-and-name-on-an-obsidian-background-and-some-white-dots (1).avif",
@@ -155,7 +155,7 @@
     "frontmatter": {
       "title": "My WWOOF at Crown Hill Farm",
       "description": "My Third WWOOF experience at Crown Hill Farm, NY and my thoughts on farming going forward.",
-      "last-updated": "2026-01-11T06:00:00.000Z",
+      "last-updated": "2026-01-16T23:40:17.879Z",
       "created": "2026-01-11T06:00:00.000Z",
       "image": {
         "path": "/blog/images/2026/01/12/image.png",
@@ -184,7 +184,7 @@
     "frontmatter": {
       "title": "Example Page",
       "description": "This is an example page.",
-      "last-updated": "2025-11-07T00:00:00.000Z",
+      "last-updated": "2026-01-16T23:40:17.880Z",
       "created": "2025-04-20T00:00:00.000Z"
     },
     "breadcrumbs": [
@@ -203,7 +203,7 @@
     "frontmatter": {
       "title": "Farming",
       "description": "Explore my thoughts and projects related to sustainable and regenerative farming.",
-      "last-updated": "2025-11-07T00:00:00.000Z",
+      "last-updated": "2026-01-16T23:40:17.881Z",
       "created": "2025-04-20T00:00:00.000Z"
     },
     "breadcrumbs": [
@@ -222,7 +222,7 @@
     "frontmatter": {
       "title": "Fully Homomorphic Encryption",
       "description": "An introduction to Fully Homomorphic Encryption (FHE), its principles, applications, and significance in modern cryptography.",
-      "last-updated": "2025-11-07T00:00:00.000Z",
+      "last-updated": "2026-01-16T23:40:17.880Z",
       "created": "2025-11-07T00:00:00.000Z"
     },
     "breadcrumbs": [
@@ -241,7 +241,7 @@
     "frontmatter": {
       "title": "Thundercraft5's Homepage",
       "description": "Thundercraft5's personal website showcasing projects, interests, and open-source contributions.",
-      "last-updated": "2025-11-07T00:00:00.000Z",
+      "last-updated": "2026-01-16T23:40:17.880Z",
       "created": "2025-04-20T00:00:00.000Z"
     },
     "breadcrumbs": [
@@ -255,12 +255,31 @@
       ]
     ]
   },
+  "/links": {
+    "path": "pages\\links.mdx",
+    "frontmatter": {
+      "title": "Links",
+      "description": "All links used on this site",
+      "last-updated": "2026-01-16T23:40:17.881Z",
+      "created": "20250113"
+    },
+    "breadcrumbs": [
+      [
+        "/",
+        "Thundercraft5's Homepage"
+      ],
+      [
+        "/links",
+        "Links"
+      ]
+    ]
+  },
   "/packages": {
     "path": "pages\\packages\\index.mdx",
     "frontmatter": {
       "title": "Packages",
       "description": "A collection of software packages and libraries developed and maintained by me.",
-      "last-updated": "2025-11-07T00:00:00.000Z",
+      "last-updated": "2026-01-16T23:40:17.881Z",
       "created": "2025-11-07T00:00:00.000Z"
     },
     "breadcrumbs": [
@@ -279,7 +298,7 @@
     "frontmatter": {
       "title": "YoutubeFullscreen",
       "description": "A small utility to open YouTube videos in a fullscreen overlay/window.",
-      "last-updated": "2025-11-07T00:00:00.000Z",
+      "last-updated": "2026-01-16T23:40:17.881Z",
       "created": "2025-11-07T00:00:00.000Z",
       "package": "YoutubeFullscreen",
       "repo": "https://github.com/Thundercraft5/YoutubeFullscreen"
@@ -304,7 +323,7 @@
     "frontmatter": {
       "title": "My Philosophy",
       "description": "An overview of my personal philosophy and beliefs.",
-      "last-updated": "2025-11-07T00:00:00.000Z",
+      "last-updated": "2026-01-16T23:40:17.881Z",
       "created": "2025-04-20T00:00:00.000Z"
     },
     "breadcrumbs": [
@@ -324,7 +343,7 @@
       "title": "CannonballBox",
       "description": "A physics simulation of projectile motion with adjustable parameters.",
       "created": "2025-04-20T00:00:00.000Z",
-      "last-updated": "2025-11-07T00:00:00.000Z"
+      "last-updated": "2026-01-16T23:40:17.882Z"
     },
     "breadcrumbs": [
       [
@@ -346,7 +365,7 @@
     "frontmatter": {
       "title": "CanvasDots",
       "description": "A node visualization project using HTML5 Canvas",
-      "last-updated": "11-07-25",
+      "last-updated": "2026-01-16T23:40:17.882Z",
       "created": "04-20-25"
     },
     "breadcrumbs": [
@@ -370,7 +389,7 @@
       "title": "ESlintEditor",
       "description": "An experiment hosting ESLint in monaco Editor on the web",
       "created": "11-07-2025",
-      "last-updated": "11-07-2025"
+      "last-updated": "2026-01-16T23:40:17.882Z"
     },
     "breadcrumbs": [
       [
@@ -392,7 +411,7 @@
     "frontmatter": {
       "title": "My Projects",
       "description": "List of personal projects",
-      "last-updated": "2025-11-07T00:00:00.000Z",
+      "last-updated": "2026-01-16T23:40:17.882Z",
       "created": "2025-04-20T00:00:00.000Z"
     },
     "breadcrumbs": [
@@ -412,7 +431,7 @@
       "title": "InfectionTable",
       "description": "Table for modelling spreading table cells",
       "created": "2025-04-20T00:00:00.000Z",
-      "last-updated": "2025-11-07T00:00:00.000Z"
+      "last-updated": "2026-01-16T23:40:17.883Z"
     },
     "breadcrumbs": [
       [
@@ -435,7 +454,7 @@
       "title": "MinMaxFinder",
       "description": "An experiment with various mathematical graphing tools and libraries",
       "created": "2025-04-20T00:00:00.000Z",
-      "last-updated": "2025-11-07T00:00:00.000Z"
+      "last-updated": "2026-01-16T23:40:17.883Z"
     },
     "breadcrumbs": [
       [
@@ -458,7 +477,7 @@
       "title": "My Work",
       "description": "My work and contributions in open-source projects, including scripts, tools, and more.",
       "created": "2025-04-20T00:00:00.000Z",
-      "last-updated": "2025-11-07T00:00:00.000Z"
+      "last-updated": "2026-01-16T23:40:17.883Z"
     },
     "breadcrumbs": [
       [
