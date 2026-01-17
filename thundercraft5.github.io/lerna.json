@@ -1,0 +1,10 @@
+{
+	"packages": [
+		"projects/*",
+		"internalPackages/*",
+		"builds"
+	],
+	"npmClient": "npm",
+	"useWorkspaces": true,
+	"version": "independent"
+}

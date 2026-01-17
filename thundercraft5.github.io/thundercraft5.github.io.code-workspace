@@ -1,0 +1,92 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"**/.git": false,
+			"**/.svn": false,
+			"**/.hg": false,
+			"**/CVS": false,
+			"**/.DS_Store": false,
+			"**/Thumbs.db": false,
+			"**/.classpath": false,
+			"**/.project": false,
+			"**/.settings": false,
+			"**/.factorypath": false,
+			"**/.vscode": false,
+			"**/.editorconfig": false,
+			"**/.history": false,
+			"**/.gitattributes": false,
+			"**/.gitignore": false,
+			"**/eclipse-formatter.xml": false,
+			"**/LICENSE": false,
+			"**/phpcs-composer.xml": false,
+			"**/README.md": false,
+			"**/tempCodeRunnerFile.*": false,
+			"**/*.class": false,
+			"**/.eslintrc.cjs": false,
+			"**/.metadata": false,
+			"**/.vs": false,
+			"**/pom.xml": false,
+			"**/.gitingnore": false,
+			"**/.nojekyll": false,
+			"**/AUTHORS.txt": false,
+			"**/LICENSE.txt": false,
+			"**/AssemblyInfo.cs": false,
+			"**/.apt_generated": false,
+			"**/.clang-tidy": false,
+			"**/Cargo.toml": false,
+			"**/Cargo.lock": false,
+			".tmp-projections/": false,
+			"Visual-Studio\\C#\\*/*bin": false,
+			"Visual-Studio\\C#\\*/obj": false,
+			"Visual-Studio\\Java\\*/*bin": false,
+			"Visual-Studio\\Rust\\*/target": false,
+			"PowerShell\\Modules/PackageManagement": false,
+			"*.vsconfig": false,
+			"*.code-workspace": false,
+			".eslintrc.json": false,
+			"CppProperties.json": false,
+			"debug.log": false,
+			"Overrides": false,
+			"Cargo.toml": false,
+			".debuggerDefaults": false,
+			"**/.debuggerDefaults": false,
+			"**/.idea": false,
+			"**/target": false,
+			"out": false,
+			"*.pem": false,
+			"**/package-lock.json": false,
+			"**/*.key": false,
+			"**/*.crt": false
+		},
+		"explorerExclude.backup": null,
+		"git.ignoreLimitWarning": true
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"type": "pwa-node",
+				"request": "launch",
+				"name": "Launch Local Server",
+				"skipFiles": [
+					"<node_internals>/**"
+				],
+				"runtimeExecutable": "nodemon",
+				"runtimeArgs": [
+					"./scripts/server.js",
+					"--experimental-modules",
+					"--experimental-import-meta-resolve",
+					"--experimental-json-modules",
+					"--experimental-repl-await",
+					"--no-warnings",
+					"--trace-deprecation",
+				]
+			}
+		]
+	}
+}
