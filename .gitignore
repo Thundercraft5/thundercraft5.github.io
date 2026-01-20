@@ -12,3 +12,4 @@ localhost.key
 node_modules/**
 node_modules
 out
+.env
