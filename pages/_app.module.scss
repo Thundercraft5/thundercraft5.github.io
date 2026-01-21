@@ -15,6 +15,23 @@
     }
 }
 
+@media screen and (max-width: 1200px) {
+    .mainContent {
+        flex-direction: column-reverse;
+
+        &>aside {
+            position: static !important;
+            align-items: center;
+            margin: auto;
+
+            & .forceGraphContainer {
+                width: 30vh;
+                height: 30vh;
+            }
+        }
+    }
+}
+
 .mainContentContainer {
     display: flex;
     flex-direction: column;

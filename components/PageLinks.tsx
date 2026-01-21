@@ -17,7 +17,7 @@ export function LinksToHere() {
         <ul className={backlinksList}>
             {links.length ? links.map((link, index) => (
                 <li key={index}>
-                    <IconizedLink href={link.source} title={link.title}>{link.title}</IconizedLink>
+                    <IconizedLink titled href={link.source} title={link.title}>{link.title}</IconizedLink>
                 </li>
             )) : <div className={noBacklinks}>No backlinks found</div>}
         </ul>
@@ -28,12 +28,13 @@ export function Outlinks() {
     const { route, pathname } = useRouter();
     const links = graphData.links.filter(link => link.source === route || (link.source + "/") === route)
 
+
     return (<>
         <h3 className={whiteHeader}>Outlinks</h3>
         <ul className={backlinksList}>
             {links.length ? links.map((link, index) => (
                 <li key={index}>
-                    <IconizedLink href={link.target} title={link.toTitle}>{link.toTitle}</IconizedLink>
+                    <IconizedLink titled href={link.target} title={link.toTitle}>{link.toTitle || link.name}</IconizedLink>
                 </li>
             )) : <div className={noBacklinks}>No outlinks found</div>}
         </ul>

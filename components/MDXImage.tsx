@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { smallText, enlarged, image, imageContainer } from "./MDXImage.module.scss";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useImageModal } from "./ImageModal/ImageModalProvider.tsx";
 export type Props = {
     src: string;
@@ -12,6 +12,8 @@ export type Props = {
 
 export default function MDXImage({ ...props }: Props) {
     const { showModal } = useImageModal();
+
+    // const { width, height } = useState({ src: null,  });
 
     return <>
         <div className={imageContainer} onClick={e => showModal(props.src, props.alt)}>

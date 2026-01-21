@@ -28,6 +28,8 @@ export default ({ ...props }) => {
     const [hasInitializedForces, setHasInitializedForces] = React.useState(false);
     const [tick, incrementTick] = useReducer(v => v + 1, 0);
 
+    console.log(width)
+
     // ✅ SOLUTION: The Callback Ref
     // This function runs automatically once, the moment the graph is mounted.
     // We do not need state, effects, or ticks to wait for it.
@@ -67,8 +69,8 @@ export default ({ ...props }) => {
         <ForceGraph2D
             graphData={gData satisfies GraphData}
             ref={handleRef}
-            width={width / 5}
-            height={width / 5}
+            width={width / (width < 1200 ? 3.333 : 5)}
+            height={width / (width < 1200 ? 3.333 : 5)}
             // onEngineTick={() => { !hasInitializedForces && incrementTick() }}
 
             backgroundColor="#1a1a1a"
@@ -87,13 +89,18 @@ export default ({ ...props }) => {
                 if (node.external) {
                     try {
                         const size = 16;
-                        ctx.drawImage(
+                        if (node.img instanceof Image) ctx.drawImage(
                             node.img,
                             node.x - size / 2,
                             node.y - size / 2,
                             size,
                             size
-                        );
+                        )
+                        else {
+                            ctx.beginPath();
+                            ctx.arc(node.x, node.y, isCurrent ? 8 : 3, 0, 2 * Math.PI, false);
+                            ctx.fillStyle = isCurrent ? '#9dd7e3' : '#4a90e2';
+                        }
                     } catch (err) {
                         console.warn(err);
                         // Faillback to default dot if image fails

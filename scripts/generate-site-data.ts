@@ -6,6 +6,7 @@ import { command, subcommands, run, string, restPositionals } from "cmd-ts";
 import frontmatter from "gray-matter";
 import "colors";
 import { JSDOM } from "jsdom";
+import { mode } from "mathjs";
 
 // --- CONFIGURATION ---
 const SITE_URL = process.env.SITE_URL ?? 'https://thundercraft5.github.io';
@@ -263,6 +264,7 @@ async function generateLinksMap(routeMap: Record<string, any>) {
         if (link.external) {
             if (!newNodes.find(n => n.id === link.target)) {
                 const metadata = externalMetadataCache.get(link.target);
+
                 newNodes.push({
                     id: link.target,
                     name: metadata?.name || link.target,
@@ -278,6 +280,19 @@ async function generateLinksMap(routeMap: Record<string, any>) {
              }
         }
     });
+
+    const externals = newNodes.filter(value => value.external);
+    externals.forEach(node => {
+        if ((!node.icon) && node.external) {
+            externals.forEach((value) => {
+                // console.log(node, value)
+                if (value.icon && new URL(node.id).origin === new URL(value.id).origin) {
+                    node.icon = value.icon;
+                }
+            })
+        }
+    })
+
 
     return { nodes: newNodes, links: newLinks };
 }
@@ -435,11 +450,12 @@ async function scrape(url: string) {
 
         const response = await fetch(url, { 
             signal: controller.signal,
-            headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Bot/1.0)' }
+            // headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Bot/1.0)' }
         });
         clearTimeout(timeoutId);
 
         if (!response.headers.get('content-type')?.includes('text/html')) {
+            console.warn("INVALID RESPONSE", response.headers)
             return { title: getUrlFinalSegment(url), icon: "" };
         }
 
@@ -457,6 +473,7 @@ async function scrape(url: string) {
 
         return { title: (title || getUrlFinalSegment(url)).trim(), icon };
     } catch (ex) {
+        console.warn(ex);
         return { title: getUrlFinalSegment(url), icon: "" };
     }
 }

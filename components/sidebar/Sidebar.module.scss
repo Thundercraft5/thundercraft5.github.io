@@ -18,6 +18,19 @@
     background: #1a1a1a;
 }
 
+@media screen and (max-width: 1200px) {
+
+    .forceGraphContainer {
+        min-width: 30vw;
+        min-height: 30vw;
+    }
+
+    .sidebar {
+        width: 30vw;
+        padding: 10px;
+    }
+}
+
 .force-graph-container>canvas {
     border-radius: 5px;
 }
