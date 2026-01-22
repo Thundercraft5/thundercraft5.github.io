@@ -4,7 +4,7 @@
     "frontmatter": {
       "title": "About Me",
       "description": "Learn more about Thundercraft5, my journey as a developer and regenerative farmer and my interests.",
-      "last-updated": "2026-01-21T03:49:53.834Z",
+      "last-updated": "2026-01-21T03:26:55.820Z",
       "created": "2025-04-20T00:00:00.000Z"
     },
     "breadcrumbs": [
@@ -24,7 +24,7 @@
       "title": "Blog",
       "description": "Read my latest blog posts and updates.",
       "created": "2025-11-07T00:00:00.000Z",
-      "last-updated": "2026-01-21T03:49:53.835Z"
+      "last-updated": "2026-01-21T03:26:55.820Z"
     },
     "breadcrumbs": [
       [
@@ -42,7 +42,7 @@
     "frontmatter": {
       "title": "First blog post",
       "description": "This is my first blog post created on November 7, 2025.",
-      "last-updated": "2026-01-21T03:49:53.835Z",
+      "last-updated": "2026-01-21T03:26:55.820Z",
       "created": "2025-11-07T06:00:00.000Z"
     },
     "breadcrumbs": [
@@ -70,7 +70,7 @@
       "title": "Reflecting on my first WWOOF trip",
       "description": "Sharing my experiences and lessons learned from my initial WWOOF adventure.",
       "created": "2025-11-07T00:00:00.000Z",
-      "last-updated": "2026-01-21T03:49:53.835Z",
+      "last-updated": "2026-01-21T03:26:55.820Z",
       "image": {
         "path": "/blog/images/2025/11/07.3/valley.png",
         "width": 400,
@@ -103,7 +103,7 @@
     "frontmatter": {
       "title": "2025 Posts",
       "description": "A collection of blog posts from the year 2025.",
-      "last-updated": "2026-01-21T03:49:53.836Z",
+      "last-updated": "2026-01-21T03:26:55.820Z",
       "created": "2025-11-07T00:00:00.000Z"
     },
     "breadcrumbs": [
@@ -126,7 +126,7 @@
     "frontmatter": {
       "title": "The Inflation of Meta-Knowledge and Lack of Wisdom: Notes which note notes of notes which note nothing",
       "description": "The Dark Side of note-taking apps and the endless pursuit of empty meta-knowledge and meta-notes, without wisdom.",
-      "last-updated": "2026-01-21T03:49:53.838Z",
+      "last-updated": "2026-01-21T03:26:55.821Z",
       "created": "2026-01-11T06:00:00.000Z",
       "image": {
         "path": "/blog/images/2026/01/11/obsidian-logo-and-name-on-an-obsidian-background-and-some-white-dots (1).avif",
@@ -153,15 +153,15 @@
   "/blog/posts/2026/01/20": {
     "path": "pages\\blog\\posts\\2026\\01\\20.mdx",
     "frontmatter": {
-      "title": "The Age  of Fig Leaves: Me, Fandom, and The Hypixel SkyBlock Wiki",
-      "description": "How FANDOM hides behind fig leaves (license and indemnity) to save face instead of embracing showing face, how FANDOM exemplifies unsound ethical practices endemic to this day and age, and my past experiences at the Hypixel SkyBlock Wiki.",
+      "title": "The Age of Fig Leaves: Me, Fandom, and The Hypixel SkyBlock Wiki",
+      "description": "How FANDOM hides behind fig leaves (such as ToU indemnity clauses) to save face instead of embracing showing face, how FANDOM exemplifies unsound ethical practices endemic to this day and age, and my past experiences at the Hypixel SkyBlock Wiki.",
       "image": {
         "path": "/blog/images/2026/01/20/Fandom.svg",
         "width": 800,
         "height": 200,
-        "caption": "Copyright & Credit 2021: Fandom"
+        "caption": "Fandom is a trademark of Fandom, Inc. This image is used for purposes of identification, commentary, and criticism."
       },
-      "last-updated": "2026-01-21T03:49:53.859Z",
+      "last-updated": "2026-01-21T03:50:04.843Z",
       "created": "2026-01-20T22:30:52.390Z"
     },
     "breadcrumbs": [
@@ -175,7 +175,7 @@
       ],
       [
         "/blog/posts/2026/01/20",
-        "The Age  of Fig Leaves: Me, Fandom, and The Hypixel SkyBlock Wiki"
+        "The Age of Fig Leaves: Me, Fandom, and The Hypixel SkyBlock Wiki"
       ]
     ]
   },
@@ -184,7 +184,7 @@
     "frontmatter": {
       "title": "Example Page",
       "description": "This is an example page.",
-      "last-updated": "2026-01-21T03:49:53.851Z",
+      "last-updated": "2026-01-21T03:26:55.821Z",
       "created": "2025-04-20T00:00:00.000Z"
     },
     "breadcrumbs": [
@@ -203,7 +203,7 @@
     "frontmatter": {
       "title": "Farming",
       "description": "Explore my thoughts and projects related to sustainable and regenerative farming.",
-      "last-updated": "2026-01-21T03:49:53.865Z",
+      "last-updated": "2026-01-21T03:26:55.821Z",
       "created": "2025-04-20T00:00:00.000Z"
     },
     "breadcrumbs": [
@@ -222,7 +222,7 @@
     "frontmatter": {
       "title": "Fully Homomorphic Encryption",
       "description": "An introduction to Fully Homomorphic Encryption (FHE), its principles, applications, and significance in modern cryptography.",
-      "last-updated": "2026-01-21T03:49:53.865Z",
+      "last-updated": "2026-01-21T03:26:55.822Z",
       "created": "2025-11-07T00:00:00.000Z"
     },
     "breadcrumbs": [
@@ -241,7 +241,7 @@
     "frontmatter": {
       "title": "Thundercraft5's Homepage",
       "description": "Thundercraft5's personal website showcasing projects, interests, and open-source contributions.",
-      "last-updated": "2026-01-21T03:49:54.092Z",
+      "last-updated": "2026-01-21T03:26:55.822Z",
       "created": "2025-04-20T00:00:00.000Z"
     },
     "breadcrumbs": [
@@ -260,7 +260,7 @@
     "frontmatter": {
       "title": "Links",
       "description": "All links used on this site",
-      "last-updated": "2026-01-21T03:49:54.081Z",
+      "last-updated": "2026-01-21T03:26:55.822Z",
       "created": "20250113"
     },
     "breadcrumbs": [
@@ -323,7 +323,7 @@
     "frontmatter": {
       "title": "My Philosophy",
       "description": "An overview of my personal philosophy and beliefs.",
-      "last-updated": "2026-01-21T03:49:54.113Z",
+      "last-updated": "2026-01-21T03:26:55.822Z",
       "created": "2025-04-20T00:00:00.000Z"
     },
     "breadcrumbs": [
@@ -477,7 +477,7 @@
       "title": "My Work",
       "description": "My work and contributions in open-source projects, including scripts, tools, and more.",
       "created": "2025-04-20T00:00:00.000Z",
-      "last-updated": "2026-01-21T03:49:54.122Z"
+      "last-updated": "2026-01-21T03:26:55.824Z"
     },
     "breadcrumbs": [
       [
