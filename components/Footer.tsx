@@ -1,6 +1,6 @@
 import CopyrightNotice from "./CopyrightNotice";
 import Links from "./Links";
-import { footer, lastUpdated, flexRow } from './Footer.module.scss'
+import { footer, lastUpdated, flexRow, disclaimer } from './Footer.module.scss'
 import { plainlist } from "./Links.module.scss";
 import Tools from "./Tools";
 import { LinksToHere, Outlinks } from "./PageLinks";
@@ -12,6 +12,7 @@ export default function Footer({ date, created }: { date?: string, created?: str
             {created && <li><span className={lastUpdated}>🖋 This page was created on <b>{created}</b></span></li>}
             <li><LinksToHere /></li>
             <li><Outlinks /></li>
+            <li><div className={disclaimer}><i>All opinions expressed and work on this website are my own unless explicitly stated otherwise.</i></div></li>
             <li><CopyrightNotice /></li>
             <li className={flexRow}><Links /><Tools /></li>
         </ul>
